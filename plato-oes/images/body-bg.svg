@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	width="1920px" height="2920px" viewBox="0 0 1920 2920">
+<filter filterUnits="objectBoundingBox" x="0.00" y="0.00" width="100.00" height="100.00" id="filter0">
+<feFlood flood-color="rgb(239,247,247)" result="coFloodOut1"/>
+<feComposite in="coFloodOut1" in2="SourceAlpha" operator="in" result="coOverlay1"/>
+<feBlend in="coOverlay1" in2="SourceGraphic" mode="normal" result="colorOverlay1"/>
+</filter>
+<filter filterUnits="objectBoundingBox" x="0.00" y="0.00" width="100.00" height="100.00" id="filter1">
+<feFlood flood-color="rgb(239,247,247)" result="coFloodOut1"/>
+<feComposite in="coFloodOut1" in2="SourceAlpha" operator="in" result="coOverlay1"/>
+<feBlend in="coOverlay1" in2="SourceGraphic" mode="normal" result="colorOverlay1"/>
+</filter>
+<path fillRule="evenodd" d="M-630.75 1042.14C-630.75 1042.14-2077.31 3137.19-2077.31 3137.19-2119.33 3198.04-2104.08 3281.5-2043.25 3323.6-2043.25 3323.6-474.13 4409.55-474.13 4409.55-413.3 4451.65-329.93 4436.45-287.91 4375.6-287.91 4375.6 1158.65 2280.55 1158.65 2280.55 1200.66 2219.7 1185.41 2136.24 1124.58 2094.14 1124.58 2094.14-444.53 1008.19-444.53 1008.19-505.36 966.09-588.74 981.29-630.75 1042.14Z" fill="rgb(226,86,129)" filter="url(#filter0)"/><path fillRule="evenodd" d="M 2003.46-1098.9C 2003.46-1098.9 4103.92 343.44 4103.92 343.44 4164.93 385.33 4180.42 468.75 4138.53 529.76 4138.53 529.76 3057.9 2103.46 3057.9 2103.46 3016.01 2164.46 2932.59 2179.96 2871.58 2138.07 2871.58 2138.07 771.12 695.72 771.12 695.72 710.11 653.83 694.62 570.41 736.51 509.41 736.51 509.41 1817.14-1064.29 1817.14-1064.29 1859.03-1125.3 1942.45-1140.8 2003.46-1098.9Z" fill="rgb(226,86,129)" filter="url(#filter1)"/></svg>

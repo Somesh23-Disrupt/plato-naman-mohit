@@ -1,0 +1,118 @@
+@media (max-width: 1500px) {
+  body.boxed-v #wrapper {
+    max-width: 100%;
+  }
+}
+@media (max-width: 1199px) {
+  .main-heading br {
+    display: none;
+  }
+
+  .quote-form .form-group {
+    width: 26%;
+  }
+}
+@media (max-width: 992px) {
+  .hidden-sm {
+    display: none;
+  }
+
+  .quote-section br {
+    display: none;
+  }
+
+  .quote-form .form-group {
+    width: 25%;
+  }
+}
+@media (max-width: 767px) {
+  .hidden-xs {
+    display: none;
+  }
+
+  #header .holder {
+    padding: 30px 0 20px;
+  }
+  #header .nav-opener {
+    display: inline-block;
+  }
+  #header.sticky {
+    top: 0;
+    left: 0;
+    right: 0;
+    position: fixed;
+  }
+  #header.sticky #nav {
+    top: 100%;
+    position: absolute;
+  }
+
+  #nav {
+    left: 0;
+    right: 0;
+    top: 100%;
+    bottom: auto;
+    max-height: 0;
+    overflow: hidden;
+    background: #fff;
+    position: absolute;
+    transition: all ease 0.3s;
+  }
+  #nav ul {
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
+  }
+  #nav ul li {
+    padding: 0;
+    display: block;
+    text-align: left;
+  }
+  #nav ul .button {
+    float: none;
+  }
+  #nav ul a {
+    display: block;
+    padding: 10px 20px;
+  }
+
+  .nav-active #nav {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  .main-banner .heading {
+    font-size: 28px;
+    line-height: 35px;
+  }
+
+  .quote-form .form-group {
+    width: 100%;
+    margin-right: 0;
+  }
+  .quote-form .btn {
+    padding: 11px 25px;
+  }
+  .quote-form.style2 {
+    width: 250px;
+  }
+
+  .quote-section h2 {
+    font-size: 38px;
+    line-height: 50px;
+  }
+
+  .gallery-box .box {
+    width: 33%;
+  }
+
+  .social a {
+    width: 55px;
+    height: 55px;
+    line-height: 55px;
+  }
+
+  .price-box {
+    margin-bottom: 30px;
+  }
+}

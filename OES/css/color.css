@@ -1,0 +1,15 @@
+a,
+#nav a:hover,
+#nav a.active,
+.la-ball-clip-rotate,
+.main-color {
+  color: #f2195d;
+}
+
+.main-bg-color {
+  background-color: #f2195d;
+}
+
+.main-border-color {
+  border-color: #f2195d;
+}
