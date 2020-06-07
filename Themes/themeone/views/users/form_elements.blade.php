@@ -310,9 +310,6 @@
 					@endif
 
 					@if((checkRole(getUserGrade(2))))
-					
-					
-					@if(checkRole(['teacher']))
 
 					<fieldset class="form-group">
 
@@ -343,46 +340,8 @@
 						</datalist>
 
 						<div class="validation-error" ng-messages="formUsers.name.$error" >
-						</fieldset>
-
-						@endif
-
-						@if(checkRole(['teacher']))
-
-						<fieldset class="form-group">
-
-						{{ Form::label('parent', getphrase('parent')) }}
-
-						<span class="text-red">*</span>
-
-						<?php
 
 
-
-						
-						if($record)
-
-							$selected = $record->parent_id;
-
-						?>
-
-						{{Form::select('parent_id', $parents, $selected, ['placeholder' => getPhrase('select_parent'),'class'=>'form-control',
-
-							'ng-model'=>'parent_id',
-
-							'required'=> 'true',
-
-							'ng-class'=>'{"has-error": formUsers.parent_id.$touched && formUsers.parent_id.$invalid}'
-
-						 ])}}
-
-						  <div class="validation-error" ng-messages="formUsers.parent_id.$error" >
-
-	    					{!! getValidationMessage()!!}
-
-
-
-						</div>
 
 
 
@@ -428,94 +387,15 @@
 
 					</fieldset>
 
-						<?php $role=getRole();?>
-					@if($role=!'owner' and $role=!'parent')
-					<fieldset class="form-group">
-
-
-
-						{{ Form::label('Institution', getphrase('Institution Name')) }}
-
-						<span class="text-red">*</span>
-
-						{{ Form::text('inst_name', $value = null , $attributes = array('class'=>'form-control',
-
-							'placeholder' => getPhrase("Institution"),
-
-							'ng-model'=>'inst_name',
-
-							'ng-pattern' => getRegexPattern('name'),
-
-							'required'=> 'true', 
-
-							'ng-class'=>'{"has-error": registrationForm.inst_name.$touched && registrationForm.inst_name.$invalid}',
-
-							'ng-minlength' => '2',
-
-						)) }}
-
-							<div class="validation-error" ng-messages="registrationForm.inst_name.$error" >
-
-								{!! getValidationMessage()!!}
-
-								{!! getValidationMessage('minlength')!!}
-
-								{!! getValidationMessage('pattern')!!}
-
-							</div>
-
-					</fieldset>
-						<fieldset class="form-group">
-
-
-
-						{{ Form::label('department', getphrase('Department Name')) }}
-
-						<span class="text-red">*</span>
-
-						{{ Form::text('department', $value = null , $attributes = array('class'=>'form-control',
-
-							'placeholder' => getPhrase("Department"),
-
-							'ng-model'=>'department',
-
-							'ng-pattern' => getRegexPattern('name'),
-
-							'required'=> 'true', 
-
-							'ng-class'=>'{"has-error": registrationForm.department.$touched && registrationForm.department.$invalid}',
-
-							'ng-minlength' => '4',
-
-						)) }}
-
-							<div class="validation-error" ng-messages="registrationForm.department.$error" >
-
-								{!! getValidationMessage()!!}
-
-								{!! getValidationMessage('minlength')!!}
-
-								{!! getValidationMessage('pattern')!!}
-
-							</div>
-
-					</fieldset>
-					@endif
-							
-							
-
-
 					<div class="row">
 
 						<fieldset class="form-group col-sm-6">
 
 
-							@if(checkRole(['owner'])or checkRole(['admin']))
 
-								{{ Form::label('address', getphrase('address')) }}
-							@else
-								{{ Form::label('address', getphrase('student_address')) }}
-							@endif
+						{{ Form::label('address', getphrase('billing_address')) }}
+
+
 
 						{{ Form::textarea('address', $value = null , $attributes = array('class'=>'form-control','rows'=>3, 'cols'=>'15', 'placeholder' => getPhrase('please_enter_your_address'),
 
@@ -524,6 +404,7 @@
 							)) }}
 
 					</fieldset>
+
 
 
 					<fieldset class='col-sm-6'>

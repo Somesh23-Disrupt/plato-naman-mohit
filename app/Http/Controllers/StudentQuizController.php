@@ -1054,7 +1054,7 @@ class StudentQuizController extends Controller
         {
 
              $cats  = User::getUserSeleted('categories');
-            // $users=User::select('id')->where('institute_id',Auth::user()->institute_id)->get();
+            // $users=User::select('id')->where('inst_id',Auth::user()->inst_id)->get();
             $records = Quiz::join('quizcategories', 'quizzes.category_id', '=', 'quizcategories.id')
             ->select(['title', 'dueration', 'category', 'is_paid', 'total_marks','tags','quizzes.slug','quizzes.validity','quizzes.cost' ])
             //->where('total_marks', '!=', 0)

@@ -45,6 +45,8 @@ class QuizCategoryController extends Controller
           prepareBlockUserMessage();
           return back();
         }
+        $data['active_class']       = 'exams';
+        $data['title']              = getPhrase('quiz_categories');
         
          $view_name = getTheme().'::exams.quizcategories.list';
         return view($view_name, $data);
@@ -119,7 +121,7 @@ class QuizCategoryController extends Controller
     	$data['record']         	= FALSE;
     	$data['active_class']       = 'exams';
     	$data['title']              = getPhrase('create_category');
-        $data['sections']           = array_pluck(User::where('institute_id',Auth::user()->institute_id)->whereNotNull('section_id')->distinct()->get(),'section_name','section_id');
+        $data['sections']           = array_pluck(User::where('inst_id',Auth::user()->inst_id)->whereNotNull('section_id')->distinct()->get(),'section_name','section_id');
 
     	// return view('exams.quizcategories.add-edit', $data);
 
@@ -148,7 +150,7 @@ class QuizCategoryController extends Controller
     	$data['record']       		= $record;
     	$data['active_class']       = 'exams';
     	$data['title']              = getPhrase('edit_category');
-        $data['sections']           = array_pluck(User::where('institute_id',Auth::user()->institute_id)->whereNotNull('section_id')->distinct()->get(),'section_name','section_id');
+        $data['sections']           = array_pluck(User::where('inst_id',Auth::user()->inst_id)->whereNotNull('section_id')->distinct()->get(),'section_name','section_id');
 
     	// return view('exams.quizcategories.add-edit', $data);
 
@@ -264,7 +266,7 @@ class QuizCategoryController extends Controller
           return back();
         }
         $data['layout']      = getLayout();
-        
+
         $record = QuizCategory::where('slug', $slug)->first();
             try{
             if(!env('DEMO_MODE')) {
@@ -276,7 +278,7 @@ class QuizCategoryController extends Controller
             }
             $response['status'] = 1;
             $response['message'] = getPhrase('category_deleted_successfully');
-            
+
        } catch ( \Illuminate\Database\QueryException $e) {
                  $response['status'] = 0;
            if(getSetting('show_foreign_key_constraint','module'))
@@ -309,7 +311,7 @@ class QuizCategoryController extends Controller
          if(env('DEMO_MODE')) {
         return ;
        }
-       
+
         $files = array();
         $files[] = $path.$record;
         File::delete($files);
@@ -331,13 +333,13 @@ class QuizCategoryController extends Controller
 
          if ($request->hasFile($file_name)) {
           $examSettings = getExamSettings();
-          
+
           $destinationPath      = $examSettings->categoryImagepath;
-          
+
           $fileName = $record->id.'-'.$file_name.'.'.$request->$file_name->guessClientExtension();
-          
+
           $request->file($file_name)->move($destinationPath, $fileName);
-         
+
          //Save Normal Image with 300x300
           Image::make($destinationPath.$fileName)->fit($examSettings->imageSize)->save($destinationPath.$fileName);
          return $fileName;

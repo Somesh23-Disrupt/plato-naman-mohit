@@ -15,13 +15,13 @@
 						</ol>
 					</div>
 				</div>
-								
+
 				<!-- /.row -->
 				<div class="panel panel-custom">
 					<div class="panel-heading">
-						
+
 						<div class="pull-right messages-buttons">
-							 
+
 							<a href="{{URL_USERS_IMPORT}}" class="btn  btn-primary button" >{{ getPhrase('import_excel')}}</a>
 							<a href="{{URL_USERS_ADD}}" class="btn  btn-primary button" >
 							@if(checkRole(['teacher']))
@@ -30,12 +30,12 @@
 								{{ getPhrase('add_user')}}
 							@endif
 							</a>
-							 
+
 						</div>
 						<h1>{{ $title }}</h1>
 					</div>
 					<div class="panel-body packages">
-						<div> 
+						<div>
 						<table class="table table-striped table-bordered datatable" cellspacing="0" width="100%">
 							<thead>
 								<tr>
@@ -47,13 +47,12 @@
 									<th>{{ getPhrase('department')}}</th>
 									<th>{{ getPhrase('institution Name')}}</th>
 									<th>{{ getPhrase('action')}}</th>
-									<th>{{ getPhrase('Status')}}</th>
 								</tr>
 							</thead>
-							 
+
 						</table>
 						</div>
-						 
+
 
 					</div>
 
@@ -62,7 +61,7 @@
 			<!-- /.container-fluid -->
 		</div>
 @endsection
- 
+
 @section('footer_scripts')
  @include('common.datatables', array('route'=>'users.dataTable'))
  @include('common.deletescript', array('route'=>URL_USERS_DELETE))

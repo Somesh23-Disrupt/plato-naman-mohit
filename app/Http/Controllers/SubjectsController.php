@@ -103,7 +103,7 @@ class SubjectsController extends Controller
     	$data['record']         	= FALSE;
     	$data['active_class']       = 'exams';
     	$data['title']              = getPhrase('add_subject');
-        $data['sections']           = array_pluck(User::where('institute_id',Auth::user()->institute_id)->whereNotNull('section_id')->distinct()->get(),'section_name','section_id');
+        $data['sections']           = array_pluck(User::where('inst_id',Auth::user()->inst_id)->whereNotNull('section_id')->distinct()->get(),'section_name','section_id');
 
     	// return view('mastersettings.subjects.add-edit', $data);
 
