@@ -110,7 +110,7 @@ class LmsCategoryController extends Controller
     	$data['record']         	= FALSE;
     	$data['active_class']       = 'lms';
     	$data['title']              = getPhrase('create_category');
-        $data['sections']           = array_pluck(User::where('institute_id',Auth::user()->institute_id)->whereNotNull('section_id')->distinct()->get(),'section_name','section_id');
+        $data['sections']           = array_pluck(User::where('inst_id',Auth::user()->inst_id)->whereNotNull('section_id')->distinct()->get(),'section_name','section_id');
     	// return view('lms.lmscategories.add-edit', $data);
 
          $view_name = getTheme().'::lms.lmscategories.add-edit';
@@ -136,7 +136,7 @@ class LmsCategoryController extends Controller
     	$data['record']       		= $record;
     	$data['active_class']       = 'lms';
     	$data['title']              = getPhrase('edit_category');
-        $data['sections']           = array_pluck(User::where('institute_id',Auth::user()->institute_id)->whereNotNull('section_id')->distinct()->get(),'section_name','section_id');
+        $data['sections']           = array_pluck(User::where('inst_id',Auth::user()->inst_id)->whereNotNull('section_id')->distinct()->get(),'section_name','section_id');
 
         $data['layout']=getLayout();
     	// return view('lms.lmscategories.add-edit', $data);

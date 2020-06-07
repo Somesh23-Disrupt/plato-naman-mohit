@@ -29,11 +29,11 @@ class UsersController extends Controller
     public function __construct()
     {
          $currentUser = \Auth::user();
-     
+
          $this->middleware('auth');
-    
+
     }
-    
+
     /**
     * Display a listing of the resource.
     *
@@ -41,15 +41,12 @@ class UsersController extends Controller
     */
      public function index($role = 'student')
      {
-        if(!checkRole(getUserGrade(2)))
+        if(!checkRole(getUserGrade(3)))
         {
-          if(!checkRole(getUserGrade(8)))
-          {
             prepareBlockUserMessage();
             return back();
-          }
         }
-      
+
         $data['records']      = FALSE;
         $data['layout']      = getLayout();
         $data['active_class'] = 'users';
@@ -74,12 +71,12 @@ class UsersController extends Controller
         if($slug=='')
         {
 
-             $records = User::join('roles', 'users.role_id', '=', 'roles.id')
-            ->select(['users.name', 'email', 'image', 'roles.display_name','login_enabled','role_id',
-              'slug', 'users.id', 'users.updated_at'])
-            ->orderBy('users.updated_at', 'desc')
-            ->where('users.institute_id','=', Auth::user()->institute_id)
-            ->get();
+            $records = User::join('roles', 'users.role_id', '=', 'roles.id')
+           ->select(['users.name', 'email', 'image', 'roles.display_name','login_enabled','section_name','inst_name','role_id',
+             'slug', 'users.id', 'users.updated_at'])
+           ->orderBy('users.updated_at', 'desc')
+           ->where('users.inst_id','=', Auth::user()->inst_id)
+           ->get();
 
         }
         else {
@@ -87,9 +84,9 @@ class UsersController extends Controller
             $role = App\Role::getRoleId($slug);
 
             $records = User::join('roles', 'users.role_id', '=', 'roles.id', 'roles.id', '=', $role->id)
-            ->select(['name',  'image', 'email','roles.display_name','login_enabled','role_id','slug', 'users.updated_at'])
+            ->select(['users.name', 'email', 'image', 'roles.display_name','login_enabled','section_name','inst_name','role_id','slug', 'users.updated_at'])
              ->orderBy('users.updated_at', 'desc')
-             ->where('users.institute_id','=', Auth::user()->institute_id)
+             ->where('users.inst_id','=', Auth::user()->inst_id)
              ->get();
 
         }
@@ -127,10 +124,10 @@ class UsersController extends Controller
             return $link_data;
             })
           ->addColumn('user_status', function($records){
-                 
+
              if(App\User::find($records->id)->isOnline()) {
                 $status='<i class="fa fa-check text-success">Online</i>' ;}
-             else{ 
+             else{
               $status='<i class="fa fa-times text-danger">Offline</i>';}
                return $status;
             })
@@ -139,7 +136,7 @@ class UsersController extends Controller
             return '<a href="'.URL_USER_DETAILS.$records->slug.'">'.ucfirst($records->name).'</a>';
 
           return ucfirst($records->name);
-        })        
+        })
          ->editColumn('image', function($records){
             return '<img src="'.getProfilePath($records->image).'"  />';
         })
@@ -183,15 +180,15 @@ class UsersController extends Controller
           prepareBlockUserMessage();
           return back();
         }
-        
+
        if(checkRole(getUserGrade(7))){
              prepareBlockUserMessage();
              return back();
           }
-       
+
         $data['record']       = FALSE;
         $data['active_class'] = 'users';
-        
+
         // $data['roles']        = $this->getUserRoles();
         $roles  = \App\Role::select('display_name', 'id','name')->get();
         if(checkRole(['teacher'])){
@@ -199,23 +196,23 @@ class UsersController extends Controller
           $parents = \App\User::where('role_id',6)
           ->select('id','name')->get();
           $all_parent = [];
-          
+
             foreach($parents as $parent)
-            { 
+            {
                 $all_parent[$parent->id] = $parent->name;
             }
             $data['parents']        = $all_parent;
-            
+
         }
         foreach($roles as $role)
         {
-          
+
            if(!checkRole(getUserGrade(1))) {
 
             if(!(strtolower($role->name) == 'admin' || strtolower($role->name) =='owner'))
               $final_roles[$role->id] = $role->display_name;
           }
-          else 
+          else
            $final_roles[$role->id] = $role->display_name;
         }
         $data['roles']        = $final_roles;
@@ -227,7 +224,7 @@ class UsersController extends Controller
         $data['layout']       = getLayout();
 
         // return view('users.add-edit-user', $data);
-        $data['sections']=User::select('section_name')->where('institute_id',Auth::user()->institute_id)->distinct()->pluck('section_name');
+        $data['sections']=User::select('section_name')->where('inst_id',Auth::user()->inst_id)->distinct()->pluck('section_name');
          $view_name = getTheme().'::users.add-edit-user';
         return view($view_name, $data);
      }
@@ -286,7 +283,7 @@ class UsersController extends Controller
         $name               = $request->name;
         $user->name         = $name;
         $user->email        = $request->email;
-        $user->institute_id = Auth::user()->institute_id;
+        $user->inst_id = Auth::user()->inst_id;
         $user->inst_name    = Auth::user()->inst_name;
         if(checkRole(getUserGrade(6))){
             $user->section_id   = Auth::user()->section_id;
@@ -295,7 +292,7 @@ class UsersController extends Controller
         else if(checkRole(getUserGrade(2))){
             if($request->section){
                 $sect_id=User::select('section_id')
-                            ->where('institute_id',Auth::user()->institute_id)
+                            ->where('inst_id',Auth::user()->inst_id)
                             ->where('section_name',$request->section)->pluck('section_id')->first();
 
                 if($sect_id==NULL){
@@ -483,11 +480,11 @@ class UsersController extends Controller
          * Only Owner can edit the Admin/Owner profiles
          * Admin can edit his own account, in that case send role type admin on condition
          */
-        
+
      $UserOwnAccount = FALSE;
      if(\Auth::user()->id == $record->id)
       $UserOwnAccount = TRUE;
-    
+
       if(!$UserOwnAccount)  {
         $current_user_role = getRoleData($record->role_id);
 
@@ -508,29 +505,29 @@ class UsersController extends Controller
           $parents = \App\User::where('role_id',6)
           ->select('id','name')->get();
           $all_parent = [];
-          
+
             foreach($parents as $parent)
-            { 
+            {
                 $all_parent[$parent->id] = $parent->name;
             }
             $data['parents']        = $all_parent;
-            
+
         }
         $roles                = \App\Role::select('display_name', 'id','name')->get();
         $final_roles = [];
         foreach($roles as $role)
         {
-          
+
            if(!checkRole(getUserGrade(1))) {
 
             if(!(strtolower($role->name) == 'admin' || strtolower($role->name) =='owner'))
               $final_roles[$role->id] = $role->display_name;
           }
-          else 
+          else
            $final_roles[$role->id] = $role->display_name;
         }
         $data['roles']        = $final_roles;
-         
+
 
         if($UserOwnAccount && checkRole(['admin']))
           $data['roles'][getRoleData('admin')] = 'Admin';
@@ -538,7 +535,7 @@ class UsersController extends Controller
         $data['active_class']       = 'users';
         $data['title']              = getPhrase('edit_user');
         $data['layout']             = getLayout();
-        $data['sections']=User::select('section_name')->where('institute_id',Auth::user()->institute_id)->distinct()->pluck('section_name');
+        $data['sections']=User::select('section_name')->where('inst_id',Auth::user()->inst_id)->distinct()->pluck('section_name');
 
         // dd($data);
         // return view('users.add-edit-user', $data);
@@ -598,7 +595,7 @@ class UsersController extends Controller
             $sect_id=NULL;
             if($request->section){
                 $sect_id=User::select('section_id')
-                                ->where('institute_id',Auth::user()->institute_id)
+                                ->where('inst_id',Auth::user()->inst_id)
                                 ->where('section_name',$request->section)->pluck('section_id')->first();
 
                 if($sect_id==NULL){
@@ -930,13 +927,13 @@ class UsersController extends Controller
           $users =array();
           $isHavingDuplicate = 0;
           if(!empty($data) && $data->count()){
-            
+
             foreach ($data as $key => $value) {
 
               foreach($value as $record)
               {
                 unset($user_record);
-            
+
                 $user_record['username'] = $record->username;
                 $user_record['name'] = $record->name;
                 $user_record['email'] = $record->email;
@@ -968,19 +965,19 @@ class UsersController extends Controller
                  $failed_list[$failed_length] = (object)$temp;
                   continue;
                 }
-               
+
                 $users[] = $user_record;
-               
+
               }
-            
+
             }
               if($this->addUser($users))
                   $success_list = $users;
           }
         }
-       
-       
-     
+
+
+
        $this->excel_data['failed'] = $failed_list;
        $this->excel_data['success'] = $success_list;
 
@@ -1011,12 +1008,12 @@ class UsersController extends Controller
        $data['active_class'] = 'users';
        $data['heading']      = getPhrase('users');
        $data['title']        = getPhrase('report');
-      
+
        // return view('users.import.import-result', $data);
 
          $view_name = getTheme().'::users.import.import-result';
         return view($view_name, $data);
- 
+
      }
 
 public function getFailedData()
@@ -1094,7 +1091,7 @@ public function downloadExcel()
 
               $user->notify(new \App\Notifications\NewUserRegistration( $user, $user->email, $request->password, $link ) );
 
-              
+
             } catch(Exception $e) {
               // dd($e->getMessage());
             }
@@ -1112,28 +1109,28 @@ public function downloadExcel()
   public function settings($slug)
   {
        $record = User::where('slug', $slug)->first();
-       
+
         if($isValid = $this->isValidRecord($record))
          return redirect($isValid);
        /**
         * Validate the non-admin user wether is trying to access other user profile
         * If so return the user back to previous page with message
         */
-       
+
         if(!isEligible($slug))
           return back();
-        
+
 
         /**
          * Make sure the Admin or staff cannot edit the Admin/Owner accounts
          * Only Owner can edit the Admin/Owner profiles
          * Admin can edit his own account, in that case send role type admin on condition
          */
-        
+
      $UserOwnAccount = FALSE;
      if(\Auth::user()->id == $record->id)
       $UserOwnAccount = TRUE;
-    
+
       if(!$UserOwnAccount)  {
         $current_user_role = getRoleData($record->role_id);
 
@@ -1145,7 +1142,7 @@ public function downloadExcel()
           }
         }
 
-      } 
+      }
 
 
 
@@ -1164,8 +1161,8 @@ public function downloadExcel()
         $view_name = getTheme().'::users.account-settings';
         return view($view_name, $data);
 
-} 
-  
+}
+
   /**
    * This method updates the user preferences based on the provided categories
    * All these settings will be stored under Users table settings field as json format
@@ -1176,28 +1173,28 @@ public function downloadExcel()
   public function updateSettings(Request $request, $slug)
   {
         $record = User::where('slug', $slug)->first();
-       
+
         if($isValid = $this->isValidRecord($record))
          return redirect($isValid);
        /**
         * Validate the non-admin user wether is trying to access other user profile
         * If so return the user back to previous page with message
         */
-       
+
         if(!isEligible($slug))
           return back();
-        
+
 
         /**
          * Make sure the Admin or staff cannot edit the Admin/Owner accounts
          * Only Owner can edit the Admin/Owner profiles
          * Admin can edit his own account, in that case send role type admin on condition
          */
-        
+
      $UserOwnAccount = FALSE;
      if(\Auth::user()->id == $record->id)
       $UserOwnAccount = TRUE;
-    
+
       if(!$UserOwnAccount)  {
         $current_user_role = getRoleData($record->role_id);
 
@@ -1214,7 +1211,7 @@ public function downloadExcel()
     if($record->settings)
     {
       $options =(array) json_decode($record->settings)->user_preferences;
-      
+
     }
 
     $options['quiz_categories'] = [];
@@ -1227,16 +1224,16 @@ public function downloadExcel()
       foreach($request->lms_categories as $key => $value)
         $options['lms_categories'][] = $key;
     }
-    
+
     $record->settings = json_encode(array('user_preferences'=>$options));
-    
+
     $record->save();
-  
+
     flash('success','record_updated_successfully', 'success');
      return back();
-  }  
+  }
 
-  
+
   public function viewParentDetails($slug)
   {
      if(!checkRole(getUserGrade(4)))
@@ -1246,7 +1243,7 @@ public function downloadExcel()
         }
 
        $record = User::where('slug', '=', $slug)->first();
-       
+
        if($isValid = $this->isValidRecord($record))
          return redirect($isValid);
 
@@ -1256,27 +1253,27 @@ public function downloadExcel()
 
        $data['heading']      = getPhrase('parent_details');
        $data['title']        = getPhrase('parent_details');
-       // return view('users.parent-details', $data); 
+       // return view('users.parent-details', $data);
 
          $view_name = getTheme().'::users.parent-details';
-        return view($view_name, $data);   
+        return view($view_name, $data);
   }
 
   public function updateParentDetails(Request $request, $slug)
   {
-     
+
      if(!checkRole(getUserGrade(4)))
         {
           prepareBlockUserMessage();
           return back();
         }
 
-    
+
     $user                   = User::where('slug', '=', $slug)->first();
         $role_id = getRoleData('parent');
         $message = '';
         $hasError = 0;
-        
+
         DB::beginTransaction();
         if($request->account == 0)
         {
@@ -1289,13 +1286,13 @@ public function downloadExcel()
             $parent_user->slug = $parent_user::makeSlug($request->parent_user_name);
             $parent_user->email = $request->parent_email;
             $parent_user->password = bcrypt('password');
-          
+
         try{
             $parent_user->save();
             $parent_user->roles()->attach($role_id);
             $user->parent_id = $parent_user->id;
             $user->save();
-            
+
             sendEmail('registration', array('user_name'=>$user->name, 'username'=>$user->username, 'to_email' => $user->email, 'password'=>$parent_user->password));
 
             DB::commit();
@@ -1323,7 +1320,7 @@ public function downloadExcel()
         }
         if(!$hasError)
             flash('success',$message, 'success');
-        else 
+        else
             flash('Ooops',$message, 'error');
         return back();
   }
@@ -1337,7 +1334,7 @@ public function downloadExcel()
             where('name','LIKE', '%'.$term.'%')
             ->orWhere('username', 'LIKE', '%'.$term.'%')
             ->orWhere('phone', 'LIKE', '%'.$term.'%')
-            ->groupBy('id')  
+            ->groupBy('id')
             ->havingRaw('role_id='.$role_id)
             ->select(['id','role_id','name', 'username', 'email', 'phone'])
             ->get();
@@ -1382,10 +1379,10 @@ public function downloadExcel()
 
         $records = array();
 
-        
+
         $records = App\UserSubscription::select(['email', 'created_at'])
                                      ->orderBy('updated_at', 'desc');
-             
+
 
         return Datatables::of($records)
         ->make();
@@ -1403,17 +1400,17 @@ public function downloadExcel()
           prepareBlockUserMessage();
           return back();
         }
-        
+
         $record = User::where('slug', $slug)->first();
-       
+
         /**
-         * Check if any exams exists with this category, 
+         * Check if any exams exists with this category,
          * If exists we cannot delete the record
          */
           if(!env('DEMO_MODE')) {
-                
 
-            $previous_status = $record->login_enabled;     
+
+            $previous_status = $record->login_enabled;
             if ($previous_status)
               $record->login_enabled = 0;
             else

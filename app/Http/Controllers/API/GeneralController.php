@@ -231,7 +231,7 @@ class GeneralController extends Controller
         $coupon_data = \App\Couponcode::where('coupon_code', '=', $coupon_code)->first();
         if($coupon_data){
 
-            if($coupon_data->institute_id != $user->institute_id){
+            if($coupon_data->inst_id != $user->inst_id){
                  
                  $response['status']  = 0;
                  $response['message'] = 'You are not eligible to use this coupon code';

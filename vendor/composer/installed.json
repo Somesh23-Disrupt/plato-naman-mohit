@@ -6010,17 +6010,17 @@
     },
     {
         "name": "zizaco/entrust",
-        "version": "5.2.x-dev",
-        "version_normalized": "5.2.9999999.9999999-dev",
+        "version": "1.9.1",
+        "version_normalized": "1.9.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/Zizaco/entrust.git",
-            "reference": "3623cc052937d9e62543402b50f24065720d44b9"
+            "reference": "05b2542f5f96ea80998a13800c6e216df6821bff"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/Zizaco/entrust/zipball/3623cc052937d9e62543402b50f24065720d44b9",
-            "reference": "3623cc052937d9e62543402b50f24065720d44b9",
+            "url": "https://api.github.com/repos/Zizaco/entrust/zipball/05b2542f5f96ea80998a13800c6e216df6821bff",
+            "reference": "05b2542f5f96ea80998a13800c6e216df6821bff",
             "shasum": ""
         },
         "require": {

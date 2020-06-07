@@ -30,24 +30,24 @@ class DashboardController extends Controller
          * Check the role of user
          * Redirect the user as per the eligiblity
          */
-      
+
         $user = getUserRecord();
         $data['layout']         = getLayout();
         $data['title']          = getPhrase('dashboard');
         $role = getRole();
         if ($role=='admin') {
-           
+
               Artisan::call('view:clear');
-             
+
               $tnps=0;
               $data['tppforteach']=0;
-              
+
               $data['passpercent']=$this->totalpass();
               // dd($data['passpercent']);
               foreach ($data['passpercent'] as $per) {
                 // dd($per);
                 $data['tppforteach']=$per['per']+$data['tppforteach'];
-                
+
               }
               // dd($data['tppforteach']);
               if ($data['tppforteach']>0) {
@@ -68,17 +68,17 @@ class DashboardController extends Controller
                 $color_number = rand(0,999);
                 $labels[] = ucfirst(getRoleData($value));
                 $dataset[] = App\User::where('role_id', '=', $value)->where('inst_id',auth()->user()->inst_id)->get()->count();
-                
+
                 $border_color[] = 'rgb(247,247,247)';
              }
-             for ($i=0; $i < 3; $i++) { 
+             for ($i=0; $i < 3; $i++) {
                $bgcolor[] = $test[$i];
              }
 
-            
+
             $dataset_label[] = 'lbl';
-           
-            $chart_data['type'] = 'pie'; 
+
+            $chart_data['type'] = 'pie';
             //horizontalBar, bar, polarArea, line, doughnut, pie
             $chart_data['data']   = (object) array(
                     'labels'            => $labels,
@@ -87,29 +87,29 @@ class DashboardController extends Controller
                     'bgcolor'           => $bgcolor,
                     'border_color'      => $border_color
                     );
-                
+
            $data['chart_data'][] = (object)$chart_data;
            $data['chart_heading']         = getPhrase('user_statistics');
-           
+
            $data['payments_chart_data'] = (object)$this->getPaymentStats();
           //  $data['payments_monthly_data'] = (object)$this->getPaymentMonthlyStats();
           //  $data['demanding_quizzes'] = (object)$this->getDemandingQuizzes();
           //  $data['demanding_paid_quizzes'] = (object)$this->getDemandingQuizzes('paid');
-                  
+
            $data['layout']        = getLayout();
-   
+
             //   $data['right_bar']          = FALSE;
-        
+
             // $data['right_bar_path']     = 'common.right-bar-chart';
             $data['right_bar_data']     = array('chart_data' => $data['chart_data'] );
-           $data['ids'] = array('myChart0' );  
+           $data['ids'] = array('myChart0' );
 
            // return view('admin.dashboard', $data);
 
 
            //Code Table in Admin dashboard
               $records = Quiz::select(['title', 'category_id', 'start_date'])->get()->sortByDesc('start_date');
-              
+
             $data['tables']=$records;
 
             // $childs=App\User::where('inst_id',auth()->user()->inst_id)->where('role_id',5)->get();
@@ -127,24 +127,24 @@ class DashboardController extends Controller
             //     // dd($records);
 
             //     foreach($records as $record){
-                    
+
             //         $sub[$record->title]=$sub[$record->title]+$record->percentage;
-                    
-                   
+
+
             //     }
-                
+
             // }
             // dd($sub);
-            
+
 
             $view_name = getTheme().'::admin.dashboard';
-            
+
             return view($view_name, $data);
         }
         if ($role=='owner') {
-              
+
               Artisan::call('view:clear');
-            
+
             $roles = App\Role::whereNotIn('id',[1])->pluck('id');
             $dataset = [];
             $labels = [];
@@ -156,17 +156,17 @@ class DashboardController extends Controller
                 $color_number = rand(0,999);
                 $labels[] = ucfirst(getRoleData($value));
                 $dataset[] = App\User::where('role_id', '=', $value)->get()->count();
-                
+
                 $border_color[] = 'rgb(247,247,247)';
             }
-            for ($i=0; $i < 3; $i++) { 
+            for ($i=0; $i < 3; $i++) {
               $bgcolor[] = $test[$i];
             }
 
-            
+
             $dataset_label[] = 'lbl';
-          
-            $chart_data['type'] = 'pie'; 
+
+            $chart_data['type'] = 'pie';
             //horizontalBar, bar, polarArea, line, doughnut, pie
             $chart_data['data']   = (object) array(
                     'labels'            => $labels,
@@ -175,28 +175,28 @@ class DashboardController extends Controller
                     'bgcolor'           => $bgcolor,
                     'border_color'      => $border_color
                     );
-                  
+
               $data['chart_data'][] = (object)$chart_data;
               $data['chart_heading']         = getPhrase('user_statistics');
               $data['demanding_quizzes'] = (object)$this->getDemandingQuizzes();
               $data['demanding_paid_quizzes'] = (object)$this->getDemandingQuizzes('paid');
-            
+
                 $data['layout']        = getLayout();
 
             //   $data['right_bar']          = FALSE;
 
             // $data['right_bar_path']     = 'common.right-bar-chart';
             $data['right_bar_data']     = array('chart_data' => $data['chart_data'] );
-                $data['ids'] = array('myChart0' );  
+                $data['ids'] = array('myChart0' );
 
                 $institution=Institution::select(['institution_name','id'])->get();
                 $data['institutions']=$institution;
-               
-    
-                
+
+
+
                 $dataset_label[] = 'lbl';
-              
-                $chart_data['type'] = 'pie'; 
+
+                $chart_data['type'] = 'pie';
                 //horizontalBar, bar, polarArea, line, doughnut, pie
                 $chart_data['data']   = (object) array(
                         'labels'            => $labels,
@@ -205,18 +205,18 @@ class DashboardController extends Controller
                         'bgcolor'           => $bgcolor,
                         'border_color'      => $border_color
                         );
-                                   
+
                 // return view('admin.dashboard', $data);
-               
-                  
+
+
             $view_name = getTheme().'::owner.dashboard';
-            
+
             return view($view_name, $data);
         }
         else if ($role=='teacher') {
               Artisan::call('view:clear');
-              
-              
+
+
               $data['tppforteach']=0;
               $tnps=0;
               $data['passpercent']=$this->totalpass();
@@ -241,10 +241,10 @@ class DashboardController extends Controller
               $view_name = getTheme().'::teacher.dashboard';
               return view($view_name, $data);
         }
-    
+
          else if($role == 'parent')
         {
-              
+
             $data['passpercent']=$this->totalpass();
             $data['tnps']= $data['passpercent'];
             $user                   = getUserWithSlug();
@@ -258,7 +258,7 @@ class DashboardController extends Controller
               $dash[]=(object)$this->examanalysisbytotalmarks($child);
               $t['atemp']=count($dash[$i]->data->dataset);
               $t['name']=$child->name;
-              
+
               $i++;
               $new[]=$t;
               $name[]=$child->slug;
@@ -309,11 +309,11 @@ class DashboardController extends Controller
             }
             $data['user']=$user;
             $data['examattend']=count($data['chart_data'][3]->data->dataset);
-           // return view('student.dashboard', $data);   
+           // return view('student.dashboard', $data);
             $view_name = getTheme().'::student.dashboard';
-            return view($view_name, $data);         
+            return view($view_name, $data);
         }
-         
+
     }
 
      public function getLatestQuizzes()
@@ -390,7 +390,7 @@ class DashboardController extends Controller
             $payment_dataset_labels = [getPhrase('total')];
 
             $payment_bgcolor = ['rgba(41, 75, 147, 1)','rgba(196, 219, 250, 1)','rgba(52, 132, 240, 1)'];
-            $payment_border_color = [getColor('background',4),getColor('background',9),getColor('background',18)]; 
+            $payment_border_color = [getColor('background',4),getColor('background',9),getColor('background',18)];
 
           $payments_stats['data']    = (object) array(
                                         'labels'            => $payment_labels,
@@ -399,7 +399,7 @@ class DashboardController extends Controller
                                         'bgcolor'           => $payment_bgcolor,
                                         'border_color'      => $payment_border_color
                                         );
-           $payments_stats['type'] = 'bar'; 
+           $payments_stats['type'] = 'bar';
              $payments_stats['title'] = getPhrase('average Score');
 
            return $payments_stats;
@@ -412,13 +412,13 @@ class DashboardController extends Controller
 
           $paymentObject = new App\Payment();
             $payment_data = (object)$paymentObject->getSuccessMonthlyData();
-            
+
 
             $payment_dataset = [];
             $payment_labels = [];
             $payment_dataset_labels = [getPhrase('total')];
             $payment_bgcolor = [];
-            $payment_border_color = []; 
+            $payment_border_color = [];
 
 
             foreach($payment_data as $record)
@@ -438,8 +438,8 @@ class DashboardController extends Controller
                                         'bgcolor'           => $payment_bgcolor,
                                         'border_color'      => $payment_border_color
                                         );
-           $payments_stats['type'] = 'line'; 
-           $payments_stats['title'] = getPhrase('payments_reports_in').' '.getCurrencyCode(); 
+           $payments_stats['type'] = 'line';
+           $payments_stats['title'] = getPhrase('payments_reports_in').' '.getCurrencyCode();
 
            return $payments_stats;
     }
@@ -453,7 +453,7 @@ class DashboardController extends Controller
             $summary_labels = [];
             $summary_dataset_labels = [getPhrase('total')];
             $summary_bgcolor = [];
-            $summary_border_color = []; 
+            $summary_border_color = [];
 
 
             foreach($usage as $record)
@@ -464,7 +464,7 @@ class DashboardController extends Controller
 
             }
             $test=['rgba(196, 219, 250, 1)','rgba(52, 132, 240, 1)','rgba(41, 75, 147, 1)','rgba(14, 77, 146, 0.3)','rgba(16, 52, 166, 0.8)','rgba(17, 30, 108, 0.5)'];
-             for ($i=0; $i < 6; $i++) { 
+             for ($i=0; $i < 6; $i++) {
                $summary_bgcolor[] = $test[$i];
              }
 
@@ -479,24 +479,24 @@ class DashboardController extends Controller
                 'bgcolor'           => $summary_bgcolor,
                 'border_color'      => $summary_border_color
                 );
-           $quiz_stats['type'] = 'doughnut'; 
-           $quiz_stats['title'] = getPhrase('demanding_quizzes'); 
+           $quiz_stats['type'] = 'doughnut';
+           $quiz_stats['title'] = getPhrase('demanding_quizzes');
            if($type!='')
-           $quiz_stats['title'] = getPhrase('demanding').' '.$type.' '.getPhrase('quizzes'); 
+           $quiz_stats['title'] = getPhrase('demanding').' '.$type.' '.getPhrase('quizzes');
 
            return $quiz_stats;
     }
 
     public function testLanguage($value='')
-    { 
+    {
 
       dd( $language_phrases = (array) session('language_phrases'));
-      
+
       $tr = new TranslateClient(); // Default is from 'auto' to 'en'
       $tr->setSource('en'); // Translate from English
       $tr->setTarget('te'); // Translate to Georgian
       echo $tr->translate('Hello World');
-       
+
 
      //  $url = urlencode("https://www.googleapis.com/language/translate/v2?q=Select Role&target=hi&source=en&key=AIzaSyAhYkPKPhQ0MA4iWuU0HuoDUZqQKLU16yY");
      //  $returned_content =  json_decode(file_get_contents($url), true);
@@ -514,13 +514,13 @@ class DashboardController extends Controller
             $dataset = [];
             $bgcolor = [];
             $bordercolor = [];
-            
+
             $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')
                 ->select(['title','is_paid' ,'dueration', 'quizzes.total_marks',  \DB::raw('count(quizresults.user_id) as attempts, quizzes.slug, user_id') ])
                 ->where('user_id', '=', $user->id)
                 ->groupBy('quizresults.quiz_id')
                 ->get();
-          
+
             $chartSettings = new App\ChartSettings();
 
             $dataset_label = getPhrase('attempts');
@@ -533,9 +533,9 @@ class DashboardController extends Controller
                 $bordercolor[] = getColor('border', $color_number);
            }
 
-            $chart_data['type'] = 'bar'; 
+            $chart_data['type'] = 'bar';
             //horizontalBar, bar, polarArea, line, doughnut, pie
-            $chart_data['title'] = getPhrase('exam_analysis_by_attempts'); 
+            $chart_data['title'] = getPhrase('exam_analysis_by_attempts');
             $chart_data['data']   = (object) array(
                 'labels'            => $labels,
                 'dataset'           => $dataset,
@@ -548,14 +548,14 @@ class DashboardController extends Controller
     }
     public function examanalysisbytotalmarks($user='')
     {
-     
+
       if(checkRole(['parent'])||checkRole(['admin'])){
         $user=$user;
       }else{
         $user = auth()->user();
-        
+
       }
-     
+
       $data['active_class']       = 'dashboard';
       $data['title']='Dashboard';
       $data['user']               = $user;
@@ -570,7 +570,7 @@ class DashboardController extends Controller
           ->where('user_id', '=', $user->id)
           ->groupBy('quizresults.quiz_id')
           ->get();
-    
+
       $chartSettings = new App\ChartSettings();
 
       $dataset_label = getPhrase('Marks');
@@ -583,9 +583,9 @@ class DashboardController extends Controller
           $bordercolor[] = getColor('border', $color_number);
      }
 
-      $chart_data['type'] = 'bar'; 
+      $chart_data['type'] = 'bar';
       //horizontalBar, bar, polarArea, line, doughnut, pie
-      $chart_data['title'] = getPhrase('exam_analysis_by_total_marks'); 
+      $chart_data['title'] = getPhrase('exam_analysis_by_total_marks');
       $chart_data['data']   = (object) array(
           'labels'            => $labels,
           'dataset'           => $dataset,
@@ -603,7 +603,7 @@ class DashboardController extends Controller
       $records = $resultObject->getOverallSubjectsReport($user);
       $color_correct          = getColor('background', rand(0,999));
       $color_wrong            = getColor('background', rand(0,999));
-      $color_not_attempted    = getColor('background', rand(0,999)); 
+      $color_not_attempted    = getColor('background', rand(0,999));
       $correct_answers        = 0;
       $wrong_answers          = 0;
       $not_answered           = 0;
@@ -614,16 +614,16 @@ class DashboardController extends Controller
           $wrong_answers      += $record->wrong_answers;
           $not_answered       += $record->not_answered;
 
-     } 
+     }
 
       $labels = [getPhrase('correct'), getPhrase('wrong'), getPhrase('not_answered')];
       $dataset = [$correct_answers, $wrong_answers, $not_answered];
       $dataset_label[] = 'lbl';
       $bgcolor  = [$color_correct,$color_wrong,$color_not_attempted];
       $border_color = [$color_correct,$color_wrong,$color_not_attempted];
-      $chart_data['type'] = 'pie'; 
+      $chart_data['type'] = 'pie';
       //horizontalBar, bar, polarArea, line, doughnut, pie
-      $chart_data['title'] = getphrase('overall_performance');  
+      $chart_data['title'] = getphrase('overall_performance');
 
       $chart_data['data']   = (object) array(
               'labels'            => $labels,
@@ -632,9 +632,9 @@ class DashboardController extends Controller
               'bgcolor'           => $bgcolor,
               'border_color'      => $border_color
               );
-        
+
         return $chart_data;
-      
+
     }
     public function bestperformanceinallquizzes()
     {
@@ -646,7 +646,7 @@ class DashboardController extends Controller
             $dataset = [];
             $bgcolor = [];
             $bordercolor = [];
-            
+
             foreach($records as $record) {
                 $color_number = rand(0,999);
                 $record = (object)$record;
@@ -654,14 +654,14 @@ class DashboardController extends Controller
                 $dataset[] = $record->percentage;
                 $bgcolor[] = getColor('background',$color_number);
                 $bordercolor[] = getColor('border', $color_number);
-           } 
+           }
 
             $labels = $labels;
             $dataset = $dataset;
             $dataset_label = getPhrase('performance').' in %';
             $bgcolor  = $bgcolor;
             $border_color = $bordercolor;
-            $chart_data['type'] = 'bar'; 
+            $chart_data['type'] = 'bar';
             //horizontalBar, bar, polarArea, line, doughnut, pie
             $chart_data['title'] = getPhrase('best_performance_in_all_quizzes');
 
@@ -704,23 +704,23 @@ class DashboardController extends Controller
             $dataset[] = $record->total_marks;
             $total= $record->total_marks+$total;
             }
-            
+
             $name[]=$user->name;
-              if($total>0){ 
+              if($total>0){
                 $avg=round($total/$i,0)+$avg;
                 $totalbystd[]=round($total/$i,2);
               }else{
                 $totalbystd[]=$total;
               }
-             
+
             }
             if($avg>0){
                 $data['avg']=$avg/$users->count();
               }else{
                 $data['avg']=0;
               }
-              
-                
+
+
               $data['data']   = (object) array(
                 'avg'            => $data['avg'],
                 'totals'   =>$totalbystd ,
@@ -747,7 +747,7 @@ class DashboardController extends Controller
           }else{
             $users=App\User::where($id, '=', $user->id)->get();
           }
-            
+
           foreach ($users as $user) {
                 $data['user']               = $user;
                 // Chart code start
@@ -756,13 +756,13 @@ class DashboardController extends Controller
                 $dataset = [];
                 $bgcolor = [];
                 $bordercolor = [];
-                
+
                 $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')
                     ->select(['title','is_paid' ,'dueration', 'quizzes.total_marks',  \DB::raw('count(quizresults.user_id) as attempts, quizzes.slug, user_id') ])
                     ->where('user_id', '=', $user->id)
                     ->groupBy('quizresults.quiz_id')
                     ->get();
-              
+
                 $chartSettings = new App\ChartSettings();
 
                 $dataset_label = getPhrase('attempts');
@@ -775,9 +775,9 @@ class DashboardController extends Controller
                     $bordercolor[] = getColor('border', $color_number);
                   }
 
-                $chart_data['type'] = 'bar'; 
+                $chart_data['type'] = 'bar';
                 //horizontalBar, bar, polarArea, line, doughnut, pie
-                $chart_data['title'] = getPhrase('exam_analysis_by_attempts').' '.getPhrase('For').' '.getPhrase($user->name); 
+                $chart_data['title'] = getPhrase('exam_analysis_by_attempts').' '.getPhrase('For').' '.getPhrase($user->name);
                 $chart_data['data']   = (object) array(
                     'labels'            => $labels,
                     'dataset'           => $dataset,
@@ -787,8 +787,8 @@ class DashboardController extends Controller
                     );
 
                 $data['chart_data'][]=(object)$chart_data;
-      
-      
+
+
               $data['active_class']       = 'dashboard';
               $data['title']='Dashboard';
               $data['user']               = $user;
@@ -803,9 +803,9 @@ class DashboardController extends Controller
                   ->where('user_id', '=', $user->id)
                   ->groupBy('quizresults.quiz_id')
                   ->get();
-            
+
               $chartSettings = new App\ChartSettings();
-        
+
               $dataset_label = getPhrase('Marks');
               foreach($records as $record) {
                   $color_number = rand(0,999);
@@ -815,10 +815,10 @@ class DashboardController extends Controller
                   $bgcolor[] = getColor('background',$color_number);
                   $bordercolor[] = getColor('border', $color_number);
             }
-        
-              $chart_data['type'] = 'bar'; 
+
+              $chart_data['type'] = 'bar';
               //horizontalBar, bar, polarArea, line, doughnut, pie
-              $chart_data['title'] = getPhrase('exam_analysis_by_total_marks').' '.getPhrase('For').' '.getPhrase($user->name); 
+              $chart_data['title'] = getPhrase('exam_analysis_by_total_marks').' '.getPhrase('For').' '.getPhrase($user->name);
               $chart_data['data']   = (object) array(
                   'labels'            => $labels,
                   'dataset'           => $dataset,
@@ -826,7 +826,7 @@ class DashboardController extends Controller
                   'bgcolor'           => $bgcolor,
                   'border_color'      => $bordercolor
                   );
-                  
+
                 $data['chart_data'][]=(object)$chart_data;
 
 
@@ -834,28 +834,28 @@ class DashboardController extends Controller
                 $records = $resultObject->getOverallSubjectsReport($user);
                 $color_correct          = getColor('background', rand(0,999));
                 $color_wrong            = getColor('background', rand(0,999));
-                $color_not_attempted    = getColor('background', rand(0,999)); 
+                $color_not_attempted    = getColor('background', rand(0,999));
                 $correct_answers        = 0;
                 $wrong_answers          = 0;
                 $not_answered           = 0;
-          
+
                 foreach($records as $record) {
                     $record = (object)$record;
                     $correct_answers    += $record->correct_answers;
                     $wrong_answers      += $record->wrong_answers;
                     $not_answered       += $record->not_answered;
-          
-               } 
-          
+
+               }
+
                 $labels = [getPhrase('correct'), getPhrase('wrong'), getPhrase('not_answered')];
                 $dataset = [$correct_answers, $wrong_answers, $not_answered];
                 $dataset_label = 'lbl';
                 $bgcolor  = [$color_correct,$color_wrong,$color_not_attempted];
                 $border_color = [$color_correct,$color_wrong,$color_not_attempted];
-                $chart_data['type'] = 'pie'; 
+                $chart_data['type'] = 'pie';
                 //horizontalBar, bar, polarArea, line, doughnut, pie
-                $chart_data['title'] = getphrase('overall_performance').' '.getPhrase('For').' '.getPhrase($user->name);  
-          
+                $chart_data['title'] = getphrase('overall_performance').' '.getPhrase('For').' '.getPhrase($user->name);
+
                 $chart_data['data']   = (object) array(
                         'labels'            => $labels,
                         'dataset'           => $dataset,
@@ -863,7 +863,7 @@ class DashboardController extends Controller
                         'bgcolor'           => $bgcolor,
                         'border_color'      => $border_color
                         );
-                
+
                   $data['chart_data'][]=(object)$chart_data;
 
 
@@ -873,7 +873,7 @@ class DashboardController extends Controller
                         $dataset = [];
                         $bgcolor = [];
                         $bordercolor = [];
-                        
+
                         foreach($records as $record) {
                             $color_number = rand(0,999);
                             $record = (object)$record;
@@ -881,17 +881,17 @@ class DashboardController extends Controller
                             $dataset[] = $record->percentage;
                             $bgcolor[] = getColor('background',$color_number);
                             $bordercolor[] = getColor('border', $color_number);
-                       } 
-            
+                       }
+
                         $labels = $labels;
                         $dataset = $dataset;
                         $dataset_label = getPhrase('performance').' in %';
                         $bgcolor  = $bgcolor;
                         $border_color = $bordercolor;
-                        $chart_data['type'] = 'bar'; 
+                        $chart_data['type'] = 'bar';
                         //horizontalBar, bar, polarArea, line, doughnut, pie
                         $chart_data['title'] = getPhrase('best_performance_in_all_quizzes').' '.getPhrase('For').' '.getPhrase($user->name);
-            
+
                         $chart_data['data']   = (object) array(
                                 'labels'            => $labels,
                                 'dataset'           => $dataset,
@@ -899,10 +899,10 @@ class DashboardController extends Controller
                                 'bgcolor'           => $bgcolor,
                                 'border_color'      => $border_color
                                 );
-                   
+
                                 $data['chart_data'][]=(object)$chart_data;
           }
-        }  
+        }
           return $data['chart_data'];
     }
     public function totalpass()
@@ -924,6 +924,7 @@ class DashboardController extends Controller
         $users=App\User::where('id',getUserWithSlug()->id)->select('id','name')->get();
       }
       $tpp=0;
+      $t=[];
       // $sum=0;
       foreach ($users as $user) {
           $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')
@@ -931,23 +932,23 @@ class DashboardController extends Controller
             ->where('user_id', '=', $user->id)
             ->groupBy('quizresults.quiz_id')
             ->get();
-         
+
           // dd($records);
           $tpp=0;
           foreach ($records as $record) {
-            
+
             $percent=($record->marks_obtained/$record->total_marks)*100;
             $tpp= $percent+$tpp;
             // $data['name']=$name;
             // $data['percent']=$tpp;
-           
+
           }
           if(count($records)<=0 || $tpp<=0){
             $data['per']=0;
           }else{
             $data['per']=round($tpp/count($records),2);
           }
-          
+
           $data['name']=$user->name;
           $t[]=$data;
           // dd($data);
