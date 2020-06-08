@@ -47,7 +47,7 @@ class QuizCategoryController extends Controller
         }
         $data['active_class']       = 'exams';
         $data['title']              = getPhrase('quiz_categories');
-        
+        $data['layout']=getLayout();
          $view_name = getTheme().'::exams.quizcategories.list';
         return view($view_name, $data);
     }
