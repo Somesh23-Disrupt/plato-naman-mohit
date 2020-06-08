@@ -126,7 +126,7 @@ class ParentsController extends Controller
     public function childdash($slug='')
     {       
           
-            if(!checkRole(getUserGrade(7)))
+            if(!checkRole(getUserGrade(8)))
             {
               prepareBlockUserMessage();
               return back();

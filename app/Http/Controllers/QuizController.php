@@ -202,7 +202,7 @@ class QuizController extends Controller
     public function update(Request $request, $slug)
     {
       // dd($request);
-      {
+      
       $record = Quiz::getRecordWithSlug($slug);
      $rules = [
          'title'               => 'bail|required|max:40' ,

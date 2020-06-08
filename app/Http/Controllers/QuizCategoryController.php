@@ -47,7 +47,7 @@ class QuizCategoryController extends Controller
         }
         $data['active_class']       = 'exams';
         $data['title']              = getPhrase('quiz_categories');
-        
+        $data['layout']=getLayout();
          $view_name = getTheme().'::exams.quizcategories.list';
         return view($view_name, $data);
     }
@@ -124,6 +124,7 @@ class QuizCategoryController extends Controller
         $data['sections']           = array_pluck(User::where('inst_id',Auth::user()->inst_id)->whereNotNull('section_id')->distinct()->get(),'section_name','section_id');
 
     	// return view('exams.quizcategories.add-edit', $data);
+        $data['layout']=getLayout();
 
            $view_name = getTheme().'::exams.quizcategories.add-edit';
         return view($view_name, $data);
