@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Topic;
+use App\User;
 use App\Subject;
 use Yajra\Datatables\Datatables;
+use Auth;
 use DB;
 use Input;
 use Excel;
@@ -27,6 +29,7 @@ class TopicsController extends Controller
      */
     public function index()
     {
+
       if(!checkRole(getUserGrade(3)))
       {
         prepareBlockUserMessage();
@@ -55,7 +58,8 @@ class TopicsController extends Controller
       }
          $records = Topic::join('subjects', 'topics.subject_id', '=' ,'subjects.id')
          ->select([
-            'subject_title','parent_id', 'topic_name','description','topics.slug', 'topics.id', 'topics.updated_at'])
+            'subject_title','parent_id', 'topic_name','section_id','description','topics.slug', 'topics.id', 'topics.updated_at'])
+        ->where('record_updated_by',Auth::user()->id)
          ->orderBy('updated_at','desc');
 
         return Datatables::of($records)
@@ -69,7 +73,7 @@ class TopicsController extends Controller
 
 
                     $temp = '';
-                    if(checkRole(getUserGrade(1)))
+                    if(checkRole(getUserGrade(3)))
                     {
                         $temp .=' <li><a href="javascript:void(0);" onclick="deleteRecord(\''.$records->slug.'\');"><i class="fa fa-trash"></i>'. getPhrase("delete").'</a></li>';
                     }
@@ -78,6 +82,9 @@ class TopicsController extends Controller
 
             return $link_data;
             })
+        ->editColumn('section_id', function($records) {
+            return User::select('section_name')->where('section_id',$records->section_id)->pluck('section_name')->first();
+        })
         ->editColumn('topic_name', function($records)
         {
           return $records->topic_name.' ('.$records->id.')';

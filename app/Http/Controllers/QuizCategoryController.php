@@ -66,7 +66,7 @@ class QuizCategoryController extends Controller
         }
 
          $records = QuizCategory::select([
-         	'category', 'image', 'description', 'id','slug'])
+         	'category', 'image','section_id', 'description', 'id','slug'])
             ->where('record_updated_by',Auth::user()->id)
          ->orderBy('updated_at', 'desc')
          ->get();
@@ -80,18 +80,14 @@ class QuizCategoryController extends Controller
                             <i class="mdi mdi-dots-vertical"></i>
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="dLabel">
-                            <li><a href="'.URL_QUIZ_CATEGORY_EDIT.'/'.$records->slug.'"><i class="fa fa-pencil"></i>'.getPhrase("edit").'</a></li>';
+                            <li><a href="'.URL_QUIZ_CATEGORY_EDIT.'/'.$records->slug.'"><i class="fa fa-pencil"></i>'.getPhrase("edit").'</a></li>
+                            <li><a href="javascript:void(0);" onclick="deleteRecord(\''.$records->slug.'\');"><i class="fa fa-trash"></i>'. getPhrase("delete").'</a></li></ul></div>';
 
-
-        $temp = '';
-        if(checkRole(getUserGrade(1))) {
-        $temp .= '<li><a href="javascript:void(0);" onclick="deleteRecord(\''.$records->slug.'\');"><i class="fa fa-trash"></i>'. getPhrase("delete").'</a></li>';
-        }
-        $temp .='</ul></div>';
-
-        $link_data = $link_data.$temp;
             return $link_data;
             })
+        ->editColumn('section_id', function($records) {
+            return User::select('section_name')->where('section_id',$records->section_id)->pluck('section_name')->first();
+        })
         ->removeColumn('id')
         ->removeColumn('slug')
         ->editColumn('image', function($records){
@@ -261,7 +257,7 @@ class QuizCategoryController extends Controller
      */
     public function delete($slug)
     {
-         if(!checkRole(getUserGrade(2)))
+         if(!checkRole(getUserGrade(3)))
         {
           prepareBlockUserMessage();
           return back();

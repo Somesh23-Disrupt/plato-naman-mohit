@@ -34,7 +34,7 @@
 
 				</div>
 
-								
+
 
 				<!-- /.row -->
 
@@ -42,7 +42,7 @@
 
 					<div class="panel-heading">
 
-						
+
 
 						<div class="pull-right messages-buttons">
 
@@ -62,7 +62,7 @@
 
 					<div class="panel-body packages">
 
-						<div> 
+						<div>
 
 						<table class="table table-striped table-bordered datatable" cellspacing="0" width="100%">
 
@@ -76,7 +76,7 @@
 
 									<th>{{ getPhrase('category')}}</th>
 
-									<th>{{ getPhrase('is_paid')}}</th>
+									<th>{{ getPhrase('section')}}</th>
 
 									<th>{{ getPhrase('total_marks')}}</th>
 
@@ -84,13 +84,13 @@
 
 									<th>{{ getPhrase('action')}}</th>
 
-								  
+
 
 								</tr>
 
 							</thead>
 
-							 
+
 
 						</table>
 
@@ -110,13 +110,13 @@
 
 @endsection
 
- 
+
 
 
 
 @section('footer_scripts')
 
-  
+
 
  @include('common.datatables', array('route'=>URL_QUIZ_GETLIST, 'route_as_url' => TRUE))
 
@@ -125,4 +125,3 @@
 
 
 @stop
-

@@ -24,6 +24,8 @@
 
 							<li><a href="<?php echo e(PREFIX); ?>"><i class="mdi mdi-home"></i></a> </li>
 
+							 
+
 							<li><?php echo e($title); ?></li>
 
 						</ol>
@@ -40,27 +42,15 @@
 
 					<div class="panel-heading">
 
-						
+						 
 
-						<div class="pull-right messages-buttons">
-
-							<a href="<?php echo e(URL_QUIZ_ADD); ?>" class="btn  btn-primary button" ><?php echo e(getPhrase('create')); ?></a>
-
-						</div>
-
-						<div class="pull-right messages-buttons">
-
-							<a href="<?php echo e(URL_EXAM_SERIES); ?>" class="btn  btn-primary button" ><?php echo e(getPhrase('create_series')); ?></a>
-
-						</div>
-
-						<h1><?php echo e($title); ?></h1>
+						<h1><?php echo e($title.' '.getPhrase('of').' '.$user->name); ?></h1>
 
 					</div>
 
 					<div class="panel-body packages">
 
-						<div> 
+						<div class="table-responsive"> 
 
 						<table class="table table-striped table-bordered datatable" cellspacing="0" width="100%">
 
@@ -68,19 +58,21 @@
 
 								<tr>
 
+								 
+
 									<th><?php echo e(getPhrase('title')); ?></th>
+
+									<th><?php echo e(getPhrase('type')); ?></th>
 
 									<th><?php echo e(getPhrase('duration')); ?></th>
 
-									<th><?php echo e(getPhrase('category')); ?></th>
+									<th><?php echo e(getPhrase('marks')); ?></th>
 
-									<th><?php echo e(getPhrase('is_paid')); ?></th>
+									<th><?php echo e(getPhrase('attempts')); ?></th>
 
-									<th><?php echo e(getPhrase('total_marks')); ?></th>
+									 
 
-									<th><?php echo e(getPhrase('exam_type')); ?></th>
-
-									<th><?php echo e(getPhrase('action')); ?></th>
+									
 
 								  
 
@@ -94,7 +86,17 @@
 
 						</div>
 
+						<div class="row">
 
+							<div class="col-md-4 col-md-offset-4">
+
+								<canvas id="myChart1" width="100" height="110"></canvas>
+
+							</div>
+
+						</div>
+
+ 
 
 					</div>
 
@@ -116,9 +118,13 @@
 
   
 
- <?php echo $__env->make('common.datatables', array('route'=>URL_QUIZ_GETLIST, 'route_as_url' => TRUE), array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+ <?php echo $__env->make('common.datatables', array('route'=>URL_STUDENT_EXAM_ANALYSIS_BYEXAM.$user->slug, 'route_as_url' => 'TRUE'), array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 
- <?php echo $__env->make('common.deletescript', array('route'=>URL_QUIZ_DELETE), array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+ 
+
+<?php echo $__env->make('common.chart', array($chart_data,'ids' => array('myChart1' )), array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>;
+
+
 
 
 

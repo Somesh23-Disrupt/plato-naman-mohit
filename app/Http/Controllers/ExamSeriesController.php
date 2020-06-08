@@ -65,7 +65,7 @@ class ExamSeriesController extends Controller
         $records = array();
 
 
-            $records = ExamSeries::select(['title', 'image', 'is_paid', 'cost', 'validity',  'total_exams','total_questions','slug', 'id', 'updated_at'])
+            $records = ExamSeries::select(['title', 'image', 'category_id', 'start_date','end_date',  'total_exams','total_questions','slug', 'id', 'updated_at'])
             ->orderBy('updated_at', 'desc');
 
         return Datatables::of($records)
@@ -80,7 +80,7 @@ class ExamSeriesController extends Controller
                             <li><a href="'.URL_EXAM_SERIES_EDIT.$records->slug.'"><i class="fa fa-pencil"></i>'.getPhrase("edit").'</a></li>';
 
                            $temp = '';
-                           if(checkRole(getUserGrade(1))) {
+                           if(checkRole(getUserGrade(3))) {
                     $temp .= ' <li><a href="javascript:void(0);" onclick="deleteRecord(\''.$records->slug.'\');"><i class="fa fa-trash"></i>'. getPhrase("delete").'</a></li>';
                       }
 
@@ -103,6 +103,9 @@ class ExamSeriesController extends Controller
         {
           return ($records->is_paid) ? $records->validity : '-';
         })
+        ->editColumn('category_id', function($records) {
+               return QuizCategory::select('category')->where('id',$records->category_id)->pluck('category')->first();
+         })
 
         ->editColumn('image', function($records)
         {
@@ -136,7 +139,7 @@ class ExamSeriesController extends Controller
     	$data['record']         	= FALSE;
         $data['layout']      = getLayout();
 
-        $data['categories']         = array_pluck(QuizCategory::all(), 'category', 'id');
+        $data['categories']         = array_pluck(QuizCategory::where('record_updated_by',Auth::user()->id)->get(), 'category', 'id');
     	$data['active_class']       = 'exams';
       	$data['title']              = getPhrase('add_exam_series');
     	// return view('exams.examseries.add-edit', $data);
@@ -261,7 +264,7 @@ class ExamSeriesController extends Controller
       	$name  						=  $request->title;
     		$record->title 				= $name;
        	$record->slug 				= $record->makeSlug($name);
-        $record->is_paid			= $request->is_paid;
+        $record->is_paid			= 0;
         $record->validity			= -1;
         $record->cost				= 0;
         if($request->is_paid) {
@@ -439,7 +442,7 @@ class ExamSeriesController extends Controller
     	 * Get the available questions from questionbank_quizzes table
     	 * Load view with this data
     	 */
-        
+
 
 		$record = ExamSeries::getRecordWithSlug($slug);
 
@@ -476,7 +479,7 @@ class ExamSeriesController extends Controller
         }
 
 
-    	$data['exam_categories']       	= array_pluck(App\QuizCategory::all(),
+    	$data['exam_categories']       	= array_pluck(App\QuizCategory::where('record_updated_by',Auth::user()->id)->get(),
     									'category', 'id');
 
     	$data['title']              = getPhrase('update_series_for').' '.$record->title;
@@ -494,7 +497,7 @@ class ExamSeriesController extends Controller
             prepareBlockUserMessage();
             return back();
         }
-        
+
 
         $exam_series = ExamSeries::getRecordWithSlug($slug);
 
@@ -545,12 +548,11 @@ class ExamSeriesController extends Controller
         }
 
         if($interested_categories) {
-        if(count($interested_categories->quiz_categories))
-        $data['series']             = ExamSeries::where('start_date','<=',date('Y-m-d'))
-                                        ->where('end_date','>=',date('Y-m-d'))
-                                        -> whereIn('category_id',(array) $interested_categories->quiz_categories)
-                                        ->paginate(getRecordsPerPage());
+        if(count($interested_categories->quiz_categories));
         }
+        $data['series']             = ExamSeries::where('start_date','<=',date('Y-m-d'))
+                                        //->where('end_date','>=',date('Y-m-d'))
+                                        ->paginate(getRecordsPerPage());
 
         //$data['series']             = ExamSeries::whereIn('category_id',(array) $interested_categories->quiz_categories)                                       ->paginate(getRecordsPerPage());
         //dd($data);

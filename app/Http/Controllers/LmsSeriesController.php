@@ -60,7 +60,7 @@ class LmsSeriesController extends Controller
         $records = array();
 
 
-            $records = LmsSeries::select(['title', 'image', 'is_paid', 'cost', 'validity',  'total_items','show_in_front','slug', 'id', 'updated_at'])
+            $records = LmsSeries::select(['title', 'image', 'section_id', 'start_date', 'end_date',  'total_items','slug', 'id', 'updated_at'])
 			->where('record_updated_by',Auth::user()->id)
             ->orderBy('updated_at', 'desc');
 
@@ -74,7 +74,7 @@ class LmsSeriesController extends Controller
                            <li><a href="'.URL_LMS_SERIES_UPDATE_SERIES.$records->slug.'"><i class="fa fa-spinner"></i>'.getPhrase("update").' LMS'.'</a></li>
                             <li><a href="'.URL_LMS_SERIES_EDIT.$records->slug.'"><i class="fa fa-pencil"></i>'.getPhrase("edit").'</a></li>';
                            $temp = '';
-                           if(checkRole(getUserGrade(1))) {
+                           if(checkRole(getUserGrade(3))) {
                     $temp .= ' <li><a href="javascript:void(0);" onclick="deleteRecord(\''.$records->slug.'\');"><i class="fa fa-trash"></i>'. getPhrase("delete").'</a></li>';
                       }
                     $temp .='</ul></div>';
@@ -95,6 +95,9 @@ class LmsSeriesController extends Controller
 
             return '<img src="'.$image_path.'" height="60" width="60"  />';
         })
+		/*->editColumn('section_id', function($records) {
+               return User::select('section_name')->where('section_id',$records->section_id)->pluck('section_name')->first();
+        })*/
         ->editColumn('cost', function($records)
         {
            return ($records->is_paid) ? $records->cost : '-';
@@ -130,6 +133,7 @@ class LmsSeriesController extends Controller
         return back();
       }
     	$data['record']         	= FALSE;
+		$data['layout']=getLayout();
     	$data['active_class']       = 'lms';
     	$data['categories']       	= array_pluck(App\LmsCategory::where('record_updated_by',Auth::user()->id)->get(),'category', 'id');
 
@@ -192,14 +196,14 @@ class LmsSeriesController extends Controller
        $name = $request->title;
         if($name != $record->title)
             $record->slug = $record->makeSlug($name, TRUE);
-      
+
        //Validate the overall request
        $this->validate($request, $rules);
 
-        
+
 
     	$record->title 				= $name;
-       	
+
         $record->is_paid			= $request->is_paid;
         $record->lms_category_id			= $request->lms_category_id;
         $record->validity			= -1;
@@ -210,7 +214,7 @@ class LmsSeriesController extends Controller
     	}
 
         $record->total_items		= $request->total_items;
-        
+
 
         $record->short_description	= $request->short_description;
         $record->description		= $request->description;
@@ -218,11 +222,11 @@ class LmsSeriesController extends Controller
         $record->end_date   = $request->end_date;
 
         $record->is_popular   = $request->is_popular;
-        
+
         $record->record_updated_by 	= Auth::user()->id;
 
         $record->show_in_front   = $request->show_in_front;
-        
+
         $record->save();
         $file_name = 'image';
         if ($request->hasFile($file_name))
@@ -267,7 +271,7 @@ class LmsSeriesController extends Controller
       	$name  						    =  $request->title;
 		    $record->title 				= $name;
        	$record->slug 				= $record->makeSlug($name, TRUE);
-        $record->is_paid			= $request->is_paid;
+        $record->is_paid			= 0;
         $record->validity			= -1;
         $record->lms_category_id	= $request->lms_category_id;
         $record->cost				= 0;
@@ -441,15 +445,16 @@ class LmsSeriesController extends Controller
     	 * Get the available questions from questionbank_quizzes table
     	 * Load view with this data
     	 */
-		$record = LmsSeries::getRecordWithSlug($slug); 
+		$record = LmsSeries::getRecordWithSlug($slug);
         $data['layout']=getLayout();
     	$data['record']         	= $record;
     	$data['active_class']       = 'lms';
         $data['right_bar']          = TRUE;
         $data['right_bar_path']     = 'lms.lmsseries.right-bar-update-lmslist';
-		$data['categories']       	= array_pluck(App\Subject::all(),'subject_title', 'id');        
+		$data['categories']       	= array_pluck(App\Subject::where('record_updated_by',Auth::user()->id)->get(),'subject_title', 'id');
         $data['settings']           = FALSE;
         $previous_records = array();
+
         if($record->total_items > 0)
         {
             $series = DB::table('lmsseries_data')

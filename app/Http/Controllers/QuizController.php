@@ -78,7 +78,7 @@ class QuizController extends Controller
 
 
             $records = Quiz::join('quizcategories', 'quizzes.category_id', '=', 'quizcategories.id')
-            ->select(['title', 'dueration', 'category', 'is_paid', 'total_marks','exam_type','tags','quizzes.slug' ])
+            ->select(['title', 'dueration', 'category', 'quizzes.section_id', 'total_marks','exam_type','tags','quizzes.slug' ])
             ->where('quizzes.record_updated_by',Auth::user()->id)
             ->orderBy('quizzes.updated_at', 'desc');
 
@@ -88,7 +88,7 @@ class QuizController extends Controller
             $category = QuizCategory::getRecordWithSlug($slug);
 
         $records = Quiz::join('quizcategories', 'quizzes.category_id', '=', 'quizcategories.id')
-            ->select(['title', 'dueration', 'category', 'is_paid', 'total_marks','exam_type','tags','quizzes.slug' ])
+            ->select(['title', 'dueration', 'category', 'section_id', 'total_marks','exam_type','tags','quizzes.slug' ])
             ->where('quizzes.record_updated_by',Auth::user()->id)
             ->where('quizzes.category_id', '=', $category->id)
             ->orderBy('quizcategories.updated_at', 'desc');
@@ -103,20 +103,13 @@ class QuizController extends Controller
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel">
                            <li><a href="'.URL_QUIZ_UPDATE_QUESTIONS.$records->slug.'"><i class="fa fa-spinner"></i>'.getPhrase("update_questions").'</a></li>
-                            <li><a href="'.URL_QUIZ_EDIT.'/'.$records->slug.'"><i class="fa fa-pencil"></i>'.getPhrase("edit").'</a></li>';
-                           $temp = '';
-                           if(checkRole(getUserGrade(1))) {
-                    $temp .= ' <li><a href="javascript:void(0);" onclick="deleteRecord(\''.$records->slug.'\');"><i class="fa fa-trash"></i>'. getPhrase("delete").'</a></li>';
-                      }
-                    $temp .='</ul></div>';
+                            <li><a href="'.URL_QUIZ_EDIT.'/'.$records->slug.'"><i class="fa fa-pencil"></i>'.getPhrase("edit").'</a></li>
+                            <li><a href="javascript:void(0);" onclick="deleteRecord(\''.$records->slug.'\');"><i class="fa fa-trash"></i>'. getPhrase("delete").'</a></li></ul></div>';
 
-
-                    $link_data .=$temp;
             return $link_data;
             })
-        ->editColumn('is_paid', function($records)
-        {
-            return ($records->is_paid) ? '<span class="label label-primary">'.getPhrase('paid') .'</span>' : '<span class="label label-success">'.getPhrase('free').'</span>';
+        ->editColumn('section_id', function($records) {
+            return User::select('section_name')->where('section_id',$records->section_id)->pluck('section_name')->first();
         })
         ->editColumn('title',function($records)
         {
@@ -149,13 +142,11 @@ class QuizController extends Controller
         $data['layout']      = getLayout();
       $data['record']             = FALSE;
       $data['active_class']       = 'exams';
-      $data['categories']         = array_pluck(QuizCategory::all(), 'category', 'id');
+      $data['categories']         = array_pluck(QuizCategory::where('record_updated_by',Auth::user()->id)->get(), 'category', 'id');
       $data['instructions']       = array_pluck(App\Instruction::all(), 'title', 'id');
       $data['exam_types']         = App\ExamType::where('status','=',1)->get()->pluck('title','code')->toArray();
-      // dd($data);
       $data['title']              = getPhrase('create_quiz');
       // return view('exams.quiz.add-edit', $data);
-
           $view_name = getTheme().'::exams.quiz.add-edit';
         return view($view_name, $data);
     }
@@ -176,7 +167,7 @@ class QuizController extends Controller
       $record = Quiz::getRecordWithSlug($slug);
       if($isValid = $this->isValidRecord($record))
         return redirect($isValid);
-      
+
       $data['layout']      = getLayout();
 
       $data['record']           = $record;
@@ -202,7 +193,7 @@ class QuizController extends Controller
     public function update(Request $request, $slug)
     {
       // dd($request);
-      
+
       $record = Quiz::getRecordWithSlug($slug);
      $rules = [
          'title'               => 'bail|required|max:40' ,
@@ -336,7 +327,7 @@ class QuizController extends Controller
         $record->total_marks    = $request->total_marks;
         $record->pass_percentage  = $request->pass_percentage;
         $record->tags       = '';
-        $record->is_paid      = $request->is_paid;
+        $record->is_paid      = 0;
         $record->cost       = 0;
         $record->validity       = -1;
         if($record->is_paid) {
@@ -344,11 +335,11 @@ class QuizController extends Controller
           $record->validity     = $request->validity;
         }
 
-        $record->publish_results_immediately            
+        $record->publish_results_immediately
                                     = $request->publish_results_immediately;
-        $record->publish_results_immediately      
+        $record->publish_results_immediately
                       = 1;
-        
+
         $record->having_negative_mark = 1;
         $record->negative_mark = $request->negative_mark;
         $record->start_date = $request->start_date;
@@ -488,7 +479,7 @@ class QuizController extends Controller
       $data['active_class']       = 'exams';
         // $data['right_bar']          = FALSE;
         // $data['right_bar_path']     = 'exams.quiz.right-bar-update-questions';
-        
+
         $data['settings']           = FALSE;
         $previous_questions = array();
         $data['layout']      = getLayout();
@@ -506,10 +497,10 @@ class QuizController extends Controller
                 $temp['subject_id']  = $question->subject_id;
                 $temp['question_id'] = $question->questionbank_id;
                 $temp['marks']       = $question->marks;
-                
+
                 $question_details         = QuestionBank::find($question->questionbank_id);
                 $subject                  = $question_details->subject;
-                
+
                 $temp['question']         = $question_details->question;
                 $temp['question_type']    = $question_details->question_type;
                 $temp['difficulty_level'] = $question_details->difficulty_level;
@@ -536,14 +527,14 @@ class QuizController extends Controller
               foreach($previous_questions as $question)
                 $temp_questions[$question['question_id']] = $question;
 
-              
+
               foreach($section_data as $sd)
               {
                 $index = str_replace(' ','_',$sd->section_name);
                 $section_wise_questions[$index]['section_name'] = $sd->section_name;
                 $section_wise_questions[$index]['section_time'] = $sd->section_time;
-               
-                 foreach($sd->questions as $q_no) 
+
+                 foreach($sd->questions as $q_no)
                  {
                   $section_wise_questions[$index]['questions'][] = $temp_questions[$q_no];
                  }
@@ -553,14 +544,14 @@ class QuizController extends Controller
 
               $settings['questions'] = $section_wise_questions;
             }
-            
+
             $settings['total_marks']  = $record->total_marks;
             $settings['section_data'] = $record->section_data;
             $data['settings']         = json_encode($settings);
         }
-        
-        
-      $data['subjects']     = array_pluck(App\Subject::all(), 'subject_title', 'id');
+
+
+      $data['subjects']     = array_pluck(App\Subject::where('record_updated_by',Auth::user()->id)->get(), 'subject_title', 'id');
       $data['title']        = getPhrase('update_questions_for').' '.$record->title;
       // dd($data);
 
@@ -599,12 +590,12 @@ class QuizController extends Controller
         $questions_to_update = array();
         $sections_data = array();
 
-        foreach ($questions as $ques_key => $q) 
+        foreach ($questions as $ques_key => $q)
         {
            // dd($q);
           if($quiz->exam_type!='NSNT')
           {
-            
+
           foreach($q->questions as $question)
           {
             // dd($question);
@@ -621,8 +612,8 @@ class QuizController extends Controller
               // dd($key);
               $sections_data[$key]['section_name']  = $added_sections[$ques_key];
               $sections_data[$key]['section_time']  = $added_times[$ques_key];
-            
-              
+
+
               if(!isset($sections_data[$key]['questions']))
                 $sections_data[$key]['questions'] = [];
               if(!in_array($question->question_id, $sections_data[$key]['questions']))
@@ -640,7 +631,7 @@ class QuizController extends Controller
             $temp['quize_id']         = $quiz_id;
             $temp['marks']            = $q->marks;
             $marks                   += $q->marks;
-         
+
             array_push($questions_to_update, $temp);
           }
         }
@@ -649,7 +640,7 @@ class QuizController extends Controller
 
         $total_questions = count($questions_to_update);
 
-     
+
           //Clear all previous questions
           DB::table('questionbank_quizzes')->where('quize_id', '=', $quiz_id)->delete();
           //Insert New Questions
@@ -665,7 +656,7 @@ class QuizController extends Controller
         }
 
         catch (Exception $e) {
-           
+
            DB::rollBack();
            flash('Oops...!','Error! Improper Data Submitted Please Try Again', 'error');
 
@@ -681,7 +672,7 @@ class QuizController extends Controller
      */
     public function examTypes()
     {
-        if(!checkRole(getUserGrade(2)))
+        if(!checkRole(getUserGrade(3)))
         {
           prepareBlockUserMessage();
           return back();
@@ -698,9 +689,9 @@ class QuizController extends Controller
     }
 
     public function editExamType($code)
-    { 
-      
-       if(!checkRole(getUserGrade(2)))
+    {
+
+       if(!checkRole(getUserGrade(3)))
         {
           prepareBlockUserMessage();
           return back();
@@ -722,16 +713,16 @@ class QuizController extends Controller
 
     public function updateExamType(Request $request, $code)
     {
-         if(!checkRole(getUserGrade(2)))
+         if(!checkRole(getUserGrade(3)))
         {
           prepareBlockUserMessage();
           return back();
         }
-      
+
 
        $record   = App\ExamType::where('code',$code)->first()->update($request->all());
-      
-       flash('success','exam_type_updated_successfully','success'); 
+
+       flash('success','exam_type_updated_successfully','success');
        return redirect(URL_EXAM_TYPES);
 
     }
@@ -744,13 +735,13 @@ class QuizController extends Controller
 
          if ($request->hasFile($file_name)) {
           $examSettings = getExamSettings();
-          
+
           $destinationPath      = $examSettings->categoryImagepath;
-          
+
           $fileName = $record->id.'-'.$file_name.'.'.$request->$file_name->guessClientExtension();
-          
+
           $request->file($file_name)->move($destinationPath, $fileName);
-         
+
          //Save Normal Image with 300x300
           Image::make($destinationPath.$fileName)->fit($examSettings->imageSize)->save($destinationPath.$fileName);
          return $fileName;
@@ -762,13 +753,13 @@ class QuizController extends Controller
          if(isDemo()) {
         return ;
        }
-       
+
         $files = array();
         $files[] = $path.$record;
         File::delete($files);
     }
 
-   
+
 
 
 }

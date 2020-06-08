@@ -735,7 +735,7 @@ class UsersController extends Controller
         */
 
         if(!checkRole(getUserGrade(3)))
-          return back();
+          ;//return back();
           if(checkRole(['parent'])){
             $childs=App\User::where('parent_id',auth()->user()->id)->get();
                 foreach ($childs as $child) {

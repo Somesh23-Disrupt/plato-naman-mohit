@@ -181,6 +181,7 @@ class LmsContentController extends Controller
             case 'iframe':
                     if($request->file_path)
                         $file_path = $request->file_path;
+                        $file_path = str_replace("watch?v=","embed/",$file_path);
                 break;
             case 'file' :
                    if($request->file_path)
@@ -291,6 +292,7 @@ class LmsContentController extends Controller
             case 'iframe':
                     $rules['file_path'] = 'bail|required';
                     $file_path = $request->file_path;
+                    $file_path = str_replace("watch?v=","embed/",$file_path);
                 break;
             case 'file' :
                      $rules['lms_file'] = 'bail|required';

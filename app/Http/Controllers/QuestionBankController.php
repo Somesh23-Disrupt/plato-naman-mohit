@@ -8,6 +8,8 @@ use App\Subject;
 use App\QuestionBank;
 use Yajra\Datatables\Datatables;
 use DB;
+use Auth;
+use App\User;
 use Image;
 use ImageSettings;
 use File;
@@ -58,7 +60,8 @@ class QuestionBankController extends Controller
       }
 
          $records = Subject::select([
-         	'subject_title', 'subject_code', 'id','slug', 'is_lab', 'updated_at'])
+         	'subject_title','section_id', 'subject_code', 'id','slug', 'is_lab', 'updated_at'])
+            ->where('record_updated_by',Auth::user()->id)
          	  ->orderBy('updated_at', 'desc');
 
         $table = Datatables::of($records)
@@ -81,6 +84,9 @@ class QuestionBankController extends Controller
         ->editColumn('subject_title', function($records) {
             return '<a href="'.URL_QUESTIONBANK_VIEW.$records->slug.'">'.$records->subject_title.'</a>';
         })
+        ->editColumn('section_id', function($records) {
+               return User::select('section_name')->where('section_id',$records->section_id)->pluck('section_name')->first();
+           })
         ->removeColumn('id')
         ->removeColumn('slug')
         ->removeColumn('is_lab')
