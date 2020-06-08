@@ -99,7 +99,7 @@
 						<div class="username">
 							<h2>{{Auth::user()->name}}</h2>
 							<br>
-							<h2>{{getPhrase('Section : ').Auth::user()->section}}</h2>
+							<h2>{{getPhrase('Section : ').Auth::user()->section_name}}</h2>
 							 
 						</div>
 						@endif

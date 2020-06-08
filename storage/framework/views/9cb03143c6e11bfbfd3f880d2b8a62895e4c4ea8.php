@@ -71,6 +71,15 @@
 			<!-- Top Menu Items -->
 			<?php $newUsers = (new App\User())->getLatestUsers(); ?>
 			<ul class="nav navbar-right top-nav">
+				<li>
+					<div class="dropdown-toggle top-profile-menu" data-toggle="dropdown">
+						<?php if(Auth::check()): ?>
+						<div class="username">
+							<h2><?php echo e(Auth::user()->inst_name); ?></h2>
+						</div>
+						<?php endif; ?>
+					</div>
+				</li>
 				<li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown">
 				<i class="icon-topbar-event"></i> <?php echo e(getPhrase('latest_users')); ?>  </a>
 					<div class="dropdown-menu dropdown-menu-right dropdown-menu-notif" aria-labelledby="dd-notification">
@@ -99,8 +108,6 @@
 						<?php if(Auth::check()): ?>
 						<div class="username">
 							<h2><?php echo e(Auth::user()->name); ?></h2>
-							<br>
-							<h2><?php echo e(getPhrase('Section : ').Auth::user()->section); ?></h2>
 							 
 						</div>
 						<?php endif; ?>
@@ -162,15 +169,12 @@
 						</a> 
 					</li>
 
+					<li <?php echo e(isActive($active_class, 'languages')); ?>> <a href="<?php echo e(URL_LANGUAGES_LIST); ?>">
+					<i class="fa fa-fw fa-language" aria-hidden="true"></i> <?php echo e(getPhrase('languages')); ?> </a> </li>
 					
-					<li <?php echo e(isActive($active_class, 'users')); ?>> <a data-toggle="collapse" data-target="#users"><i class="fa fa-fw fa-user-circle"></i> <?php echo e(getPhrase('users')); ?> </a> 
- 					<ul id="users" class="collapse sidemenu-dropdown">
-							<li><a href="<?php echo e(URL_USERS); ?>"> <i class="fa fa-fw fa-user-circle"></i><?php echo e(getPhrase('Students')); ?></a></li>
-							<li><a href="<?php echo e(URL_TOPLIST); ?>"> <i class="fa fa-fw fa-user-circle"></i><?php echo e(getPhrase('Top Students')); ?></a></li>
-
-					</ul>
-					</li>
-
+					<li <?php echo e(isActive($active_class, 'users')); ?>> <a href="<?php echo e(URL_USERS); ?>"><i class="fa fa-fw fa-user-circle"></i> <?php echo e(getPhrase('users')); ?> </a> </li>
+					
+<!-- 
 					<li <?php echo e(isActive($active_class, 'exams')); ?> > 
 
 					<a data-toggle="collapse" data-target="#exams"><i class="fa fa-fw fa-desktop" ></i> 
@@ -195,9 +199,32 @@
 					</li>
 
 
-					
+					<li <?php echo e(isActive($active_class, 'coupons')); ?> > 
 
+					<a data-toggle="collapse" data-target="#coupons"><i class="fa fa-fw fa-tags"></i> 
+					<?php echo e(getPhrase('coupons')); ?> </a> 
 					
+					<ul id="coupons" class="collapse sidemenu-dropdown">
+							<li><a href="<?php echo e(URL_COUPONS); ?>"> <i class="fa fa-fw fa-list"></i><?php echo e(getPhrase('list')); ?></a></li>
+							<li><a href="<?php echo e(URL_COUPONS_ADD); ?>"> <i class="fa fa-fw fa-plus"></i><?php echo e(getPhrase('add')); ?></a></li>
+						 
+					</ul>
+
+					</li>
+
+					<li <?php echo e(isActive($active_class, 'master')); ?> > 
+
+					<a data-toggle="collapse" data-target="#master"><i class="fa fa-fw fa-desktop"></i> 
+					<?php echo e(getPhrase('master')); ?> </a> 
+					
+					<ul id="master" class="collapse sidemenu-dropdown">
+							<li><a href="<?php echo e(URL_DEPARTMENT_LIST); ?>"> <i class="fa fa-fw fa-list"></i><?php echo e(getPhrase('department')); ?></a></li>
+							<li><a href="<?php echo e(URL_SECTION_LIST); ?>"> <i class="fa fa-fw fa-list"></i><?php echo e(getPhrase('section')); ?></a></li>
+						 
+					</ul>
+
+					</li>
+
 					<li <?php echo e(isActive($active_class, 'lms')); ?> > 
 
 					<a data-toggle="collapse" data-target="#lms"><i class="fa fa-fw fa-tv" ></i> 
@@ -212,9 +239,28 @@
 
 
 
+					 <li <?php echo e(isActive($active_class, 'resumes_templates')); ?> > 
+						<a href="<?php echo e(URL_RESUME_TEMPLATES); ?>" ><i class="fa fa-address-card-o" aria-hidden="true"></i>
+					<?php echo e(getPhrase('resumes_templates')); ?> </a> 
+					
+					</li>
 					
 
+					<li <?php echo e(isActive($active_class, 'reports')); ?> > 
+
+					<a data-toggle="collapse" data-target="#reports"><i class="fa fa-fw fa-credit-card" ></i> 
+					<?php echo e(getPhrase('payment_reports')); ?> </a> 
 					
+					<ul id="reports" class="collapse sidemenu-dropdown">
+						  	<li><a href="<?php echo e(URL_ONLINE_PAYMENT_REPORTS); ?>"> <i class="fa fa-fw fa-link"></i><?php echo e(getPhrase('online_payments')); ?></a></li>
+							<li><a href="<?php echo e(URL_OFFLINE_PAYMENT_REPORTS); ?>"> <i class="fa fa-fw fa-chain-broken"></i><?php echo e(getPhrase('offline_payments')); ?></a></li>
+							<li><a href="<?php echo e(URL_PAYMENT_REPORT_EXPORT); ?>"> <i class="fa fa-fw fa-file-excel-o"></i><?php echo e(getPhrase('export')); ?></a></li>
+							
+
+					</ul>
+
+					</li>
+ -->
 					<li <?php echo e(isActive($active_class, 'notifications')); ?> > 
 						<a href="<?php echo e(URL_ADMIN_NOTIFICATIONS); ?>" ><i class="fa fa-fw fa-bell" aria-hidden="true"></i>
 					<?php echo e(getPhrase('notifications')); ?> </a> 
@@ -243,19 +289,53 @@
 
 
 
-					<li <?php echo e(isActive($active_class, 'faqs')); ?> > 
+<!-- 					<li <?php echo e(isActive($active_class, 'pages')); ?> > 
+						<a href="<?php echo e(URL_PAGES); ?>" ><i class="fa fa-book" ></i> <?php echo e(getPhrase('pages')); ?> </a> 
+					</li>
 
-					<a href='<?php echo e(URL_FAQS_all); ?>'><i class="fa fa-fw fa-question"></i> 
+
+					<li <?php echo e(isActive($active_class, 'blogs')); ?> > 
+						<a href="<?php echo e(URL_BLOGS); ?>" ><i class="fa fa-comment-o" ></i> <?php echo e(getPhrase('blogs')); ?> </a> 
+					</li>
+
+ -->					<li <?php echo e(isActive($active_class, 'faqs')); ?> > 
+
+					<a data-toggle="collapse" data-target="#faqs"><i class="fa fa-fw fa-question"></i> 
 					<?php echo e(getPhrase('faqs')); ?> </a> 
 					
-					
+					<ul id="faqs" class="collapse sidemenu-dropdown">
+							<li><a href="<?php echo e(URL_FAQ_CATEGORIES); ?>"> <i class="fa fa-fw fa-list"></i><?php echo e(getPhrase('categories')); ?></a></li>
+							<li><a href="<?php echo e(URL_FAQ_QUESTIONS); ?>"> <i class="fa fa-fw fa-question"></i><?php echo e(getPhrase('faqs')); ?></a></li>
+						 
+					</ul>
 
 					</li>
 
 
 					
 
+					<!-- <li <?php echo e(isActive($active_class, 'master_settings')); ?> > 
+
+					<a data-toggle="collapse" data-target="#master_settings" href="<?php echo e(URL_MASTERSETTINGS_SETTINGS); ?>"><i class="fa fa-fw fa-cog" ></i> 
+					<?php echo e(getPhrase('master_settings')); ?> </a> 
 					
+					<ul id="master_settings" class="collapse sidemenu-dropdown">
+							
+
+							
+							<?php if(checkRole(getUserGrade(1))): ?>
+							<li><a href="<?php echo e(URL_MASTERSETTINGS_SETTINGS); ?>"> <i class="icon-settings"></i> <?php echo e(getPhrase('settings')); ?></a></li>
+							<?php endif; ?>
+							
+					</ul>
+					</li>
+
+					<li <?php echo e(isActive($active_class, 'themes')); ?> > 
+						<a href="<?php echo e(URL_THEMES_LIST); ?>" ><i class="fa fa-fw fa-th-large" ></i> 
+					<?php echo e(getPhrase('themes')); ?> </a> 
+					
+					</li>
+ -->
 				</ul>
 			</div>
 		</aside>

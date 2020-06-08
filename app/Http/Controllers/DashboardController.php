@@ -91,7 +91,7 @@ class DashboardController extends Controller
            $data['chart_data'][] = (object)$chart_data;
            $data['chart_heading']         = getPhrase('user_statistics');
 
-           $data['payments_chart_data'] = (object)$this->getPaymentStats();
+          //  $data['payments_chart_data'] = (object)$this->getPaymentStats();
           //  $data['payments_monthly_data'] = (object)$this->getPaymentMonthlyStats();
           //  $data['demanding_quizzes'] = (object)$this->getDemandingQuizzes();
           //  $data['demanding_paid_quizzes'] = (object)$this->getDemandingQuizzes('paid');
@@ -234,7 +234,7 @@ class DashboardController extends Controller
               // }
               $data['tnps']=$tnps;
               $data['avg']= $this->gettingavgscore()->avg;
-              $data['avgsection_name']=getUserWithSlug()->section_name;
+              $data['avgsection']=getUserWithSlug()->section_name;
               // return view('admin.dashboard', $data);
               //dd(App\User::where('teacher_id', '=', $user->id)->get());
               $data['chart_data']=$this->getstudents();
@@ -254,6 +254,8 @@ class DashboardController extends Controller
             $data['chart_data']=$this->getstudents();
             $childs=App\User::where('parent_id',10)->get();
             $i=0;
+            $name=[];
+            $new=[];
             foreach ($childs as $child) {
               $dash[]=(object)$this->examanalysisbytotalmarks($child);
               $t['atemp']=count($dash[$i]->data->dataset);
@@ -374,36 +376,52 @@ class DashboardController extends Controller
         return $series;
     }
 
-   public function getPaymentStats()
-    {
-        // $paymentObject = new App\Payment();
-        //     $payment_data = (object)$paymentObject->getSuccessFailedCount();
-            $section=App\Section::all();
-             $payment_dataset =[];
-             $payment_labels = [];
-            foreach ($sections as $section) {
-                $payment_dataset[] = $section->avg_score;
-                $payment_labels[] = $section->class.' '.$section->section;
-            }
-            // $payment_dataset = [$payment_data->success_count, $payment_data->cancelled_count, $payment_data->pending_count];
-            // $payment_labels = [getPhrase('success'), getPhrase('cancelled'), getPhrase('pending')];
-            $payment_dataset_labels = [getPhrase('total')];
+  //  public function getPaymentStats()
+  //   {
+  //       // $paymentObject = new App\Payment();
+  //       //     $payment_data = (object)$paymentObject->getSuccessFailedCount();
+  //           $sections=App\User::select('section_name')->where('inst_id',auth()->user()->inst_id)->where('role_id',5)->get()->pluck('section_name');
+  //           dd($sections);
+  //            $payment_dataset =[];
+  //            $payment_labels = [];
+            
+            
 
-            $payment_bgcolor = ['rgba(41, 75, 147, 1)','rgba(196, 219, 250, 1)','rgba(52, 132, 240, 1)'];
-            $payment_border_color = [getColor('background',4),getColor('background',9),getColor('background',18)];
+  //           foreach ($sections as $section) {
+  //             $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')
+  //               ->select(['quiz_id', 'quizzes.title',DB::raw('Max(percentage) as percentage'), 'quizresults.user_id'])
+  //               ->where('quizresults.user_id', '=', $section->id)
+  //               ->groupBy('quizresults.quiz_id')
 
-          $payments_stats['data']    = (object) array(
-                                        'labels'            => $payment_labels,
-                                        'dataset'           => $payment_dataset,
-                                        'dataset_label'     => $payment_dataset_labels,
-                                        'bgcolor'           => $payment_bgcolor,
-                                        'border_color'      => $payment_border_color
-                                        );
-           $payments_stats['type'] = 'bar';
-             $payments_stats['title'] = getPhrase('average Score');
+  //               ->get();
+  //               $percent=0;
+  //               foreach ($records as $record) {
+  //                 $percent=$record->percentage+$percent;
+  //               }
+  //               dd($percent);
+  //               $payment_dataset[] = $percent;
+  //               $payment_labels[] = $section->section_name;
+  //           }
+  //           // $payment_dataset = [$payment_data->success_count, $payment_data->cancelled_count, $payment_data->pending_count];
+  //           // $payment_labels = [getPhrase('success'), getPhrase('cancelled'), getPhrase('pending')];
+  //           $payment_dataset_labels = [getPhrase('total')];
 
-           return $payments_stats;
-    } /**
+  //           $payment_bgcolor = ['rgba(41, 75, 147, 1)','rgba(196, 219, 250, 1)','rgba(52, 132, 240, 1)'];
+  //           $payment_border_color = [getColor('background',4),getColor('background',9),getColor('background',18)];
+
+  //         $payments_stats['data']    = (object) array(
+  //                                       'labels'            => $payment_labels,
+  //                                       'dataset'           => $payment_dataset,
+  //                                       'dataset_label'     => $payment_dataset_labels,
+  //                                       'bgcolor'           => $payment_bgcolor,
+  //                                       'border_color'      => $payment_border_color
+  //                                       );
+  //          $payments_stats['type'] = 'bar';
+  //            $payments_stats['title'] = getPhrase('average Score');
+
+  //          return $payments_stats;
+  //   }
+     /**
      * This method returns the overall monthly summary of the payments made with status success
      * @return [type] [description]
      */

@@ -23,7 +23,7 @@
 				 				<a href="{{URL_USERS}}"><div class="state-icn bg-icon-info"><i class="fa fa-users"></i></div></a>
 				 			</div>
 				 			<div class="media-body">
-				 				<h4 class="card-title">{{ App\Institution::where('id',auth()->user()->inst_id)->first()->users->where('role_id',5)->count()}}</h4>
+				 				<h4 class="card-title">{{ App\User::where('inst_id',auth()->user()->inst_id)->where('role_id',5)->count()}}</h4>
 								<a href="{{URL_USERS}}">{{ getPhrase('Students')}}</a>
 				 			</div>
 				 		</div>
@@ -34,7 +34,7 @@
 				 				<a href="{{URL_USERS}}"><div class="state-icn bg-icon-info"><i class="fa fa-users"></i></div></a>
 				 			</div>
 				 			<div class="media-body">
-				 				<h4 class="card-title">{{ App\Institution::where('id',auth()->user()->inst_id)->first()->users->where('role_id',7)->count()}}</h4>
+				 				<h4 class="card-title">{{ App\User::where('inst_id',auth()->user()->inst_id)->where('role_id',7)->count()}}</h4>
 								<a href="{{URL_USERS}}">{{ getPhrase('teachers')}}</a>
 				 			</div>
 				 		</div>
@@ -103,8 +103,9 @@
 								<a href="{{URL_QUIZ_QUESTIONBANK}}"><div class="state-icn bg-icon-orange"><i class="fa fa-question-circle"></i></div></a>
 							</div>
 							<div class="media-body">
-								<h4 class="card-title">{{ 5 }}</h4>
-							   <a href="{{URL_QUIZ_QUESTIONBANK}}">{{ getPhrase('section')}}</a>
+								<h4 class="card-title">{{App\User::select('section_name')->where('inst_id',Auth::user()->inst_id)->where('role_id',5)->distinct()->get()->count()
+								 }}</h4>
+							   <a href="">{{ getPhrase('section')}}</a>
 							</div>
 						</div>
 					</div> 
@@ -136,12 +137,12 @@
 				 				<a href=""><div class="state-icn bg-icon-orange"><i class="fa fa-question-circle"></i></div></a>
 				 			</div>
 				 			<div class="media-body">
-				 				<h4 class="card-title">{{ App\Institution::where('id',auth()->user()->inst_id)->first()->users->where('role_id',7)->where('login_enabled',1)->count() }}</h4>
+				 				<h4 class="card-title">{{ App\User::where('inst_id',auth()->user()->inst_id)->where('role_id',7)->where('login_enabled',1)->count() }}</h4>
 								<a href="">{{ getPhrase('Active Teachers')}}</a>
 				 			</div>
 				 		</div>
 				 	</div> --}}
-				 	<div class="col-md-4 col-sm-6">
+				 	{{-- <div class="col-md-4 col-sm-6">
 				 		<div class="media state-media box-ws">
 				 			<div class="media-left">
 				 				<a href=""><div class="state-icn bg-icon-orange"><i class="fa fa-question-circle"></i></div></a>
@@ -151,7 +152,7 @@
 								<a href="">{{ getPhrase('Average Score across quizzes')}}</a>
 				 			</div>
 				 		</div>
-				 	</div>
+				 	</div> --}}
 					 <div class="col-md-4 col-sm-6">
 						<div class="media state-media box-ws">
 							<div class="media-left">
@@ -243,14 +244,14 @@
 			</div>
 			<div class="row">
 
-				<div class="col-md-6 col-lg-5">
+				{{-- <div class="col-md-6 col-lg-5">
   				  <div class="panel panel-primary dsPanel">
 				    <div class="panel-heading"><i class="fa fa-bar-chart-o"></i> {{getPhrase('Average Scores')}}</div>
 				    <div class="panel-body" >
 				    	<canvas id="payments_chart" width="100" height="75"></canvas>
 				    </div>
 				  </div>
-				</div>
+				</div> --}}
 				<div class="col-md-6 col-lg-4">
   				  <div class="panel panel-primary dsPanel">
 				    <div class="panel-heading"><i class="fa fa-bar-chart-o"></i>{{$chart_heading}}</div>
@@ -315,7 +316,7 @@
 <script src="//cdn.datatables.net/buttons/1.4.2/js/buttons.html5.min.js"></script>
 <script src="//cdn.datatables.net/buttons/1.4.2/js/buttons.print.min.js"></script>
 
- @include('common.chart', array('chart_data'=>$payments_chart_data,'ids' =>array('payments_chart'), 'scale'=>TRUE))
+ {{-- @include('common.chart', array('chart_data'=>$payments_chart_data,'ids' =>array('payments_chart'), 'scale'=>TRUE)) --}}
  @include('common.chart', array($chart_data,'ids' =>$ids));
  
  <script>
