@@ -186,10 +186,10 @@ class UsersController extends Controller
              return back();
           }
 
-          
+
         $data['record']       = FALSE;
         $data['active_class'] = 'users';
-        
+
         // $data['roles']        = $this->getUserRoles();
         $roles  = \App\Role::select('display_name', 'id','name')->get();
         if(checkRole(['teacher'])){
@@ -500,7 +500,7 @@ class UsersController extends Controller
         if(checkRole(['parent'])){
           $childs=App\User::where('parent_id',10)->get();
               foreach ($childs as $child) {
-              
+
                 $name[]=$child->slug;
 
               }
@@ -734,14 +734,14 @@ class UsersController extends Controller
         * If so return the user back to previous page with message
         */
 
-        if(!isEligible($slug))
+        if(!checkRole(getUserGrade(3)))
           return back();
           if(checkRole(['parent'])){
             $childs=App\User::where('parent_id',10)->get();
                 foreach ($childs as $child) {
-                
+
                   $name[]=$child->slug;
-  
+
                 }
                 $data['slugs']=$name;
           }

@@ -57,7 +57,7 @@ class SubjectsController extends Controller
 
 
          $records = Subject::select([
-         	'id','subject_title', 'subject_code','maximum_marks', 'pass_marks', 'is_lab', 'is_elective_type', 'slug', 'updated_at'])
+         	'id','subject_title','section_id', 'subject_code','maximum_marks', 'pass_marks', 'is_lab', 'is_elective_type', 'slug', 'updated_at'])
             ->where('record_updated_by',Auth::user()->id)
          ->orderBy('updated_at','desc');
 
@@ -70,16 +70,13 @@ class SubjectsController extends Controller
                             <i class="mdi mdi-dots-vertical"></i>
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="dLabel">
-                            <li><a href="'.URL_SUBJECTS_EDIT.'/'.$records->slug.'"><i class="fa fa-pencil"></i>'.getPhrase("edit").'</a></li>';
-                            $temp = '';
-                            if(checkRole(getUserGrade(1))) {
-                                $temp .= '<li><a href="javascript:void(0);" onclick="deleteRecord(\''.$records->slug.'\');"><i class="fa fa-trash"></i>'. getPhrase("delete").'</a></li>';
-                            }
-
-                            $temp .='</ul> </div>';
-                            $link_data .= $temp;
+                            <li><a href="'.URL_SUBJECTS_EDIT.'/'.$records->slug.'"><i class="fa fa-pencil"></i>'.getPhrase("edit").'</a></li>
+                            <li><a href="javascript:void(0);" onclick="deleteRecord(\''.$records->slug.'\');"><i class="fa fa-trash"></i>'. getPhrase("delete").'</a></li></ul> </div>';
                     return $link_data;
             })
+        ->editColumn('section_id', function($records) {
+               return User::select('section_name')->where('section_id',$records->section_id)->pluck('section_name')->first();
+           })
         ->removeColumn('slug')
         ->removeColumn('is_elective_type')
         ->removeColumn('is_lab')
@@ -103,6 +100,7 @@ class SubjectsController extends Controller
     	$data['record']         	= FALSE;
     	$data['active_class']       = 'exams';
     	$data['title']              = getPhrase('add_subject');
+        $data['layout']             = getLayout();
         $data['sections']           = array_pluck(User::where('inst_id',Auth::user()->inst_id)->whereNotNull('section_id')->distinct()->get(),'section_name','section_id');
 
     	// return view('mastersettings.subjects.add-edit', $data);
@@ -322,7 +320,7 @@ class SubjectsController extends Controller
           return back();
         }
         $data['layout']=getLayout();
-      
+
         $data['records']      = FALSE;
         $data['active_class'] = 'exams';
         $data['heading']      = getPhrase('subjects');
@@ -394,22 +392,22 @@ class SubjectsController extends Controller
                  $failed_list[$failed_length] = (object)$temp;
                   continue;
                 }
-               
+
                 $final_records[] = $excel_record;
 
-               
+
               }
-              
+
             }
-            
+
               if($this->pushToDb($final_records))
                   $success_list = $final_records;
-         
+
           }
         }
-       
+
         $data['layout']=getLayout();
-       
+
        $data['failed_list']   =   $failed_list;
        $data['success_list']  =    $success_list;
          $this->excel_data['failed'] = $failed_list;
@@ -511,5 +509,5 @@ public function downloadExcel()
        return TRUE;
      }
 
- 	
+
 }

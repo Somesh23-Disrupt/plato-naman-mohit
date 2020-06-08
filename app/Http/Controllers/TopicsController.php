@@ -33,13 +33,13 @@ class TopicsController extends Controller
         return back();
       }
         $data['layout']=getLayout();
-      
+
         $data['active_class']       = 'exams';
         $data['title']              = getPhrase('topics_list');
     	// return view('mastersettings.topics.list', $data);
 
          $view_name = getTheme().'::mastersettings.topics.list';
-        return view($view_name, $data);   
+        return view($view_name, $data);
     }
 
     /**
@@ -54,7 +54,7 @@ class TopicsController extends Controller
         return back();
       }
          $records = Topic::join('subjects', 'topics.subject_id', '=' ,'subjects.id')
-         ->select([  
+         ->select([
             'subject_title','parent_id', 'topic_name','description','topics.slug', 'topics.id', 'topics.updated_at'])
          ->orderBy('updated_at','desc');
 
@@ -66,8 +66,8 @@ class TopicsController extends Controller
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="dLabel">
                             <li><a href="'.URL_TOPICS_EDIT.'/'.$records->slug.'"><i class="fa fa-pencil"></i>'.getPhrase("edit").'</a></li>';
-                     
-                        
+
+
                     $temp = '';
                     if(checkRole(getUserGrade(1)))
                     {
@@ -110,15 +110,14 @@ class TopicsController extends Controller
       $data['subjects'] = array(''=>getPhrase('select')) + $subjects;
 
         $data['layout']=getLayout();
-      
-      
+
+
         $data['parent_topics'][0]   = getPhrase('select');
-        
+
     	$data['title']              = getPhrase('add_topic');
     	// return view('mastersettings.topics.add-edit', $data);
-
-       $view_name = getTheme().'::mastersettings.topics.add-edit';
-        return view($view_name, $data);   
+        $view_name = getTheme().'::mastersettings.topics.add-edit';
+        return view($view_name, $data);
     }
 
     /**
@@ -354,7 +353,7 @@ class TopicsController extends Controller
             }
 
           if(!$record->parent_id) {
-            
+
              if(!$parent_records[(int)$record->id] = $this->pushToDb($record)) {
                 $temp['record'] = $record;
                 $temp['type']  = getPhrase('unknown_error_occurred');

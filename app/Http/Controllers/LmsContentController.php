@@ -95,9 +95,14 @@ class LmsContentController extends Controller
         ->removeColumn('slug')
         ->editColumn('image', function($records){
             $image_path = IMAGE_PATH_UPLOAD_LMS_DEFAULT;
+
             if($records->image)
             $image_path = IMAGE_PATH_UPLOAD_LMS_CONTENTS.$records->image;
 
+            return '<img src="'.$image_path.'" height="100" width="100" />';
+        })
+        ->make();
+    }
     /**
      * This method loads the create view
      * @return void

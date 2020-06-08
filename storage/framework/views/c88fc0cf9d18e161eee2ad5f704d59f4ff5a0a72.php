@@ -9,7 +9,7 @@
 	<meta name="description" content="<?php echo e(getSetting('meta_description', 'seo_settings')); ?>">
 	<meta name="keywords" content="<?php echo e(getSetting('meta_keywords', 'seo_settings')); ?>">
 	<meta name="csrf_token" content="<?php echo e(csrf_token()); ?>">
-	 
+
 	<link rel="icon" href="<?php echo e(IMAGE_PATH_SETTINGS.getSetting('site_favicon', 'site_settings')); ?>" type="image/x-icon" />
 	<title><?php echo $__env->yieldContent('title'); ?> <?php echo e(isset($title) ? $title : getSetting('site_title','site_settings')); ?></title>
 	<!-- Bootstrap Core CSS -->
@@ -17,43 +17,43 @@
 
 	   <link href="<?php echo e(themes('css/bootstrap.min.css')); ?>" rel="stylesheet">
 	   <link href="<?php echo e(themes('css/sweetalert.css')); ?>" rel="stylesheet">
-	  
+
 	   <link href="<?php echo e(themes('css/metisMenu.min.css')); ?>" rel="stylesheet">
 	   <link href="<?php echo e(themes('css/custom-fonts.css')); ?>" rel="stylesheet">
 	   <link href="<?php echo e(themes('css/materialdesignicons.css')); ?>" rel="stylesheet">
 	   <link href="<?php echo e(themes('font-awesome/css/font-awesome.min.css')); ?>" rel="stylesheet">
-	 
+
 	   <link href="<?php echo e(themes('css/bootstrap-datepicker.min.css')); ?>" rel="stylesheet">
-	
+
 	<!-- Morris Charts CSS -->
 	
 	   <link href="<?php echo e(themes('css/plugins/morris.css')); ?>" rel="stylesheet">
 	 <link href="<?php echo e(themes('css/sb-admin.css')); ?>" rel="stylesheet">
 	 
-     
+
     <?php
     $theme_color  = getThemeColor();
     // dd($theme_color);
     ?>
-    <?php if($theme_color == 'blueheader'): ?>      
+    <?php if($theme_color == 'blueheader'): ?>
 	 <link href="<?php echo e(themes('css/theme-colors/header-blue.css')); ?>" rel="stylesheet">
-    <?php elseif($theme_color == 'bluenavbar'): ?>	 
+    <?php elseif($theme_color == 'bluenavbar'): ?>
 	 <link href="<?php echo e(themes('css/theme-colors/blue-sidebar.css')); ?>" rel="stylesheet">
-    <?php elseif($theme_color == 'darkheader'): ?>	 
+    <?php elseif($theme_color == 'darkheader'): ?>
 	 <link href="<?php echo e(themes('css/theme-colors/dark-header.css')); ?>" rel="stylesheet">
-    <?php elseif($theme_color == 'darktheme'): ?>	 
+    <?php elseif($theme_color == 'darktheme'): ?>
 	 <link href="<?php echo e(themes('css/theme-colors/dark-theme.css')); ?>" rel="stylesheet">
-    <?php elseif($theme_color == 'whitecolor'): ?>	 
+    <?php elseif($theme_color == 'whitecolor'): ?>
 	 <link href="<?php echo e(themes('css/theme-colors/white-theme.css')); ?>" rel="stylesheet">]
-	<?php endif; ?> 
-	
-	
+	<?php endif; ?>
+
+
 
 </head>
 
 <body ng-app="academia">
  <?php echo $__env->yieldContent('custom_div'); ?>
- <?php 
+ <?php
  $class = '';
  if(!isset($right_bar))
  	$class = 'no-right-sidebar';
@@ -92,8 +92,8 @@
 						</div>
 					</div>
 				</li>
-				
-				 
+
+
 				<li class="dropdown profile-menu">
 					<div class="dropdown-toggle top-profile-menu" data-toggle="dropdown">
 						<?php if(Auth::check()): ?>
@@ -101,10 +101,10 @@
 							<h2><?php echo e(Auth::user()->name); ?></h2>
 							<br>
 							<h2><?php echo e(getPhrase('Section : ').Auth::user()->section); ?></h2>
-							 
+
 						</div>
 						<?php endif; ?>
-						
+
 						<div class="profile-img"> <img src="<?php echo e(getProfilePath(Auth::user()->image, 'thumb')); ?>" alt=""> </div>
 						<div class="mdi mdi-menu-down"></div>
 					</div>
@@ -130,13 +130,13 @@
 								<span><?php echo e(getPhrase('send_push_notification')); ?></span>
 								</a>
 						</li>
-						
+
 						<li>
 							<a href="<?php echo e(URL_USERS_CHANGE_PASSWORD); ?><?php echo e(Auth::user()->slug); ?>">
 								<sapn><?php echo e(getPhrase('change_password')); ?></sapn>
 								</a>
 						</li>
-					 
+
 						<li>
 							<a href="<?php echo e(URL_USERS_LOGOUT); ?>">
 								<sapn><?php echo e(getPhrase('logout')); ?></sapn>
@@ -148,7 +148,7 @@
 			<!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
 			<!-- /.navbar-collapse -->
 		</nav>
-		 <?php if(env('DEMO_MODE')): ?> 
+		 <?php if(env('DEMO_MODE')): ?>
 		<div class="alert alert-info demo-alert">
 		&nbsp;&nbsp;&nbsp;<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
   			<strong><?php echo e(getPhrase('info')); ?>!</strong> CRUD <?php echo e(getPhrase('operations_are_disabled_in_demo_version')); ?>
@@ -156,14 +156,15 @@
 		</div>
 		<?php endif; ?>
 
-		<aside class="left-sidebar">			<div class="collapse navbar-collapse navbar-ex1-collapse">				<ul class="nav navbar-nav side-nav">					<li <?php echo e(isActive($active_class, 'dashboard')); ?>> 
+		<aside class="left-sidebar">			<div class="collapse navbar-collapse navbar-ex1-collapse">				<ul class="nav navbar-nav side-nav">					<li <?php echo e(isActive($active_class, 'dashboard')); ?>>
 						<a href="<?php echo e(PREFIX); ?>">
-							<i class="fa fa-fw fa-window-maximize"></i> <?php echo e(getPhrase('dashboard')); ?> 
-						</a> 
+							<i class="fa fa-fw fa-window-maximize"></i> <?php echo e(getPhrase('dashboard')); ?>
+
+						</a>
 					</li>
 
-					
-					<li <?php echo e(isActive($active_class, 'users')); ?>> <a data-toggle="collapse" data-target="#users"><i class="fa fa-fw fa-user-circle"></i> <?php echo e(getPhrase('users')); ?> </a> 
+
+					<li <?php echo e(isActive($active_class, 'users')); ?>> <a data-toggle="collapse" data-target="#users"><i class="fa fa-fw fa-user-circle"></i> <?php echo e(getPhrase('users')); ?> </a>
  					<ul id="users" class="collapse sidemenu-dropdown">
 							<li><a href="<?php echo e(URL_USERS); ?>"> <i class="fa fa-fw fa-user-circle"></i><?php echo e(getPhrase('Students')); ?></a></li>
 							<li><a href="<?php echo e(URL_TOPLIST); ?>"> <i class="fa fa-fw fa-user-circle"></i><?php echo e(getPhrase('Top Students')); ?></a></li>
@@ -171,11 +172,23 @@
 					</ul>
 					</li>
 
-					<li <?php echo e(isActive($active_class, 'exams')); ?> > 
+					<li <?php echo e(isActive($active_class, 'subjects')); ?> >
 
-					<a data-toggle="collapse" data-target="#exams"><i class="fa fa-fw fa-desktop" ></i> 
-					<?php echo e(getPhrase('exams')); ?> </a> 
-					
+					<a data-toggle="collapse" data-target="#exams"><i class="fa fa-fw fa-database" ></i>
+					<?php echo e(getPhrase('subjects')); ?> </a>
+
+					<ul id="subjects" class="collapse sidemenu-dropdown">
+							<li><a href="<?php echo e(URL_MASTERSETTINGS_SUBJECTS); ?>"> <i class="icon-books"></i> <?php echo e(getPhrase('subjects_master')); ?></a></li>
+							<li><a href="<?php echo e(URL_MASTERSETTINGS_TOPICS); ?>"> <i class="fa fa-fw fa-database"></i> <?php echo e(getPhrase('subject_topics')); ?></a></li>
+							<li><a href="<?php echo e(URL_INSTRUCTIONS); ?>"> <i class="fa fa-fw fa-hand-o-right"></i> <?php echo e(getPhrase('instructions')); ?></a></li>
+					</ul>
+
+					</li>
+					<li <?php echo e(isActive($active_class, 'exams')); ?> >
+
+					<a data-toggle="collapse" data-target="#exams"><i class="fa fa-fw fa-desktop" ></i>
+					<?php echo e(getPhrase('exams')); ?> </a>
+
 					<ul id="exams" class="collapse sidemenu-dropdown">
 							<li><a href="<?php echo e(URL_QUIZ_CATEGORIES); ?>"> <i class="fa fa-fw fa-fw fa-random"></i><?php echo e(getPhrase('categories')); ?></a></li>
 							<li><a href="<?php echo e(URL_QUIZ_QUESTIONBANK); ?>"> <i class="fa fa-fw fa-fw fa-question"></i><?php echo e(getPhrase('question_bank')); ?></a></li>
@@ -185,24 +198,20 @@
 							<li><a href="<?php echo e(URL_EXAM_TYPES); ?>"> <i class="fa fa-fw fa-list"></i> <?php echo e(getPhrase('exam_types')); ?></a></li>
 
 							<li><a href="<?php echo e(URL_EXAM_SERIES); ?>"> <i class="fa fa-fw fa-list-ol"></i> <?php echo e(getPhrase('exam_series')); ?></a></li>
-							<li><a href="<?php echo e(URL_INSTRUCTIONS); ?>"> <i class="fa fa-fw fa-hand-o-right"></i> <?php echo e(getPhrase('instructions')); ?></a></li>
-							<li><a href="<?php echo e(URL_MASTERSETTINGS_SUBJECTS); ?>"> <i class="icon-books"></i> <?php echo e(getPhrase('subjects_master')); ?></a></li>
-							
-							<li><a href="<?php echo e(URL_MASTERSETTINGS_TOPICS); ?>"> <i class="fa fa-fw fa-database"></i> <?php echo e(getPhrase('subject_topics')); ?></a></li>
 
 					</ul>
 
 					</li>
 
 
-					
 
-					
-					<li <?php echo e(isActive($active_class, 'lms')); ?> > 
 
-					<a data-toggle="collapse" data-target="#lms"><i class="fa fa-fw fa-tv" ></i> 
-					LMS </a> 
-					
+
+					<li <?php echo e(isActive($active_class, 'lms')); ?> >
+
+					<a data-toggle="collapse" data-target="#lms"><i class="fa fa-fw fa-tv" ></i>
+					LMS </a>
+
 					<ul id="lms" class="collapse sidemenu-dropdown">
 							<li><a href="<?php echo e(URL_LMS_CATEGORIES); ?>"> <i class="fa fa-fw fa-random"></i><?php echo e(getPhrase('categories')); ?></a></li>
 							<li><a href="<?php echo e(URL_LMS_CONTENT); ?>"> <i class="icon-books"></i><?php echo e(getPhrase('contents')); ?></a></li>
@@ -212,55 +221,55 @@
 
 
 
-					
 
-					
-					<li <?php echo e(isActive($active_class, 'notifications')); ?> > 
+
+
+					<li <?php echo e(isActive($active_class, 'notifications')); ?> >
 						<a href="<?php echo e(URL_ADMIN_NOTIFICATIONS); ?>" ><i class="fa fa-fw fa-bell" aria-hidden="true"></i>
-					<?php echo e(getPhrase('notifications')); ?> </a> 
-					
+					<?php echo e(getPhrase('notifications')); ?> </a>
+
 					</li>
-					<li <?php echo e(isActive($active_class, 'sms')); ?> > 
-						<a href="<?php echo e(URL_SEND_SMS); ?>" ><i class="fa fa-fw fa-envelope" ></i> 
-					SMS </a> 
-					
+					<li <?php echo e(isActive($active_class, 'sms')); ?> >
+						<a href="<?php echo e(URL_SEND_SMS); ?>" ><i class="fa fa-fw fa-envelope" ></i>
+					SMS </a>
+
 					</li>
-										
-					<li <?php echo e(isActive($active_class, 'messages')); ?> > 
+
+					<li <?php echo e(isActive($active_class, 'messages')); ?> >
 
 					<a  href="<?php echo e(URL_MESSAGES); ?>"> <i class="fa fa-fw fa-comments" aria-hidden="true"> </i>
 					<?php echo e(getPhrase('messages')); ?> <small class="msg"><?php echo e($count = Auth::user()->newThreadsCount()); ?> </small></a>
-					
+
 
 					</li>
 
 
-					<li <?php echo e(isActive($active_class, 'feedback')); ?> > 
-						<a href="<?php echo e(URL_FEEDBACKS); ?>" ><i class="fa fa-fw fa-commenting" ></i> 
-					<?php echo e(getPhrase('feedback')); ?> </a> 
-					
-					</li>
-
-
-
-					<li <?php echo e(isActive($active_class, 'faqs')); ?> > 
-
-					<a href='<?php echo e(URL_FAQS_all); ?>'><i class="fa fa-fw fa-question"></i> 
-					<?php echo e(getPhrase('faqs')); ?> </a> 
-					
-					
+					<li <?php echo e(isActive($active_class, 'feedback')); ?> >
+						<a href="<?php echo e(URL_FEEDBACKS); ?>" ><i class="fa fa-fw fa-commenting" ></i>
+					<?php echo e(getPhrase('feedback')); ?> </a>
 
 					</li>
 
 
-					
 
-					
+					<li <?php echo e(isActive($active_class, 'faqs')); ?> >
+
+					<a href='<?php echo e(URL_FAQS_all); ?>'><i class="fa fa-fw fa-question"></i>
+					<?php echo e(getPhrase('faqs')); ?> </a>
+
+
+
+					</li>
+
+
+
+
+
 				</ul>
 			</div>
 		</aside>
 		<?php if(isset($right_bar)): ?>
-			
+
 		<aside class="right-sidebar" id="rightSidebar">
 			<button class="sidebat-toggle" id="sidebarToggle" href='javascript:'><i class="mdi mdi-menu"></i></button>
 			<div class="panel panel-right-sidebar">
@@ -271,7 +280,7 @@
 				<?php echo $__env->make($right_bar_path, array('data' => $data), array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 			</div>
 		</aside>
-	 
+
 	<?php endif; ?>
 
 		<?php echo $__env->yieldContent('content'); ?>
@@ -287,7 +296,7 @@
 	<script src="<?php echo e(themes('js/main.js')); ?>"></script>
 	<script src="<?php echo e(themes('js/metisMenu.min.js')); ?>"></script>
 	<script src="<?php echo e(themes('js/sweetalert-dev.js')); ?>"></script>
-	
+
 	<script >
 		 /*Sidebar Menu*/
     $("#ag-menu").metisMenu();
@@ -297,9 +306,9 @@
 	 <?php echo $__env->yieldContent('footer_scripts'); ?>
 
 	<?php echo $__env->make('errors.formMessages', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
-	
-	 
- 	
+
+
+
  	<?php echo $__env->yieldContent('custom_div_end'); ?>
 	<?php echo getSetting('google_analytics', 'seo_settings'); ?>
 

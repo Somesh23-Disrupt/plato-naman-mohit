@@ -41,13 +41,11 @@ class StudentLmsController extends Controller
           $interested_categories =  json_decode($user->settings)->user_preferences;
         }
         if($interested_categories)    {
-         if(count($interested_categories->lms_categories))
-        $data['categories']         = Lmscategory::
-                                      whereIn('id',(array) $interested_categories->lms_categories)
-                                      ->where('section_id',Auth::user()->section_id)
-                                      ->paginate(getRecordsPerPage());
+         if(count($interested_categories->lms_categories));
         }
-
+        $data['categories']         = Lmscategory::
+                                      where('section_id',Auth::user()->section_id)
+                                      ->paginate(getRecordsPerPage());
         $data['user'] = $user;
         // return view('student.lms.categories', $data);
 
