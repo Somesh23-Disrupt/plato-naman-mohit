@@ -133,8 +133,8 @@ if(isset($block_navigation))
 
 						<li>
 
-							<a href="<?php echo e(URL_USERS_EDIT.Auth::user()->slug); ?>">
-
+							<a href="<?php echo e(URL_USER_DETAILS.Auth::user()->slug); ?>">
+								
 								<sapn><?php echo e(getPhrase('my_profile')); ?></sapn>
 
 							</a>

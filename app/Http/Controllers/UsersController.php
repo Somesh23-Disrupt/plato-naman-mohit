@@ -189,7 +189,7 @@ class UsersController extends Controller
           
         $data['record']       = FALSE;
         $data['active_class'] = 'users';
-
+        
         // $data['roles']        = $this->getUserRoles();
         $roles  = \App\Role::select('display_name', 'id','name')->get();
         if(checkRole(['teacher'])){
@@ -482,72 +482,72 @@ class UsersController extends Controller
          * Admin can edit his own account, in that case send role type admin on condition
          */
 
-     $UserOwnAccount = FALSE;
-     if(\Auth::user()->id == $record->id)
-      $UserOwnAccount = TRUE;
+      $UserOwnAccount = FALSE;
+      if(\Auth::user()->id == $record->id)
+        $UserOwnAccount = TRUE;
 
-      if(!$UserOwnAccount)  {
-        $current_user_role = getRoleData($record->role_id);
+        if(!$UserOwnAccount)  {
+          $current_user_role = getRoleData($record->role_id);
 
-        if((($current_user_role=='admin' || $current_user_role == 'owner') ))
-        {
-          if(!checkRole(getUserGrade(1))) {
-            prepareBlockUserMessage();
-            return back();
+          if((($current_user_role=='admin' || $current_user_role == 'owner') ))
+          {
+            if(!checkRole(getUserGrade(1))) {
+              prepareBlockUserMessage();
+              return back();
+            }
           }
         }
-      }
-      if(checkRole(['parent'])){
-        $childs=App\User::where('parent_id',10)->get();
-            foreach ($childs as $child) {
-             
-              $name[]=$child->slug;
+        if(checkRole(['parent'])){
+          $childs=App\User::where('parent_id',10)->get();
+              foreach ($childs as $child) {
+              
+                $name[]=$child->slug;
 
-            }
-            $data['slugs']=$name;
-      }
-        $data['record']             = $record;
-        // dd('hrere');
-        // $data['roles']              = $this->getUserRoles();
-        if(checkRole(['teacher'])){
-
-          $parents = \App\User::where('role_id',6)
-          ->select('id','name')->get();
-          $all_parent = [];
-
-            foreach($parents as $parent)
-            {
-                $all_parent[$parent->id] = $parent->name;
-            }
-            $data['parents']        = $all_parent;
-
+              }
+              $data['slugs']=$name;
         }
-        $roles                = \App\Role::select('display_name', 'id','name')->get();
-        $final_roles = [];
-        foreach($roles as $role)
-        {
+          $data['record']             = $record;
+          // dd('hrere');
+          // $data['roles']              = $this->getUserRoles();
+          if(checkRole(['teacher'])){
 
-           if(!checkRole(getUserGrade(1))) {
+            $parents = \App\User::where('role_id',6)
+            ->select('id','name')->get();
+            $all_parent = [];
 
-            if(!(strtolower($role->name) == 'admin' || strtolower($role->name) =='owner'))
-              $final_roles[$role->id] = $role->display_name;
+              foreach($parents as $parent)
+              {
+                  $all_parent[$parent->id] = $parent->name;
+              }
+              $data['parents']        = $all_parent;
+
           }
-          else
-           $final_roles[$role->id] = $role->display_name;
-        }
-        $data['roles']        = $final_roles;
+          $roles                = \App\Role::select('display_name', 'id','name')->get();
+          $final_roles = [];
+          foreach($roles as $role)
+          {
+
+            if(!checkRole(getUserGrade(1))) {
+
+              if(!(strtolower($role->name) == 'admin' || strtolower($role->name) =='owner'))
+                $final_roles[$role->id] = $role->display_name;
+            }
+            else
+            $final_roles[$role->id] = $role->display_name;
+          }
+          $data['roles']        = $final_roles;
 
 
-        if($UserOwnAccount && checkRole(['admin']))
-          $data['roles'][getRoleData('admin')] = 'Admin';
+          if($UserOwnAccount && checkRole(['admin']))
+            $data['roles'][getRoleData('admin')] = 'Admin';
 
-        $data['active_class']       = 'users';
-        $data['title']              = getPhrase('edit_user');
-        $data['layout']             = getLayout();
-        $data['sections']=User::select('section_name')->where('inst_id',Auth::user()->inst_id)->distinct()->pluck('section_name');
+          $data['active_class']       = 'users';
+          $data['title']              = getPhrase('edit_user');
+          $data['layout']             = getLayout();
+          $data['sections']=User::select('section_name')->where('inst_id',Auth::user()->inst_id)->distinct()->pluck('section_name');
 
-        // dd($data);
-        // return view('users.add-edit-user', $data);
+          // dd($data);
+          // return view('users.add-edit-user', $data);
 
             $view_name = getTheme().'::users.add-edit-user';
         return view($view_name, $data);
@@ -736,7 +736,15 @@ class UsersController extends Controller
 
         if(!isEligible($slug))
           return back();
-
+          if(checkRole(['parent'])){
+            $childs=App\User::where('parent_id',10)->get();
+                foreach ($childs as $child) {
+                
+                  $name[]=$child->slug;
+  
+                }
+                $data['slugs']=$name;
+          }
         $data['record']      = $record;
 
 

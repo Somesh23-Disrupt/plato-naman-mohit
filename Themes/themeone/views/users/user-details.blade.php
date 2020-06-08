@@ -79,10 +79,6 @@
 								<td><strong>Date of Birth</strong></td>
 								<td>{{$record->dob}}</td>
 							</tr>
-							<tr>
-								<td><strong>Institution</strong></td>
-								<td>{{$record->inst_name}}</td>
-							</tr>
 
 							
 						</table>

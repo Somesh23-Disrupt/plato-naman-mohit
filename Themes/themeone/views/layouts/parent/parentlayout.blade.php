@@ -133,8 +133,8 @@ if(isset($block_navigation))
 
 						<li>
 
-							<a href="{{URL_USERS_EDIT.Auth::user()->slug}}">
-
+							<a href="{{URL_USER_DETAILS.Auth::user()->slug}}">
+								
 								<sapn>{{ getPhrase('my_profile') }}</sapn>
 
 							</a>
