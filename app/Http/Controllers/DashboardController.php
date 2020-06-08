@@ -220,21 +220,21 @@ class DashboardController extends Controller
               $data['tppforteach']=0;
               $tnps=0;
               $data['passpercent']=$this->totalpass();
-              foreach ($data['passpercent'] as $per) {
-                if ($per>=50) {
-                  $tnps=$tnps+1;
-                }
-                $data['tppforteach']=$per+$data['tppforteach'];
-              }
-              if ($data['tppforteach']>0) {
-                $data['tppforteach']=round($tnps/count($data['passpercent'])*100,2);
-              }
-              else{
-                $data['tppforteach']=0;
-              }
+              // foreach ($data['passpercent'] as $per) {
+              //   if ($per>=50) {
+              //     $tnps=$tnps+1;
+              //   }
+              //   $data['tppforteach']=$per+$data['tppforteach'];
+              // }
+              // if ($data['tppforteach']>0) {
+              //   $data['tppforteach']=round($tnps/count($data['passpercent'])*100,2);
+              // }
+              // else{
+              //   $data['tppforteach']=0;
+              // }
               $data['tnps']=$tnps;
               $data['avg']= $this->gettingavgscore()->avg;
-              $data['avgsection']=getUserWithSlug()->section;
+              $data['avgsection_name']=getUserWithSlug()->section_name;
               // return view('admin.dashboard', $data);
               //dd(App\User::where('teacher_id', '=', $user->id)->get());
               $data['chart_data']=$this->getstudents();
@@ -378,7 +378,7 @@ class DashboardController extends Controller
     {
         // $paymentObject = new App\Payment();
         //     $payment_data = (object)$paymentObject->getSuccessFailedCount();
-            $sections=App\Section::all();
+            $section=App\Section::all();
              $payment_dataset =[];
              $payment_labels = [];
             foreach ($sections as $section) {
@@ -683,7 +683,7 @@ class DashboardController extends Controller
       if(checkRole(['parent'])){
         $users=App\User::where('parent_id',getUserWithSlug()->id)->get();
       }else{
-        $users=App\User::where('section',getUserWithSlug()->section)
+        $users=App\User::where('section_name',getUserWithSlug()->section_name)
         ->where('department',auth()->user()->department)->get();
       }
 
@@ -742,7 +742,7 @@ class DashboardController extends Controller
           $data['chart_data']=[];
         if(App\User::where($id, '=', $user->id)->get()->count()>0){
           if (checkRole(['teacher'])) {
-            $users=App\User::where($id, '=', $user->id)->where('section',$user->section)->
+            $users=App\User::where($id, '=', $user->id)->where('section_name',$user->section_name)->
             where('department',$user->department)->get();
           }else{
             $users=App\User::where($id, '=', $user->id)->get();
@@ -909,7 +909,7 @@ class DashboardController extends Controller
     {
       if(checkRole('teacher')){
           $users=App\User::where('teacher_id',getUserWithSlug()->id)
-          ->where('section',getUserWithSlug()->section)
+          ->where('section_name',getUserWithSlug()->section_name)
           ->where('department',getUserWithSlug()->department)
           ->select('id','name')->get();
       }

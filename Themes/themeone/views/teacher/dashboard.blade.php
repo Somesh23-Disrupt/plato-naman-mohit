@@ -20,7 +20,7 @@
 				 			</div>
 				 			<div class="media-body">
 								 <h4 class="card-title">{{ App\User::where('inst_id',getUserWithSlug()->inst_id)->where('role_id',5)
-								 ->where('section',getUserWithSlug()->section)
+								 ->where('section_name',getUserWithSlug()->section_name)
 								 ->where('department',getUserWithSlug()->department)->count()}}</h4>
 								<a href="{{URL_USERS}}">{{ getPhrase('users')}}</a>
 				 			</div>
