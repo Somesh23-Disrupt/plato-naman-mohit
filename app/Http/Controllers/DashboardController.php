@@ -41,7 +41,6 @@ class DashboardController extends Controller
 
               $tnps=0;
               $data['tppforteach']=0;
-
               $data['passpercent']=$this->totalpass();
               // dd($data['passpercent']);
               foreach ($data['passpercent'] as $per) {
@@ -57,7 +56,7 @@ class DashboardController extends Controller
               else{
                 $data['tppforteach']=0;
               }
-             $roles = App\Role::whereNotIn('id',[1,2])->get()->pluck('id');
+             $roles = App\Role::whereNotIn('id',[1,2,6])->get()->pluck('id');
              $dataset = [];
              $labels = [];
              $bgcolor = [];
@@ -75,9 +74,8 @@ class DashboardController extends Controller
                $bgcolor[] = $test[$i];
              }
 
-
+             
             $dataset_label[] = 'lbl';
-
             $chart_data['type'] = 'pie';
             //horizontalBar, bar, polarArea, line, doughnut, pie
             $chart_data['data']   = (object) array(
@@ -87,56 +85,29 @@ class DashboardController extends Controller
                     'bgcolor'           => $bgcolor,
                     'border_color'      => $border_color
                     );
+           
 
            $data['chart_data'][] = (object)$chart_data;
+           
            $data['chart_heading']         = getPhrase('user_statistics');
-
-          //  $data['payments_chart_data'] = (object)$this->getPaymentStats();
+            $avgscacrquizes=0;
+           $data['payments_chart_data'] = (object)$this->getPaymentStats();
+          //  dd($data['payments_chart_data']->data->dataset);
+           foreach($data['payments_chart_data']->data->dataset as $d){
+             $avgscacrquizes=$d+$avgscacrquizes;
+           }
+           $data['avgscacrquizes']=$avgscacrquizes/count($data['payments_chart_data']->data->dataset);
           //  $data['payments_monthly_data'] = (object)$this->getPaymentMonthlyStats();
           //  $data['demanding_quizzes'] = (object)$this->getDemandingQuizzes();
           //  $data['demanding_paid_quizzes'] = (object)$this->getDemandingQuizzes('paid');
-
            $data['layout']        = getLayout();
-
-            //   $data['right_bar']          = FALSE;
-
-            // $data['right_bar_path']     = 'common.right-bar-chart';
             $data['right_bar_data']     = array('chart_data' => $data['chart_data'] );
            $data['ids'] = array('myChart0' );
-
-           // return view('admin.dashboard', $data);
-
-
            //Code Table in Admin dashboard
               $records = Quiz::select(['title', 'category_id', 'start_date'])->get()->sortByDesc('start_date');
-
-            $data['tables']=$records;
-
-            // $childs=App\User::where('inst_id',auth()->user()->inst_id)->where('role_id',5)->get();
-            // $resultObject = new App\QuizResult();
-            // $allsub=App\Quiz::select(['title'])->get();
-            // // dd($allsub);
-            // foreach ($allsub as $asub) {
-            //   $sub[$asub->title]=0;
-            // }
-
-            // // dd($sub);
-            // foreach ($childs as $child) {
-
-            //     $records = $resultObject->getOverallQuizPerformance($child);
-            //     // dd($records);
-
-            //     foreach($records as $record){
-
-            //         $sub[$record->title]=$sub[$record->title]+$record->percentage;
-
-
-            //     }
-
-            // }
-            // dd($sub);
-
-
+              $data['chart_data'][]=(object)$this->scorebysub();
+              $data['tables']=$records;
+             
             $view_name = getTheme().'::admin.dashboard';
 
             return view($view_name, $data);
@@ -376,51 +347,72 @@ class DashboardController extends Controller
         return $series;
     }
 
-  //  public function getPaymentStats()
-  //   {
-  //       // $paymentObject = new App\Payment();
-  //       //     $payment_data = (object)$paymentObject->getSuccessFailedCount();
-  //           $sections=App\User::select('section_name')->where('inst_id',auth()->user()->inst_id)->where('role_id',5)->get()->pluck('section_name');
-  //           dd($sections);
-  //            $payment_dataset =[];
-  //            $payment_labels = [];
+   public function getPaymentStats()
+    {
+        // $paymentObject = new App\Payment();
+        //     $payment_data = (object)$paymentObject->getSuccessFailedCount();
+            $sections=App\User::select('section_id')->where('inst_id',auth()->user()->inst_id)->where('role_id',5)->distinct('section_id')->get()->pluck('section_id');
+            // dd($sections);
+             $payment_dataset =[];
+             $payment_labels = [];
             
             
+            foreach ($sections as $section) {
+              // dd($section);
+             $percent=0;
 
-  //           foreach ($sections as $section) {
-  //             $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')
-  //               ->select(['quiz_id', 'quizzes.title',DB::raw('Max(percentage) as percentage'), 'quizresults.user_id'])
-  //               ->where('quizresults.user_id', '=', $section->id)
-  //               ->groupBy('quizresults.quiz_id')
+              $users=App\User::select(['id','section_name'])->where('inst_id',auth()->user()->inst_id)->where('role_id',5)->where('section_id',$section)->get();
+              // dd($users);
+              foreach($users as $user){
+                $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')
+                ->select(['quiz_id', 'quizzes.title',DB::raw('Max(marks_obtained) as percentage'), 'quizresults.user_id'])
+                ->where('quizresults.user_id', '=', $user->id)
+                ->groupBy('quizresults.quiz_id')
+                ->get();
+                // dd($records);
+                
+                foreach ($records as $record) {
+                  $percent=$record->percentage+$percent;
+                }
+                // dd($percent);
+                if($records->count()>0){
+                  $percent=$percent/($records->count());
+                }
+                // dd($percent);
+                
+                
+              }
+              // dd($percent);
+              $payment_dataset[] = round($percent/(App\User::where('section_id',$section)->where('role_id',5)->get()->count()),2);
+              // dd($payment_dataset);
+              $payment_labels[] = $user->section_name;
+              
+              // dd($payment_dataset);
+                
+                
+                
+                
+            }
+            // dd($payment_labels);
+            // $payment_dataset = [$payment_data->success_count, $payment_data->cancelled_count, $payment_data->pending_count];
+            // $payment_labels = [getPhrase('success'), getPhrase('cancelled'), getPhrase('pending')];
+            $payment_dataset_labels = [getPhrase('total')];
 
-  //               ->get();
-  //               $percent=0;
-  //               foreach ($records as $record) {
-  //                 $percent=$record->percentage+$percent;
-  //               }
-  //               dd($percent);
-  //               $payment_dataset[] = $percent;
-  //               $payment_labels[] = $section->section_name;
-  //           }
-  //           // $payment_dataset = [$payment_data->success_count, $payment_data->cancelled_count, $payment_data->pending_count];
-  //           // $payment_labels = [getPhrase('success'), getPhrase('cancelled'), getPhrase('pending')];
-  //           $payment_dataset_labels = [getPhrase('total')];
+            $payment_bgcolor = ['rgba(41, 75, 147, 1)','rgba(196, 219, 250, 1)','rgba(52, 132, 240, 1)'];
+            $payment_border_color = [getColor('background',4),getColor('background',9),getColor('background',18)];
 
-  //           $payment_bgcolor = ['rgba(41, 75, 147, 1)','rgba(196, 219, 250, 1)','rgba(52, 132, 240, 1)'];
-  //           $payment_border_color = [getColor('background',4),getColor('background',9),getColor('background',18)];
+          $payments_stats['data']    = (object) array(
+                                        'labels'            => $payment_labels,
+                                        'dataset'           => $payment_dataset,
+                                        'dataset_label'     => $payment_dataset_labels,
+                                        'bgcolor'           => $payment_bgcolor,
+                                        'border_color'      => $payment_border_color
+                                        );
+           $payments_stats['type'] = 'bar';
+             $payments_stats['title'] = getPhrase('Total Performance');
 
-  //         $payments_stats['data']    = (object) array(
-  //                                       'labels'            => $payment_labels,
-  //                                       'dataset'           => $payment_dataset,
-  //                                       'dataset_label'     => $payment_dataset_labels,
-  //                                       'bgcolor'           => $payment_bgcolor,
-  //                                       'border_color'      => $payment_border_color
-  //                                       );
-  //          $payments_stats['type'] = 'bar';
-  //            $payments_stats['title'] = getPhrase('average Score');
-
-  //          return $payments_stats;
-  //   }
+           return $payments_stats;
+    }
      /**
      * This method returns the overall monthly summary of the payments made with status success
      * @return [type] [description]
@@ -973,6 +965,46 @@ class DashboardController extends Controller
       }
       // dd($t);
       return $t;
+    }
+
+    public function scorebysub()
+    {
+      $labels = [];
+      $dataset = [];
+      $bgcolor = [];
+      $bordercolor = [];
+      $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')
+             ->select(['quiz_id', 'quizzes.title',DB::raw('Avg(percentage) as percentage'), 'quizresults.user_id'])
+             ->groupBy('quizzes.title')
+             ->get();
+      foreach($records as $record) {
+          $color_number = rand(0,999);
+          $record = (object)$record;
+          $labels[] = $record->title;
+          $dataset[] = $record->percentage;
+          $bgcolor[] = getColor('background',$color_number);
+          $bordercolor[] = getColor('border', $color_number);
+     }
+
+      $labels = $labels;
+      $dataset = $dataset;
+      $dataset_label = getPhrase('Marks');
+      $bgcolor  = $bgcolor;
+      $border_color = $bordercolor;
+      $chart_data['type'] = 'bar';
+      //horizontalBar, bar, polarArea, line, doughnut, pie
+      $chart_data['title'] = getPhrase('Avg. Percent across Subjects');
+
+      $chart_data['data']   = (object) array(
+              'labels'            => $labels,
+              'dataset'           => $dataset,
+              'dataset_label'     => $dataset_label,
+              'bgcolor'           => $bgcolor,
+              'border_color'      => $border_color
+              );
+      
+      return $chart_data;
+       
     }
 
 }

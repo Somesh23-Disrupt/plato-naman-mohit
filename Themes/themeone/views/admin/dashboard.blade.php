@@ -34,7 +34,7 @@
 				 				<a href="{{URL_USERS}}"><div class="state-icn bg-icon-info"><i class="fa fa-users"></i></div></a>
 				 			</div>
 				 			<div class="media-body">
-				 				<h4 class="card-title">{{ App\User::where('inst_id',auth()->user()->inst_id)->where('role_id',7)->count()}}</h4>
+				 				<h4 class="card-title">{{ App\User::where('inst_id',auth()->user()->inst_id)->where('role_id',3)->count()}}</h4>
 								<a href="{{URL_USERS}}">{{ getPhrase('teachers')}}</a>
 				 			</div>
 				 		</div>
@@ -103,7 +103,7 @@
 								<a href="{{URL_QUIZ_QUESTIONBANK}}"><div class="state-icn bg-icon-orange"><i class="fa fa-question-circle"></i></div></a>
 							</div>
 							<div class="media-body">
-								<h4 class="card-title">{{App\User::select('section_name')->where('inst_id',Auth::user()->inst_id)->where('role_id',5)->distinct()->get()->count()
+								<h4 class="card-title">{{App\User::select('section_id')->where('role_id',5)->where('inst_id',Auth::user()->inst_id)->distinct('section_id')->get()->count()
 								 }}</h4>
 							   <a href="">{{ getPhrase('section')}}</a>
 							</div>
@@ -137,30 +137,30 @@
 				 				<a href=""><div class="state-icn bg-icon-orange"><i class="fa fa-question-circle"></i></div></a>
 				 			</div>
 				 			<div class="media-body">
-				 				<h4 class="card-title">{{ App\User::where('inst_id',auth()->user()->inst_id)->where('role_id',7)->where('login_enabled',1)->count() }}</h4>
+				 				<h4 class="card-title">{{ App\User::where('inst_id',auth()->user()->inst_id)->where('role_id'37)->where('login_enabled',1)->count() }}</h4>
 								<a href="">{{ getPhrase('Active Teachers')}}</a>
 				 			</div>
 				 		</div>
 				 	</div> --}}
-				 	{{-- <div class="col-md-4 col-sm-6">
+				 	<div class="col-md-3 col-sm-6">
 				 		<div class="media state-media box-ws">
 				 			<div class="media-left">
 				 				<a href=""><div class="state-icn bg-icon-orange"><i class="fa fa-question-circle"></i></div></a>
 				 			</div>
 				 			<div class="media-body">
-				 				<h4 class="card-title">{{ round(App\Section::all()->avg('avg_score'), 2)}}</h4>
-								<a href="">{{ getPhrase('Average Score across quizzes')}}</a>
+				 				<h4 class="card-title">{{ round($avgscacrquizes, 2)}}</h4>
+								<a href="">{{ getPhrase('Avg Score across quizzes')}}</a>
 				 			</div>
 				 		</div>
-				 	</div> --}}
-					 <div class="col-md-4 col-sm-6">
+				 	</div>
+					 <div class="col-md-3 col-sm-6">
 						<div class="media state-media box-ws">
 							<div class="media-left">
 								<div class="state-icn bg-icon-orange"><i class="fa fa-question-circle"></i></div>
 							</div>
 							<div class="media-body">
 								<h4 class="card-title">{{ $tppforteach }}</h4>
-								<a>{{ getPhrase('Average Pass Percentage')}}</a>
+								<a>{{ getPhrase('Avg Pass Percentage')}}</a>
 							</div>
 						</div>
 					</div>
@@ -231,8 +231,9 @@
 								<tr>
 									<td>{{App\QuizCategory::find($table->category_id)->category}}</td>
 									<td>{{$table->title}}</td>
-									<td>{{getPhrase('c')}}</td>		
-									<td>{{getPhrase('teacher')}}</td>
+									<?php $id=App\QuizCategory::find($table->category_id)->section_id ?>
+									<td>{{App\User::select(['section_name'])->where('section_id',$id)->first()->section_name}}</td>		
+									<td>{{App\User::where('role_id',3)->where('section_id',$id)->first()->name}}</td>
 									<td>{{$table->start_date}}</td>
 								</tr>
 							</thead>
@@ -244,14 +245,14 @@
 			</div>
 			<div class="row">
 
-				{{-- <div class="col-md-6 col-lg-5">
+				<div class="col-md-6 col-lg-5">
   				  <div class="panel panel-primary dsPanel">
-				    <div class="panel-heading"><i class="fa fa-bar-chart-o"></i> {{getPhrase('Average Scores')}}</div>
+				    <div class="panel-heading"><i class="fa fa-bar-chart-o"></i> {{getPhrase('Total Performance')}}</div>
 				    <div class="panel-body" >
 				    	<canvas id="payments_chart" width="100" height="75"></canvas>
 				    </div>
 				  </div>
-				</div> --}}
+				</div>
 				<div class="col-md-6 col-lg-4">
   				  <div class="panel panel-primary dsPanel">
 				    <div class="panel-heading"><i class="fa fa-bar-chart-o"></i>{{$chart_heading}}</div>
@@ -316,7 +317,7 @@
 <script src="//cdn.datatables.net/buttons/1.4.2/js/buttons.html5.min.js"></script>
 <script src="//cdn.datatables.net/buttons/1.4.2/js/buttons.print.min.js"></script>
 
- {{-- @include('common.chart', array('chart_data'=>$payments_chart_data,'ids' =>array('payments_chart'), 'scale'=>TRUE)) --}}
+ @include('common.chart', array('chart_data'=>$payments_chart_data,'ids' =>array('payments_chart'), 'scale'=>TRUE))
  @include('common.chart', array($chart_data,'ids' =>$ids));
  
  <script>

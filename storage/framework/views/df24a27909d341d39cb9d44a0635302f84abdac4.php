@@ -33,7 +33,7 @@
 				 				<a href="<?php echo e(URL_USERS); ?>"><div class="state-icn bg-icon-info"><i class="fa fa-users"></i></div></a>
 				 			</div>
 				 			<div class="media-body">
-				 				<h4 class="card-title"><?php echo e(App\User::where('inst_id',auth()->user()->inst_id)->where('role_id',7)->count()); ?></h4>
+				 				<h4 class="card-title"><?php echo e(App\User::where('inst_id',auth()->user()->inst_id)->where('role_id',3)->count()); ?></h4>
 								<a href="<?php echo e(URL_USERS); ?>"><?php echo e(getPhrase('teachers')); ?></a>
 				 			</div>
 				 		</div>
@@ -92,7 +92,7 @@
 								<a href="<?php echo e(URL_QUIZ_QUESTIONBANK); ?>"><div class="state-icn bg-icon-orange"><i class="fa fa-question-circle"></i></div></a>
 							</div>
 							<div class="media-body">
-								<h4 class="card-title"><?php echo e(App\User::select('section_name')->where('inst_id',Auth::user()->inst_id)->where('role_id',5)->distinct()->get()->count()); ?></h4>
+								<h4 class="card-title"><?php echo e(App\User::select('section_id')->where('role_id',5)->where('inst_id',Auth::user()->inst_id)->distinct('section_id')->get()->count()); ?></h4>
 							   <a href=""><?php echo e(getPhrase('section')); ?></a>
 							</div>
 						</div>
@@ -110,15 +110,25 @@
 				 		</div>
 				 	</div> -->
 				 	
-				 	
-					 <div class="col-md-4 col-sm-6">
+				 	<div class="col-md-3 col-sm-6">
+				 		<div class="media state-media box-ws">
+				 			<div class="media-left">
+				 				<a href=""><div class="state-icn bg-icon-orange"><i class="fa fa-question-circle"></i></div></a>
+				 			</div>
+				 			<div class="media-body">
+				 				<h4 class="card-title"><?php echo e(round($avgscacrquizes, 2)); ?></h4>
+								<a href=""><?php echo e(getPhrase('Avg Score across quizzes')); ?></a>
+				 			</div>
+				 		</div>
+				 	</div>
+					 <div class="col-md-3 col-sm-6">
 						<div class="media state-media box-ws">
 							<div class="media-left">
 								<div class="state-icn bg-icon-orange"><i class="fa fa-question-circle"></i></div>
 							</div>
 							<div class="media-body">
 								<h4 class="card-title"><?php echo e($tppforteach); ?></h4>
-								<a><?php echo e(getPhrase('Average Pass Percentage')); ?></a>
+								<a><?php echo e(getPhrase('Avg Pass Percentage')); ?></a>
 							</div>
 						</div>
 					</div>
@@ -189,8 +199,9 @@
 								<tr>
 									<td><?php echo e(App\QuizCategory::find($table->category_id)->category); ?></td>
 									<td><?php echo e($table->title); ?></td>
-									<td><?php echo e(getPhrase('c')); ?></td>		
-									<td><?php echo e(getPhrase('teacher')); ?></td>
+									<?php $id=App\QuizCategory::find($table->category_id)->section_id ?>
+									<td><?php echo e(App\User::select(['section_name'])->where('section_id',$id)->first()->section_name); ?></td>		
+									<td><?php echo e(App\User::where('role_id',3)->where('section_id',$id)->first()->name); ?></td>
 									<td><?php echo e($table->start_date); ?></td>
 								</tr>
 							</thead>
@@ -202,7 +213,14 @@
 			</div>
 			<div class="row">
 
-				
+				<div class="col-md-6 col-lg-5">
+  				  <div class="panel panel-primary dsPanel">
+				    <div class="panel-heading"><i class="fa fa-bar-chart-o"></i> <?php echo e(getPhrase('Total Performance')); ?></div>
+				    <div class="panel-body" >
+				    	<canvas id="payments_chart" width="100" height="75"></canvas>
+				    </div>
+				  </div>
+				</div>
 				<div class="col-md-6 col-lg-4">
   				  <div class="panel panel-primary dsPanel">
 				    <div class="panel-heading"><i class="fa fa-bar-chart-o"></i><?php echo e($chart_heading); ?></div>
@@ -267,7 +285,7 @@
 <script src="//cdn.datatables.net/buttons/1.4.2/js/buttons.html5.min.js"></script>
 <script src="//cdn.datatables.net/buttons/1.4.2/js/buttons.print.min.js"></script>
 
- 
+ <?php echo $__env->make('common.chart', array('chart_data'=>$payments_chart_data,'ids' =>array('payments_chart'), 'scale'=>TRUE), array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
  <?php echo $__env->make('common.chart', array($chart_data,'ids' =>$ids), array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>;
  
  <script>
