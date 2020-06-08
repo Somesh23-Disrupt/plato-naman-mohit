@@ -44,7 +44,7 @@
 									<th>{{ getPhrase('image')}}</th>
 									<th>{{ getPhrase('role')}}</th>
 									<th>{{ getPhrase('status')}}</th>
-									<th>{{ getPhrase('department')}}</th>
+									<th>{{ getPhrase('section_name')}}</th>
 									<th>{{ getPhrase('institution Name')}}</th>
 									<th>{{ getPhrase('action')}}</th>
 								</tr>

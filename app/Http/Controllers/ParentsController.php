@@ -154,7 +154,7 @@ class ParentsController extends Controller
             ->get();
             $data['tables']=$records;
             // dd($data['tables']);
-            $childs=App\User::where('parent_id',10)->get();
+            $childs=App\User::where('parent_id',auth()->user()->id)->get();
             foreach ($childs as $child) {
              
               $name[]=$child->slug;

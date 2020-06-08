@@ -136,9 +136,10 @@ class User extends Authenticatable
 
     public static function getUserSeleted($type='')
     {   
-        
+        $data1=[];
         if(checkRole(['parent'])){
             $users=User::where('parent_id',auth()->user()->id)->get();
+            
             // dd($users);
         }else{
             $users        = User::where('id',auth()->user()->id)->get();
@@ -151,7 +152,7 @@ class User extends Authenticatable
             $cats  = array();
             $lmscats  = array();
             $t=[];
-           
+            
             if(isset($preferences['user_preferences'])){
                 $cats         = $preferences['user_preferences']->quiz_categories;
                 $lmscats      = $preferences['user_preferences']->lms_categories;

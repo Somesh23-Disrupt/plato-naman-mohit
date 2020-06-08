@@ -282,6 +282,15 @@ class NotificationsController extends Controller
         
     	// return view('notifications.users-list', $data);  
 
+            if(checkRole(['parent'])){
+              $childs=App\User::where('parent_id',auth()->user()->id)->get();
+                  foreach ($childs as $child) {
+                  
+                    $name[]=$child->slug;
+
+                  }
+                  $data['slugs']=$name;
+            }
            $view_name = getTheme().'::notifications.users-list';
         return view($view_name, $data);  	
     }
