@@ -186,6 +186,7 @@ class UsersController extends Controller
              return back();
           }
 
+          
         $data['record']       = FALSE;
         $data['active_class'] = 'users';
 
@@ -496,7 +497,15 @@ class UsersController extends Controller
           }
         }
       }
+      if(checkRole(['parent'])){
+        $childs=App\User::where('parent_id',10)->get();
+            foreach ($childs as $child) {
+             
+              $name[]=$child->slug;
 
+            }
+            $data['slugs']=$name;
+      }
         $data['record']             = $record;
         // dd('hrere');
         // $data['roles']              = $this->getUserRoles();
