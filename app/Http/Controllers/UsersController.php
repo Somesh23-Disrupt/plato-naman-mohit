@@ -498,7 +498,7 @@ class UsersController extends Controller
           }
         }
         if(checkRole(['parent'])){
-          $childs=App\User::where('parent_id',10)->get();
+          $childs=App\User::where('parent_id',auth()->user()->id)->get();
               foreach ($childs as $child) {
 
                 $name[]=$child->slug;
@@ -737,7 +737,7 @@ class UsersController extends Controller
         if(!checkRole(getUserGrade(3)))
           return back();
           if(checkRole(['parent'])){
-            $childs=App\User::where('parent_id',10)->get();
+            $childs=App\User::where('parent_id',auth()->user()->id)->get();
                 foreach ($childs as $child) {
 
                   $name[]=$child->slug;

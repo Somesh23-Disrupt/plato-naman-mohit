@@ -98,10 +98,7 @@
 						@if(Auth::check())
 						<div class="username">
 							<h2>{{Auth::user()->name}}</h2>
-							<br>
-							<h2>{{getPhrase('Section : ').Auth::user()->section}}</h2>
-
-						</div>
+					</div>
 						@endif
 
 						<div class="profile-img"> <img src="{{ getProfilePath(Auth::user()->image, 'thumb') }}" alt=""> </div>

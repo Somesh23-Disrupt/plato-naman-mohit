@@ -99,10 +99,7 @@
 						<?php if(Auth::check()): ?>
 						<div class="username">
 							<h2><?php echo e(Auth::user()->name); ?></h2>
-							<br>
-							<h2><?php echo e(getPhrase('Section : ').Auth::user()->section); ?></h2>
-
-						</div>
+					</div>
 						<?php endif; ?>
 
 						<div class="profile-img"> <img src="<?php echo e(getProfilePath(Auth::user()->image, 'thumb')); ?>" alt=""> </div>

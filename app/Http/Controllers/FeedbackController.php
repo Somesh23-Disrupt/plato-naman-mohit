@@ -153,7 +153,15 @@ class FeedbackController extends Controller
       {
         return back();
       }
-      
+      if(checkRole(['parent'])){
+        $childs=App\User::where('parent_id',auth()->user()->id)->get();
+            foreach ($childs as $child) {
+            
+              $name[]=$child->slug;
+
+            }
+            $data['slugs']=$name;
+      }
     	$data['record']         	= FALSE;
     	$data['layout']         	= getLayout();
     	$data['active_class']       = 'feedback';

@@ -112,6 +112,15 @@ class TeacherController extends Controller
      public function faqs()
      {
         
+        if(checkRole(['parent'])){
+          $childs=App\User::where('parent_id',auth()->user()->id)->get();
+              foreach ($childs as $child) {
+              
+                $name[]=$child->slug;
+
+              }
+              $data['slugs']=$name;
+         }
         $data['active_class']       = 'faqs';
         $data['title']              = getPhrase('faqs');
         $data['layout']=getLayout();

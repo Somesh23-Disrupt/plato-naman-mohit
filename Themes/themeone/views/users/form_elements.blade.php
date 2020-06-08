@@ -393,7 +393,7 @@
 
 
 
-						{{ Form::label('address', getphrase('billing_address')) }}
+						{{ Form::label('address', getphrase('address')) }}
 
 
 

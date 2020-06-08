@@ -330,6 +330,7 @@ if(isset($block_navigation))
 					<a href='{{URL_FAQS_all}}'><i class="fa fa-fw fa-question"></i> 
 					{{ getPhrase('faqs') }} </a> 
 					</li>
+					@if (count($slugs)>0)	
 					<li {{ isActive($active_class, 'children') }} >
 
 						<a data-toggle="collapse" data-target="#children"><i class="fa fa-fw fa-user-circle"></i>
@@ -345,6 +346,7 @@ if(isset($block_navigation))
 						</ul>
 	
 					</li>
+					@endif
 	
 	
 
