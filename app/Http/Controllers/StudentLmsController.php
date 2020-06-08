@@ -41,13 +41,11 @@ class StudentLmsController extends Controller
           $interested_categories =  json_decode($user->settings)->user_preferences;
         }
         if($interested_categories)    {
-         if(count($interested_categories->lms_categories))
-        $data['categories']         = Lmscategory::
-                                      whereIn('id',(array) $interested_categories->lms_categories)
-                                      ->where('section_id',Auth::user()->section_id)
-                                      ->paginate(getRecordsPerPage());
+         if(count($interested_categories->lms_categories));
         }
-
+        $data['categories']         = Lmscategory::
+                                      where('section_id',Auth::user()->section_id)
+                                      ->paginate(getRecordsPerPage());
         $data['user'] = $user;
         // return view('student.lms.categories', $data);
 
@@ -102,12 +100,12 @@ class StudentLmsController extends Controller
     }
     if($interested_categories){
     if(count($interested_categories->lms_categories))
-        $data['series']             = LmsSeries::
-                                        where('start_date','<=',date('Y-m-d'))
-                                        ->where('end_date','>=',date('Y-m-d'))
-                                        ->whereIn('lms_category_id',(array) $interested_categories->lms_categories)
-                                        ->paginate(getRecordsPerPage());
+        ;
     }
+    $data['series']             = LmsSeries::
+                                    where('start_date','<=',date('Y-m-d'))
+                                    ->where('end_date','>=',date('Y-m-d'))
+                                    ->paginate(getRecordsPerPage());
     $data['user']               = $user;
 
     // return view('student.lms.lms-series-list', $data);
@@ -162,7 +160,7 @@ class StudentLmsController extends Controller
     public function verifyPaidItem($slug, $content_slug)
     {
 
-      if(!checkRole(getUserGrade(5)))
+      if(!checkRole(getUserGrade(7)))
       {
         prepareBlockUserMessage();
         return back();

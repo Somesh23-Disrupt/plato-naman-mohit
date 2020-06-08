@@ -95,9 +95,14 @@ class LmsContentController extends Controller
         ->removeColumn('slug')
         ->editColumn('image', function($records){
             $image_path = IMAGE_PATH_UPLOAD_LMS_DEFAULT;
+
             if($records->image)
             $image_path = IMAGE_PATH_UPLOAD_LMS_CONTENTS.$records->image;
 
+            return '<img src="'.$image_path.'" height="100" width="100" />';
+        })
+        ->make();
+    }
     /**
      * This method loads the create view
      * @return void
@@ -176,6 +181,7 @@ class LmsContentController extends Controller
             case 'iframe':
                     if($request->file_path)
                         $file_path = $request->file_path;
+                        $file_path = str_replace("watch?v=","embed/",$file_path);
                 break;
             case 'file' :
                    if($request->file_path)
@@ -286,6 +292,7 @@ class LmsContentController extends Controller
             case 'iframe':
                     $rules['file_path'] = 'bail|required';
                     $file_path = $request->file_path;
+                    $file_path = str_replace("watch?v=","embed/",$file_path);
                 break;
             case 'file' :
                      $rules['lms_file'] = 'bail|required';

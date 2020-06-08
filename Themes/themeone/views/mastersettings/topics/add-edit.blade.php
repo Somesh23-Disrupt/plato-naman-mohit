@@ -1,5 +1,5 @@
 <link rel="stylesheet" type="text/css" href="{{CSS}}select2.css">
-
+@extends($layout)
 @section('content')
 <div id="page-wrapper">
 			<div class="container-fluid">
@@ -15,7 +15,7 @@
 				</div>
 					@include('errors.errors')
 				<!-- /.row -->
-				
+
 							<div class="panel panel-custom col-lg-6 col-lg-offset-3">
 					<div class="panel-heading">
 						<div class="pull-right messages-buttons">
@@ -27,20 +27,20 @@
 					<?php $button_name = getPhrase('create'); ?>
 					@if ($record)
 					 <?php $button_name = getPhrase('update'); ?>
-						{{ Form::model($record, 
-						array('url' => URL_TOPICS_EDIT.'/'.$record->slug, 
+						{{ Form::model($record,
+						array('url' => URL_TOPICS_EDIT.'/'.$record->slug,
 						'method'=>'patch' ,'novalidate'=>'','name'=>'formTopics ')) }}
 					@else
-						{!! Form::open(array('url' => URL_TOPICS_ADD, 'method' => 'POST', 
+						{!! Form::open(array('url' => URL_TOPICS_ADD, 'method' => 'POST',
 						'novalidate'=>'','name'=>'formTopics ')) !!}
 					@endif
 
-					 @include('mastersettings.topics.form_elements', 
+					 @include('mastersettings.topics.form_elements',
 					 array('button_name'=> $button_name),
 					 array('subjects'=>$subjects, 'parent_topics'=>$parent_topics))
-					 
+
 					{!! Form::close() !!}
-					 
+
 
 					</div>
 				</div>
@@ -53,4 +53,3 @@
 	@include('mastersettings.topics.scripts.js-scripts');
 	@include('common.validations', array('isLoaded'=>TRUE));
 @stop
- 

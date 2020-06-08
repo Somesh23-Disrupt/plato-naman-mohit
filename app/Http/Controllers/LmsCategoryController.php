@@ -46,7 +46,7 @@ class LmsCategoryController extends Controller
         return back();
       }
         $data['layout']=getLayout();
-        
+
         $data['active_class']       = 'lms';
         $data['title']              = 'LMS'.' '.getPhrase('categories');
     	// return view('lms.lmscategories.list', $data);
@@ -109,6 +109,7 @@ class LmsCategoryController extends Controller
       }
     	$data['record']         	= FALSE;
     	$data['active_class']       = 'lms';
+        $data['layout']=getLayout();
     	$data['title']              = getPhrase('create_category');
         $data['sections']           = array_pluck(User::where('inst_id',Auth::user()->inst_id)->whereNotNull('section_id')->distinct()->get(),'section_name','section_id');
     	// return view('lms.lmscategories.add-edit', $data);
@@ -135,6 +136,7 @@ class LmsCategoryController extends Controller
 
     	$data['record']       		= $record;
     	$data['active_class']       = 'lms';
+        $data['layout']=getLayout();
     	$data['title']              = getPhrase('edit_category');
         $data['sections']           = array_pluck(User::where('inst_id',Auth::user()->inst_id)->whereNotNull('section_id')->distinct()->get(),'section_name','section_id');
 
@@ -164,13 +166,13 @@ class LmsCategoryController extends Controller
          'category'          	   => 'bail|required|max:60' ,
           ];
          /**
-        * Check if the title of the record is changed, 
+        * Check if the title of the record is changed,
         * if changed update the slug value based on the new title
         */
        $name = $request->category;
         if($name != $record->category)
             $record->slug = $record->makeSlug($name,TRUE);
-      
+
        //Validate the overall request
        $this->validate($request, $rules);
     	$record->category 			= $name;
@@ -204,7 +206,7 @@ class LmsCategoryController extends Controller
         prepareBlockUserMessage();
         return back();
       }
-       
+
 	    $rules = [
          'category'          	   => 'bail|required|max:60' ,
             ];
@@ -316,13 +318,13 @@ class LmsCategoryController extends Controller
 
          if ($request->hasFile($file_name)) {
           $settings = json_decode((new LmsSettings())->getSettings());
-          
-          
+
+
           $destinationPath      = $settings->categoryImagepath;
           $fileName = $record->id.'-'.$file_name.'.'.$request->$file_name->guessClientExtension();
-          
+
           $request->file($file_name)->move($destinationPath, $fileName);
-         
+
          //Save Normal Image with 300x300
           Image::make($destinationPath.$fileName)->fit($settings->imageSize)->save($destinationPath.$fileName);
          return $fileName;

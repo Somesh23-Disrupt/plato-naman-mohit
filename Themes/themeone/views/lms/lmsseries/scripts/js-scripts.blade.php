@@ -12,13 +12,13 @@ app.controller('prepareQuestions', function( $scope, $http, httpPreConfig) {
    $scope.savedItems = [];
    $scope.savedSeries =  [];
    $scope.total_items = 0;
-   
+
     $scope.initAngData = function(data) {
-        
+
         if(data === undefined)
-            return;
+            ;//return;
         $scope.removeAll();
-    
+
         if(data=='')
         {
             $scope.series   = [];
@@ -30,17 +30,17 @@ app.controller('prepareQuestions', function( $scope, $http, httpPreConfig) {
         $scope.setItem('saved_series', $scope.savedSeries);
         $scope.setItem('total_items', $scope.total_items);
     }
-    
+
      $scope.categoryChanged = function(selected_number) {
-        
+
         if(selected_number=='')
             selected_number = $scope.category_id;
         category_id = selected_number;
         if(category_id === undefined)
             return;
-        route = '{{URL_LMS_SERIES_GET_SERIES}}';  
+        route = '{{URL_LMS_SERIES_GET_SERIES}}';
         data= {_method: 'post', '_token':httpPreConfig.getToken(), 'category_id': category_id};
-       
+
             httpPreConfig.webServiceCallPost(route, data).then(function(result){
             result = result.data;
             $scope.categoryItems = [];
@@ -50,54 +50,54 @@ app.controller('prepareQuestions', function( $scope, $http, httpPreConfig) {
         }
 
         $scope.removeDuplicates = function(){
-           
+
             if($scope.savedSeries.length<=0 )
                 return;
 
              angular.forEach($scope.savedSeries,function(value,key){
-                    
+
                     res = httpPreConfig.findIndexInData($scope.categoryItems, 'id', value.id);
                     if(res >= 0)
                     {
                          $scope.categoryItems.splice(res, 1);
                     }
-                    
+
             });
         }
-          
+
         $scope.addToBag = function(item) {
-            
-           var record = item; 
-            
+
+           var record = item;
+
               res = httpPreConfig.findIndexInData($scope.savedSeries, 'id', item.id);
                     if(res == -1) {
-                      $scope.savedSeries.push(record); 
-                      
+                      $scope.savedSeries.push(record);
+
                       $scope.removeFromCategoryItems(item);
                     }
-                  else 
+                  else
                     return;
 
            //Push record to storage
             $scope.setItem('saved_series', $scope.savedSeries);
         }
 
-        $scope.removeFromCategoryItems = function(item) { 
+        $scope.removeFromCategoryItems = function(item) {
              var index = $scope.categoryItems.indexOf(item);
-             $scope.categoryItems.splice(index, 1);     
+             $scope.categoryItems.splice(index, 1);
         }
 
-        $scope.addToCategoryItems = function(item) { 
-          
+        $scope.addToCategoryItems = function(item) {
+
              if($scope.categoryItems.length) {
-                
+
                 if($scope.categoryItems[0].subject_id != item.subject_id)
                     return;
 
                  res = httpPreConfig.findIndexInData($scope.savedSeries, 'id', item.id)
-                
+
                     if(res == -1)
-                      $scope.categoryItems.push(item);     
+                      $scope.categoryItems.push(item);
                 return;
              }
              $scope.categoryChanged($scope.category_id);
@@ -127,15 +127,15 @@ app.controller('prepareQuestions', function( $scope, $http, httpPreConfig) {
          * @param  {[type]} id [description]
          * @return {[type]}    [description]
          */
-         
+
 
     $scope.removeItem = function(record){
-        
+
           $scope.savedSeries = $scope.savedSeries.filter(function(element){
             if(element.id != record.id)
               return element;
           });
-           
+
           $scope.setItem('saved_series', $scope.savedSeries);
           $scope.addToCategoryItems(record);
         }
@@ -147,8 +147,8 @@ app.controller('prepareQuestions', function( $scope, $http, httpPreConfig) {
             $scope.setItem('total_questions', $scope.totalQuestions);
             $scope.categoryChanged($scope.category_id);
         }
- 
-    
+
+
 
 }  );
 
@@ -176,5 +176,5 @@ app.filter('cut', function () {
         };
     });
 
- 
+
 </script>

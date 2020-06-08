@@ -1,5 +1,5 @@
 @extends($layout)
-<link href="{{CSS}}bootstrap-datepicker.css" rel="stylesheet">	
+<link href="{{CSS}}bootstrap-datepicker.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="{{CSS}}select2.css">
 
 <style>
@@ -42,7 +42,7 @@
 
 				<!-- /.row -->
 
-				
+
 
 				<div class="panel panel-custom" >
 
@@ -54,7 +54,7 @@
 
 						</div>
 
-						
+
 
 					<h1>{{ $title }}  </h1>
 
@@ -68,9 +68,9 @@
 
 					 <?php $button_name = getPhrase('update'); ?>
 
-						{{ Form::model($record, 
+						{{ Form::model($record,
 
-						array('url' => URL_QUIZ_EDIT.'/'.$record->slug, 
+						array('url' => URL_QUIZ_EDIT.'/'.$record->slug,
 
 						'method'=>'patch', 'files' => true, 'name'=>'formQuiz ', 'novalidate'=>'','files'=>TRUE)) }}
 
@@ -80,11 +80,11 @@
 
 					@endif
 
-					
 
 
 
-					 @include('exams.quiz.form_elements', 
+
+					 @include('exams.quiz.form_elements',
 
 					 array('button_name'=> $button_name),
 
@@ -93,12 +93,12 @@
 					 		'instructions' 		=> $instructions,
 
 					 		'record'			=> $record,
-					 		
+
 					 		'exam_types'			=> $exam_types
 
 					 		))
 
-					 		
+
 
 					{!! Form::close() !!}
 
@@ -134,7 +134,3 @@
  </script>
 
 @stop
-
- 
-
- 

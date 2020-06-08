@@ -1,6 +1,9 @@
+@extends($layout)
+@section('custom_div')
 
- @stop
+    <div ng-controller="prepareQuestions">
 
+    @stop
 @section('content')
 
 <div id="page-wrapper">
@@ -55,9 +58,9 @@
 
 								{{ Form::label('lms_categories', getphrase('select_subject')) }}
 
-								 
 
-								{{Form::select('lms_categories', $categories, null, ['class'=>'form-control', 'ng-model' => 'category_id', 
+
+								{{Form::select('lms_categories', $categories, null, ['class'=>'form-control', 'ng-model' => 'category_id',
 
 								'placeholder' => 'Select', 'ng-change'=>'categoryChanged(category_id)' ])}}
 
@@ -69,9 +72,9 @@
 
 								{{ Form::label('file_type', getphrase('file_type')) }}
 
-								 
 
-								{{Form::select('file_type', $lmssettings->content_types, null, ['class'=>'form-control', 'ng-model' => 'content_type', 
+
+								{{Form::select('file_type', $lmssettings->content_types, null, ['class'=>'form-control', 'ng-model' => 'content_type',
 
 								'placeholder' => getPhrase('Select')  ])}}
 
@@ -91,23 +94,23 @@
 
 
 
-								 
+
 
 								<div class="col-md-12">
 
 							<div ng-if="examSeries!=''" class="vertical-scroll" >
 
-						
+
 
 								<h4 ng-if="categoryItems.length>0" class="text-success">{{getPhrase('total_items')}}: @{{ categoryItems.length}} </h4>
 
 
 
-								<table  
+								<table
 
 								  class="table table-hover">
 
-  									 
+
 
 									<th>{{getPhrase('title')}}</th>
 
@@ -115,19 +118,19 @@
 
 									<th>{{getPhrase('type')}}</th>
 
-								 
 
-									 
 
-									<th>{{getPhrase('action')}}</th>	
 
-									 
+
+									<th>{{getPhrase('action')}}</th>
+
+
 
 									<tr ng-repeat="item in categoryItems | filter : {content_type: content_type} | filter:search_term  track by $index">
 
-										 
 
-										<td 
+
+										<td
 
 										title="@{{item.title}}" >
 
@@ -141,37 +144,37 @@
 
 										{{-- <td><img src="{{IMAGE_PATH_UPLOAD_LMS_CONTENTS}}@{{item.image}}" height="50" width="50" /> --}}</td>
 
-										<td><a 
+										<td><a
 
-										 
+
 
 										ng-click="addToBag(item);" class="btn btn-primary" >{{getPhrase('add')}}</a>
 
-									  		
+
 
 										  </td>
 
-										
+
 
 									</tr>
 
 								</table>
 
-								</div>	
+								</div>
 
-							
+
 
 
 
 					 			</div>
 
-					 			 
+
 
 
 
 					 		</div>
 
-					 
+
 
 					</div>
 
@@ -195,7 +198,7 @@
 
 @stop
 
- 
+
 
 @section('custom_div_end')
 

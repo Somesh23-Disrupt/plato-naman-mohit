@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Topic;
+use App\User;
 use App\Subject;
 use Yajra\Datatables\Datatables;
+use Auth;
 use DB;
 use Input;
 use Excel;
@@ -27,19 +29,20 @@ class TopicsController extends Controller
      */
     public function index()
     {
+
       if(!checkRole(getUserGrade(3)))
       {
         prepareBlockUserMessage();
         return back();
       }
         $data['layout']=getLayout();
-      
+
         $data['active_class']       = 'exams';
         $data['title']              = getPhrase('topics_list');
     	// return view('mastersettings.topics.list', $data);
 
          $view_name = getTheme().'::mastersettings.topics.list';
-        return view($view_name, $data);   
+        return view($view_name, $data);
     }
 
     /**
@@ -54,8 +57,9 @@ class TopicsController extends Controller
         return back();
       }
          $records = Topic::join('subjects', 'topics.subject_id', '=' ,'subjects.id')
-         ->select([  
-            'subject_title','parent_id', 'topic_name','description','topics.slug', 'topics.id', 'topics.updated_at'])
+         ->select([
+            'subject_title','parent_id', 'topic_name','section_id','description','topics.slug', 'topics.id', 'topics.updated_at'])
+        ->where('record_updated_by',Auth::user()->id)
          ->orderBy('updated_at','desc');
 
         return Datatables::of($records)
@@ -66,10 +70,10 @@ class TopicsController extends Controller
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="dLabel">
                             <li><a href="'.URL_TOPICS_EDIT.'/'.$records->slug.'"><i class="fa fa-pencil"></i>'.getPhrase("edit").'</a></li>';
-                     
-                        
+
+
                     $temp = '';
-                    if(checkRole(getUserGrade(1)))
+                    if(checkRole(getUserGrade(3)))
                     {
                         $temp .=' <li><a href="javascript:void(0);" onclick="deleteRecord(\''.$records->slug.'\');"><i class="fa fa-trash"></i>'. getPhrase("delete").'</a></li>';
                     }
@@ -78,6 +82,9 @@ class TopicsController extends Controller
 
             return $link_data;
             })
+        ->editColumn('section_id', function($records) {
+            return User::select('section_name')->where('section_id',$records->section_id)->pluck('section_name')->first();
+        })
         ->editColumn('topic_name', function($records)
         {
           return $records->topic_name.' ('.$records->id.')';
@@ -110,15 +117,14 @@ class TopicsController extends Controller
       $data['subjects'] = array(''=>getPhrase('select')) + $subjects;
 
         $data['layout']=getLayout();
-      
-      
+
+
         $data['parent_topics'][0]   = getPhrase('select');
-        
+
     	$data['title']              = getPhrase('add_topic');
     	// return view('mastersettings.topics.add-edit', $data);
-
-       $view_name = getTheme().'::mastersettings.topics.add-edit';
-        return view($view_name, $data);   
+        $view_name = getTheme().'::mastersettings.topics.add-edit';
+        return view($view_name, $data);
     }
 
     /**
@@ -354,7 +360,7 @@ class TopicsController extends Controller
             }
 
           if(!$record->parent_id) {
-            
+
              if(!$parent_records[(int)$record->id] = $this->pushToDb($record)) {
                 $temp['record'] = $record;
                 $temp['type']  = getPhrase('unknown_error_occurred');
