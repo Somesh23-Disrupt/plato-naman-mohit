@@ -210,41 +210,34 @@
 					</div>
 				</div>
 			</div>
-			</div>
-			<div class="row">
+		
+			
 
 				<div class="col-md-6 col-lg-5">
   				  <div class="panel panel-primary dsPanel">
-				    <div class="panel-heading"><i class="fa fa-bar-chart-o"></i> <?php echo e(getPhrase('Total Performance')); ?></div>
+				    <div class="panel-heading"><i class="fa fa-bar-chart-o"></i> <?php echo e(getPhrase('Total Performance Classes')); ?></div>
 				    <div class="panel-body" >
 				    	<canvas id="payments_chart" width="100" height="75"></canvas>
 				    </div>
 				  </div>
 				</div>
-				<div class="col-md-6 col-lg-4">
-  				  <div class="panel panel-primary dsPanel">
-				    <div class="panel-heading"><i class="fa fa-bar-chart-o"></i><?php echo e($chart_heading); ?></div>
-				    <div class="panel-body" >
-						
-						<?php $ids=[];?>
-						<?php for($i=0; $i<count($chart_data); $i++): ?>
-						<?php 
-						$newid = 'myChart'.$i;
-						$ids[] = $newid; ?>
-						
-						<div class="panel-body">
-							<div class="row">
-								<div class="col-md-12">
-									<canvas id="<?php echo e($newid); ?>" width="100" height="97"></canvas>
-								</div>
-							</div>
-						</div>
 
-						<?php endfor; ?>
-				    </div>
-				  </div>
-				</div> 
-
+				<?php $ids=[];?>
+				<?php for($i=0; $i<count($chart_data); $i++): ?>
+				<?php 
+				$newid = 'myChart'.$i;
+				$ids[] = $newid; ?>
+			
+				<div class="col-md-6">  				  
+				  <div class="panel panel-primary dsPanel">				   				    
+					<div class="panel-body" >
+					<canvas id="<?php echo e($newid); ?>" width="100" height="60"></canvas>					
+				  </div>				
+					</div>				
+				</div>
+			
+				<?php endfor; ?>	
+				
 
 				<!-- <div class="col-md-6 col-lg-4">
   				  <div class="panel panel-primary dsPanel">

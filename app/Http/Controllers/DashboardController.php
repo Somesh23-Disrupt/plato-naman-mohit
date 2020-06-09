@@ -385,7 +385,7 @@ class DashboardController extends Controller
               // dd($percent);
               $payment_dataset[] = round($percent/(App\User::where('section_id',$section)->where('role_id',5)->get()->count()),2);
               // dd($payment_dataset);
-              $payment_labels[] = $user->section_name;
+              $payment_labels[] = getPhrase('Class ').$user->section_name;
               
               // dd($payment_dataset);
                 
@@ -977,6 +977,7 @@ class DashboardController extends Controller
              ->select(['quiz_id', 'quizzes.title',DB::raw('Avg(percentage) as percentage'), 'quizresults.user_id'])
              ->groupBy('quizzes.title')
              ->get();
+      
       foreach($records as $record) {
           $color_number = rand(0,999);
           $record = (object)$record;
