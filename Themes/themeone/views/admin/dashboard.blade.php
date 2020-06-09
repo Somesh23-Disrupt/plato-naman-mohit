@@ -1,6 +1,8 @@
 @extends('layouts.admin.adminlayout')
 @section('header_scripts')
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
+	<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
+	<link href="https://cdn.datatables.net/buttons/1.4.2/css/buttons.dataTables.min.css" type="text/css">
+
 @endsection
 
 @section('content')
@@ -216,7 +218,7 @@
 			<div class="col-md-12">
 				<div class="panel panel-primary dsPanel">
 				  <div class="panel-body" >
-					<table class="table table-striped table-bordered"  id="example" cellspacing="0" width="100%">
+					<table class="table table-striped table-bordered datatable" id="datatable" cellspacing="0" width="100%">
 						<thead>
 							<tr>
 								<th>{{ getPhrase('Test Name')}}</th>
@@ -227,16 +229,16 @@
 							</tr>
 						</thead>
 						@foreach($tables as $table)
-							<thead>
+							
 								<tr>
 									<td>{{App\QuizCategory::find($table->category_id)->category}}</td>
 									<td>{{$table->title}}</td>
 									<?php $id=App\QuizCategory::find($table->category_id)->section_id ?>
 									<td>{{App\User::select(['section_name'])->where('section_id',$id)->first()->section_name}}</td>
-									<td></td>
+									<td>{{App\User::select(['name'])->where('section_id',$id)->where('role_id',3)->first()->name}}</td>
 									<td>{{$table->start_date}}</td>
 								</tr>
-							</thead>
+							
 						@endforeach
 						</table>
 					</div>
@@ -253,28 +255,25 @@
 				    </div>
 				  </div>
 				</div>
-				<div class="col-md-6 col-lg-4">
-  				  <div class="panel panel-primary dsPanel">
-				    <div class="panel-heading"><i class="fa fa-bar-chart-o"></i>{{$chart_heading}}</div>
-				    <div class="panel-body" >
+			</div>
+			<div class="row">
 
-						<?php $ids=[];?>
-						@for($i=0; $i<count($chart_data); $i++)
-						<?php
-						$newid = 'myChart'.$i;
-						$ids[] = $newid; ?>
+				<?php $ids=[];?>
+				@for($i=0; $i<count($chart_data); $i++)
+				<?php 
+				$newid = 'myChart'.$i;
+				$ids[] = $newid; ?>
 
-						<div class="panel-body">
-							<div class="row">
-								<div class="col-md-12">
-									<canvas id="{{$newid}}" width="100" height="97"></canvas>
-								</div>
-							</div>
-						</div>
+				<div class="col-md-6">  				  
+					<div class="panel panel-primary dsPanel">				   				    
+						<div class="panel-body" >
+						<canvas id="{{$newid}}" width="100" height="60"></canvas>					
+						</div>				
+					</div>				
+				</div>
 
-						@endfor
-				    </div>
-				  </div>
+				@endfor	
+							
 				</div>
 
 
@@ -299,15 +298,9 @@
 @stop
 
 @section('footer_scripts')
-<script>
- $(document).ready(function() {
-	 $('#example').DataTable();
- } );
- </script>
-
-<script src="{{themes('js/bootstrap-toggle.min.js')}}"></script>
-	<script src="{{themes('js/jquery.dataTables.min.js')}}"></script>
-	<script src="{{themes('js/dataTables.bootstrap.min.js')}}"></script>
+@include('common.chart', array('chart_data'=>$payments_chart_data,'ids' =>array('payments_chart'), 'scale'=>TRUE))
+ @include('common.chart', array($chart_data,'ids' =>$ids));
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
 
 <script src="https://cdn.datatables.net/buttons/1.4.2/js/dataTables.buttons.min.js"></script>
 <script src="//cdn.datatables.net/buttons/1.4.2/js/buttons.flash.min.js"></script>
@@ -316,14 +309,18 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
 <script src="//cdn.datatables.net/buttons/1.4.2/js/buttons.html5.min.js"></script>
 <script src="//cdn.datatables.net/buttons/1.4.2/js/buttons.print.min.js"></script>
+    <script>
+        $(document).ready( function () {
+            $('#datatable').DataTable({
+				dom: 'Bfrtip',
+	            buttons: [
+				            'copy', 'csv', 'excel', 'pdf', 'print'
 
- @include('common.chart', array('chart_data'=>$payments_chart_data,'ids' =>array('payments_chart'), 'scale'=>TRUE))
- @include('common.chart', array($chart_data,'ids' =>$ids));
-
- <script>
- $(document).ready(function() {
-	 $('#example').DataTable();
- } );
- </script>
+				        ],
+				
+			});
+        });
+    </script>
+ 
 
 @stop

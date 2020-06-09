@@ -117,7 +117,7 @@
  			</div>
  		</div>
  	</div>
-	 @for($i=0; $i<count($childs_names);$i++)
+	@for($i=0; $i<count($childs_names);$i++)
 	<div class="col-md-4 col-sm-6">
  		<div class="media state-media box-ws">
  			<div class="media-left">
