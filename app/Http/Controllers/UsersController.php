@@ -7,6 +7,7 @@ use \App;
 use App\Http\Requests;
 use App\User;
 use Cache;
+use Carbon\Carbon;
 use App\Section;
 use App\Institution;
 use App\GeneralSettings as Settings;
@@ -41,19 +42,11 @@ class UsersController extends Controller
     */
      public function index($role = 'student')
      {
-         $users = DB::table('users')->get();
-
-        foreach ($users as $user) {
-            if (Cache::has('user-is-online-' . $user->id))
-                echo $user->name . " -> online.";
-            echo "<br>";
-        }
         if(!checkRole(getUserGrade(3)))
         {
             prepareBlockUserMessage();
             return back();
         }
-
         $data['records']      = FALSE;
         $data['layout']      = getLayout();
         $data['active_class'] = 'users';
@@ -62,7 +55,7 @@ class UsersController extends Controller
         // return view('users.list-users', $data);
 
          $view_name = getTheme().'::users.list-users';
-        //return view($view_name, $data);
+        return view($view_name, $data);
      }
 
 
@@ -79,7 +72,7 @@ class UsersController extends Controller
         {
 
             $records = User::join('roles', 'users.role_id', '=', 'roles.id')
-           ->select(['users.name', 'email', 'image', 'roles.display_name','section_name','login_enabled','role_id',
+           ->select(['users.name', 'email', 'image', 'roles.display_name','section_name','last_activity','role_id',
              'slug', 'users.id', 'users.updated_at'])
            ->orderBy('users.updated_at', 'desc')
            ->where('users.inst_id','=', Auth::user()->inst_id)
@@ -91,7 +84,7 @@ class UsersController extends Controller
             $role = App\Role::getRoleId($slug);
 
             $records = User::join('roles', 'users.role_id', '=', 'roles.id', 'roles.id', '=', $role->id)
-            ->select(['users.name', 'email', 'image', 'roles.display_name','login_enabled','section_name','inst_name','role_id','slug', 'users.updated_at'])
+            ->select(['users.name', 'email', 'image', 'roles.display_name','section_name','last_activity','role_id','slug', 'users.updated_at'])
              ->orderBy('users.updated_at', 'desc')
              ->where('users.inst_id','=', Auth::user()->inst_id)
              ->get();
@@ -130,14 +123,6 @@ class UsersController extends Controller
                         $link_data .= $temp;
             return $link_data;
             })
-          ->addColumn('user_status', function($records){
-
-             if(App\User::find($records->id)->isOnline()) {
-                $status='<i class="fa fa-check text-success">Online</i>' ;}
-             else{
-              $status='<i class="fa fa-times text-danger">Offline</i>';}
-               return $status;
-            })
          ->editColumn('name', function($records) {
           if(getRoleData($records->role_id)=='student')
             return '<a href="'.URL_USER_DETAILS.$records->slug.'">'.ucfirst($records->name).'</a>';
@@ -157,9 +142,11 @@ class UsersController extends Controller
           return strtoupper($records->department);
         })
 
-        ->editColumn('login_enabled', function($records){
-
-            return ($records->login_enabled == 1) ? '<i class="fa fa-check text-success"></i>' : '<i class="fa fa-times text-danger"></i>';
+        ->editColumn('last_activity', function($records){
+               if (Carbon::parse($records->last_activity)->diffInSeconds()<=60)
+                   return '<span class="text-success">Online</span> <i class="fa fa-check text-success" aria-hidden="true"></i>';
+               else
+                   return '<span class="text-danger">Last seen: '. Carbon::parse($records->last_activity)->diffForHumans() .'</span>';
         })
 
 
