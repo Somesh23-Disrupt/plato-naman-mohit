@@ -41,6 +41,13 @@ class UsersController extends Controller
     */
      public function index($role = 'student')
      {
+         $users = DB::table('users')->get();
+
+        foreach ($users as $user) {
+            if (Cache::has('user-is-online-' . $user->id))
+                echo $user->name . " -> online.";
+            echo "<br>";
+        }
         if(!checkRole(getUserGrade(3)))
         {
             prepareBlockUserMessage();
@@ -55,7 +62,7 @@ class UsersController extends Controller
         // return view('users.list-users', $data);
 
          $view_name = getTheme().'::users.list-users';
-        return view($view_name, $data);
+        //return view($view_name, $data);
      }
 
 
@@ -72,7 +79,7 @@ class UsersController extends Controller
         {
 
             $records = User::join('roles', 'users.role_id', '=', 'roles.id')
-           ->select(['users.name', 'email', 'image', 'roles.display_name','login_enabled','section_name','inst_name','role_id',
+           ->select(['users.name', 'email', 'image', 'roles.display_name','section_name','login_enabled','role_id',
              'slug', 'users.id', 'users.updated_at'])
            ->orderBy('users.updated_at', 'desc')
            ->where('users.inst_id','=', Auth::user()->inst_id)
