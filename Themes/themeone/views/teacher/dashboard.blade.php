@@ -1,4 +1,10 @@
 @extends('layouts.teacher.teacherlayout')
+@section('header_scripts')
+	<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
+	<link href="https://cdn.datatables.net/buttons/1.4.2/css/buttons.dataTables.min.css" type="text/css">
+
+@endsection
+
 @section('content')
 
 <div id="page-wrapper">
@@ -21,8 +27,8 @@
 				 			<div class="media-body">
 								 <h4 class="card-title">{{ App\User::where('inst_id',getUserWithSlug()->inst_id)->where('role_id',5)
 								 ->where('section_name',getUserWithSlug()->section_name)
-								 ->where('department',getUserWithSlug()->department)->count()}}</h4>
-								<a href="{{URL_USERS}}">{{ getPhrase('users')}}</a>
+								 ->count()}}</h4>
+								<a href="{{URL_USERS}}">{{ getPhrase('Students')}}</a>
 				 			</div>
 				 		</div>
 				 	</div>
@@ -69,11 +75,11 @@
 				 			</div>
 				 			<div class="media-body">
 				 				<h4 class="card-title">{{ $tppforteach }}</h4>
-								{{ getPhrase('Total Pass percentage')}}
+								<a>{{ getPhrase('total_pass_percent')}}</a>
 				 			</div>
 				 		</div>
 				 	</div>
-					 <div class="col-md-3 col-sm-6">
+					 {{-- <div class="col-md-3 col-sm-6">
 						<div class="media state-media box-ws">
 							<div class="media-left">
 								<div class="state-icn bg-icon-purple"><i class="fa fa-users"></i></div>
@@ -108,7 +114,7 @@
 				 			</div>
 				 		</div>
 				 	</div>
-
+ --}}
 
 				 	 <!-- <div class="col-md-3 col-sm-6">
 				 		<div class="media state-media box-ws">
@@ -135,7 +141,38 @@
 				 	</div>
  -->
 				</div>
-
+				<div class="row">
+					<div class="col-md-12">
+						<div class="panel panel-primary dsPanel">
+						  <div class="panel-body" >
+							<table class="table table-striped table-bordered datatable" id="datatable" id="example" cellspacing="0" width="100%">
+								<thead>
+									<tr>
+										<th>{{ getPhrase('Test Name')}}</th>
+										<th>{{ getPhrase('Subject')}}</th>
+										<th>{{ getPhrase('Total Marks')}}</th>
+										<th>{{ getPhrase('Avg Marks')}}</th>
+										<th>{{ getPhrase('pass_student')}}</th>
+									</tr>
+								</thead>
+								@foreach($tables as $table)
+									
+										<tr>
+											<td>{{App\QuizCategory::find($table->category_id)->category}}</td>
+											<td>{{$table->title}}</td>
+											<?php $id=App\QuizCategory::find($table->category_id)->section_id ?>
+											<td>{{$table->total_marks}}</td>
+											<td>{{$table->avgmarks}}</td>
+											<td>{{$table->tp}}</td>
+										</tr>
+									
+								@endforeach
+								</table>
+							</div>
+						</div>
+					</div>
+					</div>
+					
 			<!-- /.container-fluid -->
  <!-- <div class="row"> -->
 
@@ -212,5 +249,27 @@
 
 @section('footer_scripts')
 	@include('common.chart', array($chart_data,'ids' =>$ids,'scale'=>TRUE));
- 
+	<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
+
+	<script src="https://cdn.datatables.net/buttons/1.4.2/js/dataTables.buttons.min.js"></script>
+	<script src="//cdn.datatables.net/buttons/1.4.2/js/buttons.flash.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+	<script src="//cdn.datatables.net/buttons/1.4.2/js/buttons.html5.min.js"></script>
+	<script src="//cdn.datatables.net/buttons/1.4.2/js/buttons.print.min.js"></script>
+		<script>
+			$(document).ready( function () {
+				$('#datatable').DataTable({
+					dom: 'Bfrtip',
+					buttons: [
+								'copy', 'csv', 'excel', 'pdf', 'print'
+	
+							],
+					
+				});
+			});
+		</script>
+	 
+	
 @stop

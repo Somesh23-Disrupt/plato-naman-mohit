@@ -86,7 +86,7 @@ class DashboardController extends Controller
                     'border_color'      => $border_color
                     );
            
-
+                    $chart_data['title'] = getPhrase('User Statistics');
            $data['chart_data'][] = (object)$chart_data;
            
            $data['chart_heading']         = getPhrase('user_statistics');
@@ -96,16 +96,24 @@ class DashboardController extends Controller
            foreach($data['payments_chart_data']->data->dataset as $d){
              $avgscacrquizes=$d+$avgscacrquizes;
            }
+           if (count($data['payments_chart_data']->data->dataset)>0) {
+             
            $data['avgscacrquizes']=$avgscacrquizes/count($data['payments_chart_data']->data->dataset);
+          }else{
+            $data['avgscacrquizes']=0;
+          }
           //  $data['payments_monthly_data'] = (object)$this->getPaymentMonthlyStats();
           //  $data['demanding_quizzes'] = (object)$this->getDemandingQuizzes();
           //  $data['demanding_paid_quizzes'] = (object)$this->getDemandingQuizzes('paid');
            $data['layout']        = getLayout();
             $data['right_bar_data']     = array('chart_data' => $data['chart_data'] );
            $data['ids'] = array('myChart0' );
+           $data['chart_data'][]=(object)$this->scorebysub();
            //Code Table in Admin dashboard
+
+           $sec_inst=App\User::select(['section_id'])->where('role_id',3)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+          //  dd($sec_inst);
               $records = Quiz::select(['title', 'category_id', 'start_date'])->get()->sortByDesc('start_date');
-              $data['chart_data'][]=(object)$this->scorebysub();
               $data['tables']=$records;
              
             $view_name = getTheme().'::admin.dashboard';
@@ -191,24 +199,79 @@ class DashboardController extends Controller
               $data['tppforteach']=0;
               $tnps=0;
               $data['passpercent']=$this->totalpass();
-              // foreach ($data['passpercent'] as $per) {
-              //   if ($per>=50) {
-              //     $tnps=$tnps+1;
-              //   }
-              //   $data['tppforteach']=$per+$data['tppforteach'];
-              // }
-              // if ($data['tppforteach']>0) {
-              //   $data['tppforteach']=round($tnps/count($data['passpercent'])*100,2);
-              // }
-              // else{
-              //   $data['tppforteach']=0;
-              // }
+              // dd($data['passpercent']);
+              foreach ($data['passpercent'] as $per) {
+                
+                if ($per['per']>=50) {
+                  $tnps=$tnps+1;
+                }
+                $data['tppforteach']=$per['per']+$data['tppforteach'];
+              }
+              if ($data['tppforteach']>0) {
+                $data['tppforteach']=round($tnps/count($data['passpercent'])*100,2);
+              }
+              else{
+                $data['tppforteach']=0;
+              }
               $data['tnps']=$tnps;
               $data['avg']= $this->gettingavgscore()->avg;
               $data['avgsection']=getUserWithSlug()->section_name;
+//Going to work on table in teachers dashboard
+              $stdbysec=App\User::where('section_id',auth()->user()->section_id)->where('role_id',5)->pluck('id');
+              $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')->where('exam_status','pass')->whereIN('user_id',$stdbysec)
+                ->select(['quiz_id', 'quizzes.category_id','quizzes.total_marks','quizzes.title','quizresults.exam_status',DB::raw('count("") as tp'),DB::raw('round(avg(marks_obtained),2) as avgmarks'), 'quizresults.user_id'])
+              ->groupBy('quizresults.quiz_id')
+              ->get();
+              $data['tables']=$records;
+
+
               // return view('admin.dashboard', $data);
               //dd(App\User::where('teacher_id', '=', $user->id)->get());
-              $data['chart_data']=$this->getstudents();
+              // $data['chart_data']=$this->getstudents();
+              
+              $data['chart_data'][]=(object)$this->scorebysub();
+              $data['chart_data'][]=(object)$this->marksbysub();
+
+
+
+              //all pass students accross quizes
+
+                  
+                $dataset = [];
+                $labels = [];
+                $bgcolor = [];
+                $border_color = [];
+                $test=['rgba(196, 219, 250, 1)','rgba(52, 132, 240, 1)','rgba(70, 75, 147, 1)'];
+                foreach($records as $record)
+                {
+                    $color_number = rand(0,999);
+                    $labels[] = ucfirst($record->title);
+                    $dataset[] = $record->tp;
+
+                    $border_color[] = 'rgb(247,247,247)';
+                }
+                for ($i=0; $i < 3; $i++) {
+                  $bgcolor[] = $test[$i];
+                }
+
+                
+                $dataset_label[] = 'lbl';
+                $chart_data['type'] = 'pie';
+                //horizontalBar, bar, polarArea, line, doughnut, pie
+                $chart_data['data']   = (object) array(
+                        'labels'            => $labels,
+                        'dataset'           => $dataset,
+                        'dataset_label'     => $dataset_label,
+                        'bgcolor'           => $bgcolor,
+                        'border_color'      => $border_color
+                        );
+              
+                        $chart_data['title'] = getPhrase('Overall Performance');
+              $data['chart_data'][] = (object)$chart_data;
+              
+          
+            
+
               $view_name = getTheme().'::teacher.dashboard';
               return view($view_name, $data);
         }
@@ -747,13 +810,12 @@ class DashboardController extends Controller
             $id='parent_id';
           }
           else{
-            $id='teacher_id';
+            $id='section_id';
           }
           $data['chart_data']=[];
-        if(App\User::where($id, '=', $user->id)->get()->count()>0){
+        if(App\User::where('section_name',$user->section_name)->where('role_id',5)->get()->count()>0){
           if (checkRole(['teacher'])) {
-            $users=App\User::where($id, '=', $user->id)->where('section_name',$user->section_name)->
-            where('department',$user->department)->get();
+            $users=App\User::where('section_name',$user->section_name)->where('role_id',5)->get();
           }else{
             $users=App\User::where($id, '=', $user->id)->get();
           }
@@ -918,9 +980,9 @@ class DashboardController extends Controller
     public function totalpass()
     {
       if(checkRole('teacher')){
-          $users=App\User::where('teacher_id',getUserWithSlug()->id)
-          ->where('section_name',getUserWithSlug()->section_name)
-          ->where('department',getUserWithSlug()->department)
+          $users=App\User::where('role_id',5)
+          ->where('section_id',getUserWithSlug()->section_id)
+          
           ->select('id','name')->get();
       }
       if(checkRole('admin')){
@@ -973,9 +1035,17 @@ class DashboardController extends Controller
       $dataset = [];
       $bgcolor = [];
       $bordercolor = [];
+      if (checkRole(['teacher'])) {
+        $userbyinst=App\User::where('inst_id',auth()->user()->inst_id)->where('section_id',auth()->user()->section_id)->where('role_id',5)->pluck('id');
+      }else{
+        $userbyinst=App\User::where('inst_id',auth()->user()->inst_id)->where('role_id',5)->pluck('id');
+      }
+      
+      // dd($userbyinst);
       $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')
              ->select(['quiz_id', 'quizzes.title',DB::raw('Avg(percentage) as percentage'), 'quizresults.user_id'])
              ->groupBy('quizzes.title')
+             ->whereIn('user_id',$userbyinst)
              ->get();
       
       foreach($records as $record) {
@@ -989,12 +1059,60 @@ class DashboardController extends Controller
 
       $labels = $labels;
       $dataset = $dataset;
-      $dataset_label = getPhrase('Marks');
+      $dataset_label = getPhrase('avg_percent');
       $bgcolor  = $bgcolor;
       $border_color = $bordercolor;
       $chart_data['type'] = 'bar';
       //horizontalBar, bar, polarArea, line, doughnut, pie
       $chart_data['title'] = getPhrase('Avg. Percent across Subjects');
+
+      $chart_data['data']   = (object) array(
+              'labels'            => $labels,
+              'dataset'           => $dataset,
+              'dataset_label'     => $dataset_label,
+              'bgcolor'           => $bgcolor,
+              'border_color'      => $border_color
+              );
+      
+      return $chart_data;
+       
+    }
+    public function marksbysub()
+    {
+      $labels = [];
+      $dataset = [];
+      $bgcolor = [];
+      $bordercolor = [];
+      if (checkRole(['teacher'])) {
+        $userbyinst=App\User::where('inst_id',auth()->user()->inst_id)->where('section_id',auth()->user()->section_id)->where('role_id',5)->pluck('id');
+      }else{
+        $userbyinst=App\User::where('inst_id',auth()->user()->inst_id)->where('role_id',5)->pluck('id');
+      }
+      
+      // dd($userbyinst);
+      $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')
+             ->select(['quiz_id', 'quizzes.title',DB::raw('Avg(marks_obtained) as percentage'), 'quizresults.user_id'])
+             ->groupBy('quizzes.title')
+             ->whereIn('user_id',$userbyinst)
+             ->get();
+      
+      foreach($records as $record) {
+          $color_number = rand(0,999);
+          $record = (object)$record;
+          $labels[] = $record->title;
+          $dataset[] = $record->percentage;
+          $bgcolor[] = getColor('background',$color_number);
+          $bordercolor[] = getColor('border', $color_number);
+     }
+
+      $labels = $labels;
+      $dataset = $dataset;
+      $dataset_label = getPhrase('avg_marks');
+      $bgcolor  = $bgcolor;
+      $border_color = $bordercolor;
+      $chart_data['type'] = 'bar';
+      //horizontalBar, bar, polarArea, line, doughnut, pie
+      $chart_data['title'] = getPhrase('Avg. Marks across Subjects');
 
       $chart_data['data']   = (object) array(
               'labels'            => $labels,
