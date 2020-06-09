@@ -27,6 +27,14 @@
 						{{Form::select('category_id', $categories, null, ['class'=>'form-control'])}}
 
 					</fieldset>
+					
+					<fieldset class="form-group col-md-6">
+
+						{{ Form::label('section_id', getphrase('section')) }}
+						<span class="text-red">*</span>
+						{{Form::select('section_id', $sections, null, ['class'=>'form-control'])}}
+
+					</fieldset>
 
 				 <!--
 					<?php

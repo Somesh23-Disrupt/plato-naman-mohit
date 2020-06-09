@@ -1,180 +1,342 @@
 <script src="<?php echo e(JS); ?>angular.js"></script>
+
  <script src="<?php echo e(JS); ?>ngStorage.js"></script>
+
 <script src="<?php echo e(JS); ?>angular-messages.js"></script>
+
 
 <script >
   var app = angular.module('academia', ['ngMessages']);
 </script>
+
 <?php echo $__env->make('common.angular-factory',array('load_module'=> FALSE), array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 
+
+
 <script>
-app.controller('prepareQuestions', function( $scope, $http, httpPreConfig) {
-   $scope.savedItems = [];
-   $scope.savedSeries =  [];
-   $scope.total_items = 0;
+
+app.controller('prepareQuestions', function( $scope, $http, httpPreConfig,$rootScope) {
+
+  $rootScope.series_type  = 0;
+
+   $scope.savedQuestions = [];
+
+    $scope.savedSeries =  [];
+
+    $scope.total_exams = 0;
+
+    $scope.total_questions = 0;
+
+   $scope.recordData  = function(series_type){
+
+
+      $rootScope.series_type  = series_type;
+   }
 
     $scope.initAngData = function(data) {
+        
 
         if(data === undefined)
-            ;//return;
+
+            return;
+
         $scope.removeAll();
 
+        $scope.totalQuestions = 0;
+
         if(data=='')
+
         {
-            $scope.series   = [];
+
+            $scope.examSeries   = [];
+
             return;
+
         }
 
+
+
         dta = data;
-        $scope.savedSeries = dta.contents;
+
+        $scope.savedSeries = dta.exams;
+
+       $scope.totalQuestions = dta.total_questions;
+
         $scope.setItem('saved_series', $scope.savedSeries);
-        $scope.setItem('total_items', $scope.total_items);
+
+        $scope.setItem('total_exams', $scope.totalExams);
+
+        $scope.setItem('total_questions', $scope.totalQuestions);
+
+ 
+
     }
 
+    
+
      $scope.categoryChanged = function(selected_number) {
-
+      // console.log($rootScope.series_type);
         if(selected_number=='')
-            selected_number = $scope.category_id;
-        category_id = selected_number;
-        if(category_id === undefined)
-            return;
-        route = '<?php echo e(URL_LMS_SERIES_GET_SERIES); ?>';
-        data= {_method: 'post', '_token':httpPreConfig.getToken(), 'category_id': category_id};
 
-            httpPreConfig.webServiceCallPost(route, data).then(function(result){
+            selected_number = $scope.category_id;
+
+        category_id = selected_number;
+
+        if(category_id === undefined)
+
+            return;
+
+        route = '<?php echo e(URL_EXAM_SERIES_GET_EXAMS); ?>';  
+
+        data= {
+                _method: 'post', 
+               '_token':httpPreConfig.getToken(), 
+               'category_id': category_id,
+               'series_type' : $rootScope.series_type
+             };
+
+         $scope.topics =[];
+
+        httpPreConfig.webServiceCallPost(route, data).then(function(result){
+          // console.log(result.data);
             result = result.data;
-            $scope.categoryItems = [];
-            $scope.categoryItems = result.items;
-            $scope.removeDuplicates();
+        $scope.categoryExams = [];
+
+        $scope.categoryExams = result.exams;
+
+        $scope.removeDuplicates();
         });
+
         }
 
         $scope.removeDuplicates = function(){
-
             if($scope.savedSeries.length<=0 )
                 return;
 
              angular.forEach($scope.savedSeries,function(value,key){
 
-                    res = httpPreConfig.findIndexInData($scope.categoryItems, 'id', value.id);
+                    res = httpPreConfig.findIndexInData($scope.categoryExams, 'id', value.id);
                     if(res >= 0)
                     {
-                         $scope.categoryItems.splice(res, 1);
-                    }
 
+                        $scope.categoryExams.splice(res, 1);
+
+                    }
             });
+
         }
 
-        $scope.addToBag = function(item) {
+        $scope.addQuestion = function(exam) {
+           var record = exam; 
+              res = httpPreConfig.findIndexInData($scope.savedSeries, 'id', exam.id);
 
-           var record = item;
-
-              res = httpPreConfig.findIndexInData($scope.savedSeries, 'id', item.id);
                     if(res == -1) {
-                      $scope.savedSeries.push(record);
 
-                      $scope.removeFromCategoryItems(item);
+                      $scope.savedSeries.push(record); 
+
+                      if(isNaN($scope.totalQuestions))
+
+                        $scope.totalQuestions = 0;
+
+                       $scope.totalQuestions = parseInt($scope.totalQuestions) + parseInt(exam.total_questions); 
+
+                      $scope.removeFromCategoryExams(exam);
+
                     }
-                  else
+
+                  else 
+
                     return;
 
+
+
            //Push record to storage
+
             $scope.setItem('saved_series', $scope.savedSeries);
+
+            $scope.setItem('total_exams', $scope.savedSeries.length);
+
+            $scope.setItem('total_questions', $scope.totalQuestions);
+
+
+
+            
+
+           
+
         }
 
-        $scope.removeFromCategoryItems = function(item) {
-             var index = $scope.categoryItems.indexOf(item);
-             $scope.categoryItems.splice(index, 1);
+
+
+        $scope.removeFromCategoryExams = function(item) { 
+
+             var index = $scope.categoryExams.indexOf(item);
+
+             $scope.categoryExams.splice(index, 1);     
+
         }
 
-        $scope.addToCategoryItems = function(item) {
 
-             if($scope.categoryItems.length) {
 
-                if($scope.categoryItems[0].subject_id != item.subject_id)
+        $scope.addToCategoryExams = function(item) { 
+
+           
+
+             if($scope.categoryExams.length) {
+
+                if($scope.categoryExams[0].category_id != item.category_id)
+
                     return;
 
                  res = httpPreConfig.findIndexInData($scope.savedSeries, 'id', item.id)
 
                     if(res == -1)
-                      $scope.categoryItems.push(item);
-                return;
+
+                      $scope.categoryExams.push(item);     
+
+                
+
              }
-             $scope.categoryChanged($scope.category_id);
+
         }
 
 
+ 
+
+
+
         /**
+
          * Set item to local storage with the sent key and value
+
          * @param  {[type]} $key   [localstorage key]
+
          * @param  {[type]} $value [value]
+
          */
+
         $scope.setItem = function($key, $value){
+
             localStorage.setItem($key, JSON.stringify($value));
+
         }
 
+
+
         /**
+
          * Get item from local storage with the specified key
+
          * @param    {[type]} $key [localstorage key]
+
          * @return  {[type]}      [description]
+
          */
+
         $scope.getItem = function($key){
+
             return JSON.parse(localStorage.getItem($key));
+
         }
 
+
+
         /**
+
          * Remove question with the sent id
+
          * @param    {[type]} id [description]
+
          * @return  {[type]}    [description]
+
          */
 
+         
 
-    $scope.removeItem = function(record){
+
+
+    $scope.removeQuestion = function(record){
 
           $scope.savedSeries = $scope.savedSeries.filter(function(element){
+
             if(element.id != record.id)
+
               return element;
+
           });
 
-          $scope.setItem('saved_series', $scope.savedSeries);
-          $scope.addToCategoryItems(record);
+           $scope.totalMarks = $scope.totalMarks - record.marks;
+           $scope.totalQuestions = $scope.totalQuestions - record.total_questions;
+
+          $scope.setItem('saved_questions', $scope.savedSeries);
+
+          $scope.addToCategoryExams(record);
+
         }
+
+
 
         $scope.removeAll = function(){
+
             $scope.savedSeries = [];
+
             $scope.totalQuestions       = 0;
+
             $scope.setItem('saved_questions', $scope.savedSeries);
+
             $scope.setItem('total_questions', $scope.totalQuestions);
+
             $scope.categoryChanged($scope.category_id);
+
+           
         }
-
-
-
 }  );
 
 app.filter('cut', function () {
-        return function (value, wordwise, max, tail) {
-            if (!value) return '';
 
+        return function (value, wordwise, max, tail) {
+
+            if (!value) return '';
             max = parseInt(max, 10);
+
             if (!max) return value;
+
             if (value.length <= max) return value;
 
+
+
             value = value.substr(0, max);
+
             if (wordwise) {
+
                 var lastspace = value.lastIndexOf(' ');
+
                 if (lastspace != -1) {
+
                   //Also remove . and , so its gives a cleaner result.
+
                   if (value.charAt(lastspace-1) == '.' || value.charAt(lastspace-1) == ',') {
+
                     lastspace = lastspace - 1;
+
                   }
+
                   value = value.substr(0, lastspace);
+
                 }
+
             }
 
+
+
             return value + (tail || ' …');
+
         };
+
     });
 
+
+
+ 
 
 </script>

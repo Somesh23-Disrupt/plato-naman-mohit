@@ -34,6 +34,7 @@
 									<th>{{ getPhrase('title')}}</th>
 									<th>{{ getPhrase('image')}}</th>
 									<th>{{ getPhrase('category')}}</th>
+									<th>{{ getPhrase('section')}}</th>
 									<th>{{ getPhrase('start_date')}}</th>
 									<th>{{ getPhrase('end_date')}}</th>
 									<th>{{ getPhrase('total_exams')}}</th>
