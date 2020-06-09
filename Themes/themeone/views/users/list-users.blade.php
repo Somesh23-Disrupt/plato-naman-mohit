@@ -43,7 +43,7 @@
 									<th>{{ getPhrase('email')}}</th>
 									<th>{{ getPhrase('image')}}</th>
 									<th>{{ getPhrase('role')}}</th>
-									<th>{{ getPhrase('section_name')}}</th>
+									<th>{{ getPhrase('section')}}</th>
 									<th>{{ getPhrase('status')}}</th>
 									<th>{{ getPhrase('action')}}</th>
 								</tr>
