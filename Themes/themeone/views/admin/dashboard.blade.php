@@ -10,7 +10,7 @@
 			<div class="row">
 					<div class="col-lg-12">
 						<ol class="breadcrumb">
-							 
+
 							<li><i class="fa fa-home"></i> {{ $title}}</li>
 						</ol>
 					</div>
@@ -96,7 +96,7 @@
 								<a href="{{URL_QUIZ_QUESTIONBANK}}">{{ getPhrase('questions')}}</a>
 				 			</div>
 				 		</div>
-					 </div> 
+					 </div>
 					 <div class="col-md-3 col-sm-6">
 						<div class="media state-media box-ws">
 							<div class="media-left">
@@ -108,7 +108,7 @@
 							   <a href="">{{ getPhrase('section')}}</a>
 							</div>
 						</div>
-					</div> 
+					</div>
 					{{-- <div class="col-md-3 col-sm-6">
 				 		<div class="media state-media box-ws">
 				 			<div class="media-left">
@@ -190,9 +190,9 @@
 				 	</div>
  -->
 				</div>
-		 
+
 			<!-- /.container-fluid -->
- 
+
  	<!-- <div class="col-md-6">
   				  <div class="panel panel-primary dsPanel">
 				    <div class="panel-heading"><i class="fa fa-pie-chart"></i> {{getPhrase('quizzes_usage')}}</div>
@@ -201,8 +201,8 @@
 				    </div>
 				  </div>
 				</div>
-				
-				
+
+
 				<div class="col-md-6">
   				  <div class="panel panel-primary dsPanel">
 				    <div class="panel-heading"><i class="fa fa-pie-chart"></i> {{getPhrase('paid_quizzes_usage')}}</div>
@@ -213,8 +213,8 @@
 				</div>
 			</div> -->
 			<div class="row">
-			<div class="col-md-12">  				  
-				<div class="panel panel-primary dsPanel">				   				    
+			<div class="col-md-12">
+				<div class="panel panel-primary dsPanel">
 				  <div class="panel-body" >
 					<table class="table table-striped table-bordered"  id="example" cellspacing="0" width="100%">
 						<thead>
@@ -232,8 +232,8 @@
 									<td>{{App\QuizCategory::find($table->category_id)->category}}</td>
 									<td>{{$table->title}}</td>
 									<?php $id=App\QuizCategory::find($table->category_id)->section_id ?>
-									<td>{{App\User::select(['section_name'])->where('section_id',$id)->first()->section_name}}</td>		
-									<td>{{App\User::where('role_id',3)->where('section_id',$id)->first()->name}}</td>
+									<td>{{App\User::select(['section_name'])->where('section_id',$id)->first()->section_name}}</td>
+									<td></td>
 									<td>{{$table->start_date}}</td>
 								</tr>
 							</thead>
@@ -257,13 +257,13 @@
   				  <div class="panel panel-primary dsPanel">
 				    <div class="panel-heading"><i class="fa fa-bar-chart-o"></i>{{$chart_heading}}</div>
 				    <div class="panel-body" >
-						
+
 						<?php $ids=[];?>
 						@for($i=0; $i<count($chart_data); $i++)
-						<?php 
+						<?php
 						$newid = 'myChart'.$i;
 						$ids[] = $newid; ?>
-						
+
 						<div class="panel-body">
 							<div class="row">
 								<div class="col-md-12">
@@ -275,7 +275,7 @@
 						@endfor
 				    </div>
 				  </div>
-				</div> 
+				</div>
 
 
 				<!-- <div class="col-md-6 col-lg-4">
@@ -287,11 +287,11 @@
 				  </div>
 				</div> -->
 
-				
- 
 
- 
-				
+
+
+
+
 	</div>
 </div>
 		<!-- /#page-wrapper -->
@@ -304,7 +304,7 @@
 	 $('#example').DataTable();
  } );
  </script>
-  
+
 <script src="{{themes('js/bootstrap-toggle.min.js')}}"></script>
 	<script src="{{themes('js/jquery.dataTables.min.js')}}"></script>
 	<script src="{{themes('js/dataTables.bootstrap.min.js')}}"></script>
@@ -319,11 +319,11 @@
 
  @include('common.chart', array('chart_data'=>$payments_chart_data,'ids' =>array('payments_chart'), 'scale'=>TRUE))
  @include('common.chart', array($chart_data,'ids' =>$ids));
- 
+
  <script>
  $(document).ready(function() {
 	 $('#example').DataTable();
  } );
  </script>
-  
+
 @stop
