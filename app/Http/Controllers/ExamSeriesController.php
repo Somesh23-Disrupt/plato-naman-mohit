@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use \App;
 use App\Http\Requests;
+use App\User;
 use App\Quiz;
 use App\Subject;
 use App\QuestionBank;
@@ -65,7 +66,8 @@ class ExamSeriesController extends Controller
         $records = array();
 
 
-            $records = ExamSeries::select(['title', 'image', 'category_id', 'start_date','end_date',  'total_exams','total_questions','slug', 'id', 'updated_at'])
+            $records = ExamSeries::select(['title', 'image', 'category_id','section_id', 'start_date','end_date',  'total_exams','total_questions','slug', 'id', 'updated_at'])
+            ->where('record_updated_by',Auth::user()->id)
             ->orderBy('updated_at', 'desc');
 
         return Datatables::of($records)
@@ -90,6 +92,9 @@ class ExamSeriesController extends Controller
                     $link_data .=$temp;
             return $link_data;
             })
+        ->editColumn('section_id', function($records) {
+            return User::select('section_name')->where('section_id',$records->section_id)->pluck('section_name')->first();
+        })
         ->editColumn('title', function($records)
         {
         	return '<a href="'.URL_EXAM_SERIES_UPDATE_SERIES.$records->slug.'">'.$records->title.'</a>';
@@ -138,7 +143,7 @@ class ExamSeriesController extends Controller
       }
     	$data['record']         	= FALSE;
         $data['layout']      = getLayout();
-
+        $data['sections']           = array_pluck(User::where('inst_id',Auth::user()->inst_id)->whereNotNull('section_id')->distinct()->get(),'section_name','section_id');
         $data['categories']         = array_pluck(QuizCategory::where('record_updated_by',Auth::user()->id)->get(), 'category', 'id');
     	$data['active_class']       = 'exams';
       	$data['title']              = getPhrase('add_exam_series');
@@ -169,7 +174,8 @@ class ExamSeriesController extends Controller
     	$data['record']       	  = $record;
     	$data['active_class']     = 'exams';
     	$data['settings']         = FALSE;
-      $data['categories']         = array_pluck(QuizCategory::all(), 'category', 'id');
+        $data['categories']         = array_pluck(QuizCategory::where('record_updated_by',Auth::user()->id)->get(), 'category', 'id');
+        $data['sections']           = array_pluck(User::where('inst_id',Auth::user()->inst_id)->whereNotNull('section_id')->distinct()->get(),'section_name','section_id');
     	$data['title']            = getPhrase('edit_series');
     	// return view('exams.examseries.add-edit', $data);
        $view_name = getTheme().'::exams.examseries.add-edit';
@@ -224,6 +230,7 @@ class ExamSeriesController extends Controller
         $record->start_date   = $request->start_date;
         $record->end_date		= $request->end_date;
         $record->record_updated_by 	= Auth::user()->id;
+        $record->section_id         = $request->section_id;
         $record->save();
         $file_name = 'image';
         if ($request->hasFile($file_name))
@@ -281,6 +288,7 @@ class ExamSeriesController extends Controller
         $record->start_date   = $request->start_date;
         $record->end_date   = $request->end_date;
         $record->record_updated_by 	= Auth::user()->id;
+        $record->section_id         = $request->section_id;
         $record->save();
         $file_name = 'image';
         if ($request->hasFile($file_name))
@@ -551,6 +559,7 @@ class ExamSeriesController extends Controller
         if(count($interested_categories->quiz_categories));
         }
         $data['series']             = ExamSeries::where('start_date','<=',date('Y-m-d'))
+                                        ->where('section_id',Auth::user()->section_id)
                                         //->where('end_date','>=',date('Y-m-d'))
                                         ->paginate(getRecordsPerPage());
 

@@ -282,6 +282,7 @@ CREATE TABLE `examseries` (
   `short_description` text COLLATE utf8_unicode_ci NOT NULL,
   `description` text COLLATE utf8_unicode_ci NOT NULL,
   `record_updated_by` int(11) NOT NULL,
+  `section_id` bigint(11) UNSIGNED NULL DEFAULT NULL,
   `start_date` date DEFAULT NULL,
   `end_date` date DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
