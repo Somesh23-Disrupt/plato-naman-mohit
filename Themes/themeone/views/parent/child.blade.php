@@ -1,4 +1,10 @@
 @extends('layouts.parent.parentlayout')
+@section('header_scripts')
+	<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
+	<link href="https://cdn.datatables.net/buttons/1.4.2/css/buttons.dataTables.min.css" type="text/css">
+
+@endsection
+
 @section('content')
 
 
@@ -124,7 +130,7 @@
       <div class="col-md-12">  				  
         <div class="panel panel-primary dsPanel">				   				    
           <div class="panel-body" >
-			<table class="table table-striped table-bordered datatable" cellspacing="0" width="100%">
+			<table class="table table-striped table-bordered datatable" id="datatable" cellspacing="0" width="100%">
 				<thead>
 					<tr>
 						<th>{{ getPhrase('Test Name')}}</th>
@@ -135,7 +141,7 @@
 					</tr>
 				</thead>
 				@foreach($tables as $table)
-				 <thead>
+				 
 					<tr>
             <td>{{App\QuizCategory::find($table->category_id)->category}}</td>
             <td>{{$table->title}}</td>
@@ -143,7 +149,7 @@
             <td>{{$table->marks_obtained}}</td>
             <td>{{round(($table->marks_obtained/$table->total_marks)*100,2)}}</td>
 					</tr>
-				</thead>
+			
 				@endforeach
 			</table>
 		</div>
@@ -181,6 +187,28 @@
 
 @section('footer_scripts')
 @include('common.chart', array($chart_data,'ids' =>$ids,'scale'=>TRUE));
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
+
+<script src="https://cdn.datatables.net/buttons/1.4.2/js/dataTables.buttons.min.js"></script>
+<script src="//cdn.datatables.net/buttons/1.4.2/js/buttons.flash.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+<script src="//cdn.datatables.net/buttons/1.4.2/js/buttons.html5.min.js"></script>
+<script src="//cdn.datatables.net/buttons/1.4.2/js/buttons.print.min.js"></script>
+    <script>
+        $(document).ready( function () {
+            $('#datatable').DataTable({
+				dom: 'Bfrtip',
+	            buttons: [
+				            'copy', 'csv', 'excel', 'pdf', 'print'
+
+				        ],
+				
+			});
+        });
+    </script>
+ 
 
 
 @stop
