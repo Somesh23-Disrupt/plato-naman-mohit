@@ -103,8 +103,8 @@ Route::get('parent-logout', function(){
 // Route::get('auth/logout', 'Auth\LoginController@getLogout');
 
 // Registration Routes...
-Route::get('register', 'Auth\RegisterController@getRegister');
-Route::post('register', 'Auth\RegisterController@postRegister');
+//Route::get('register', 'Auth\RegisterController@getRegister');
+//Route::post('register', 'Auth\RegisterController@postRegister');
 
 // Forgot Password Routes...
 // Route::get('forgot-password', 'PasswordController@postEmail');
@@ -366,6 +366,23 @@ Route::delete('student/bookmarks/delete/{id}', 'BookmarksController@delete');
 Route::delete('student/bookmarks/delete_id/{id}', 'BookmarksController@deleteById');
 Route::get('student/bookmarks/getList/{slug}',  'BookmarksController@getDatatable');
 Route::post('student/bookmarks/getSavedList',  'BookmarksController@getSavedBookmarks');
+
+
+                //////////////////////////
+                // Meetings Module //
+                /////////////////////////
+Route::get('meetings/list', 'MeetingsController@index');
+Route::get('meetings', 'MeetingsController@index');
+Route::get('meetings/add', 'MeetingsController@create');
+Route::post('meetings/add', 'MeetingsController@store');
+Route::get('meetings/edit/{slug}', 'MeetingsController@edit');
+Route::patch('meetings/edit/{slug}', 'MeetingsController@update');
+Route::delete('meetings/delete/{slug}', 'MeetingsController@delete');
+Route::get('meetings/getList', 'MeetingsController@getDatatable');
+
+// MEETINGS FOR STUDENT
+Route::get('meetings/list', 'MeetingsController@usersList');
+Route::get('meetings/show/{slug}', 'MeetingsController@display');
 
 
                 //////////////////////////

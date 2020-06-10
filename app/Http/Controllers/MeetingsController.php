@@ -7,12 +7,13 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use \App;
 
-use App\Notification;
+use App\Meeting;
 use Yajra\Datatables\Datatables;
 use DB;
 use Auth;
+use App\User;
 
-class NotificationsController extends Controller
+class MeetingsController extends Controller
 {
      public function __construct()
     {
@@ -27,16 +28,18 @@ class NotificationsController extends Controller
     {
       if(!checkRole(getUserGrade(3)))
       {
-        prepareBlockUserMessage();
-        return back();
+          if(!checkRole(getUserGrade(7))){
+            prepareBlockUserMessage();
+            return back();
+        }
       }
 
-        $data['active_class']       = 'notifications';
-        $data['title']              = getPhrase('notifications');
+        $data['active_class']       = 'meetings';
+        $data['title']              = getPhrase('meetings');
         $data['layout']              = getLayout();
-    	// return view('notifications.list', $data);
+    	// return view('meetings.list', $data);
 
-          $view_name = getTheme().'::notifications.list';
+          $view_name = getTheme().'::meetings.list';
         return view($view_name, $data);
     }
 
@@ -47,22 +50,30 @@ class NotificationsController extends Controller
     public function getDatatable($slug = '')
     {
 
-      if(!checkRole(getUserGrade(3)))
-      {
-        prepareBlockUserMessage();
-        return back();
-      }
+        if(!checkRole(getUserGrade(3)))
+        {
+            if(!checkRole(getUserGrade(7))){
+              prepareBlockUserMessage();
+              return back();
+          }
+        }
 
         $records = array();
 
 
             if(checkRole(['owner'])){
-              $records = Notification::select(['title', 'valid_from', 'valid_to', 'url', 'id','slug' ])
-              ->orderBy('updated_at', 'desc');
+              $records = Meeting::select(['title','slug','section_id', 'valid_from', 'valid_to',  'id','slug'  ])
+              ->orderBy('updated_at', 'desc')->get();
+            }
+            else if(checkRole(['student'])){
+                $records = Meeting::where('inst_id',Auth::user()->inst_id)->select(['title','slug', 'valid_from', 'valid_to',  'id','slug' ])
+                ->where('section_id',Auth::user()->section_id)
+                ->orderBy('updated_at', 'desc')->get();
             }
             else{
-              $records = Notification::where('inst_id',Auth::user()->inst_id)->select(['title', 'valid_from', 'valid_to', 'url', 'id','slug' ])
-              ->orderBy('updated_at', 'desc');
+              $records = Meeting::where('inst_id',Auth::user()->inst_id)->select(['title','slug','section_id', 'valid_from', 'valid_to',  'id','slug' ])
+              ->where('record_updated_by',Auth::user()->id)
+              ->orderBy('updated_at', 'desc')->get();
             }
 
 
@@ -74,7 +85,7 @@ class NotificationsController extends Controller
                             <i class="mdi mdi-dots-vertical"></i>
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="dLabel">
-                            <li><a href="'.URL_ADMIN_NOTIFICATIONS_EDIT.$records->slug.'"><i class="fa fa-pencil"></i>'.getPhrase("edit").'</a></li>';
+                            <li><a href="'.URL_MEETINGS_EDIT.$records->slug.'"><i class="fa fa-pencil"></i>'.getPhrase("edit").'</a></li>';
 
                            $temp = '';
                            if(checkRole(getUserGrade(3))) {
@@ -86,12 +97,18 @@ class NotificationsController extends Controller
                     $link_data .=$temp;
             return $link_data;
             })
-        //->editColumn('status', function($records)
-        //{
-            //return ($records->status == 'Active') ? '<i class="fa fa-check text-success"></i>' : '<i class="fa fa-times text-danger"></i>';
-        //})
+        ->editColumn('title',function($records)
+        {
+              return '<a href="'.URL_MEETINGS_VIEW.$records->slug.'">'.$records->title.'</a>';
+        })
+        ->editColumn('section_id', function($records) {
+            return User::select('section_name')->where('section_id',$records->section_id)->pluck('section_name')->first();
+        })
+        ->editColumn('status', function($records)
+        {
+            return ($records->status == 'Active') ? '<i class="fa fa-check text-success"></i>' : '<i class="fa fa-times text-danger"></i>';
+        })
         ->removeColumn('id')
-        ->removeColumn('slug')
 
         ->make();
     }
@@ -108,12 +125,14 @@ class NotificationsController extends Controller
         return back();
       }
     	$data['record']         	= FALSE;
-    	$data['active_class']       = 'notifications';
-     	$data['title']              = getPhrase('add_notification');
+    	$data['active_class']       = 'meetings';
+     	$data['title']              = getPhrase('add_meeting');
      	$data['layout']              = getLayout();
-    	// return view('notifications.add-edit', $data);
+        $data['sections']           = array_pluck(User::where('inst_id',Auth::user()->inst_id)->whereNotNull('section_id')->distinct()->get(),'section_name','section_id');
 
-         $view_name = getTheme().'::notifications.add-edit';
+    	// return view('meetings.add-edit', $data);
+
+         $view_name = getTheme().'::meetings.add-edit';
         return view($view_name, $data);
     }
 
@@ -130,18 +149,20 @@ class NotificationsController extends Controller
         return back();
       }
 
-    	$record = Notification::getRecordWithSlug($slug);
+    	$record = Meeting::getRecordWithSlug($slug);
     	if($isValid = $this->isValidRecord($record))
     		return redirect($isValid);
 
     	$data['record']       		= $record;
-    	$data['active_class']     	= 'notifications';
+    	$data['active_class']     	= 'meetings';
     	$data['settings']       	= FALSE;
-      	$data['title']            	= getPhrase('edit_notification');
+      	$data['title']            	= getPhrase('edit_meeting');
       	$data['layout']             = getLayout();
-    	// return view('notifications.add-edit', $data);
+        $data['sections']           = array_pluck(User::where('inst_id',Auth::user()->inst_id)->whereNotNull('section_id')->distinct()->get(),'section_name','section_id');
 
-           $view_name = getTheme().'::notifications.add-edit';
+    	// return view('meetings.add-edit', $data);
+
+           $view_name = getTheme().'::meetings.add-edit';
         return view($view_name, $data);
     }
 
@@ -159,7 +180,7 @@ class NotificationsController extends Controller
         return back();
       }
 
-    	$record = Notification::getRecordWithSlug($slug);
+    	$record = Meeting::getRecordWithSlug($slug);
 		 $rules = [
         'title'          	=> 'bail|required|max:50' ,
 
@@ -181,13 +202,13 @@ class NotificationsController extends Controller
         $record->valid_from			= $request->valid_from;
         $record->valid_to			= $request->valid_to;
         $record->inst_id		= Auth::user()->inst_id;
-        $record->url				= $request->url;
+        $record->section_id				= $request->section_id;
         $record->short_description		= $request->short_description;
         $record->description		= $request->description;
        	$record->record_updated_by 	= Auth::user()->id;
         $record->save();
         flash('success','record_updated_successfully', 'success');
-    	return redirect(URL_ADMIN_NOTIFICATIONS);
+    	return redirect(URL_MEETINGS);
     }
 
     /**
@@ -210,21 +231,21 @@ class NotificationsController extends Controller
          'valid_to'      	=> 'bail|required' ,
             ];
         $this->validate($request, $rules);
-        $record = new Notification();
+        $record = new Meeting();
       	$name  						=  $request->title;
-		    $record->title 				= $name;
-       	$record->slug 				= $record->makeSlug($name);
+		$record->title 				= $name;
+       	$record->slug               = $record->makeSlug($name, TRUE);
         $record->valid_from			= $request->valid_from;
-        $record->inst_id		= Auth::user()->inst_id;
+        $record->inst_id		    = Auth::user()->inst_id;
         $record->valid_to			= $request->valid_to;
-        $record->url				= $request->url;
+        $record->section_id			= $request->section_id;
         $record->short_description	= $request->short_description;
         $record->description		= $request->description;
        	$record->record_updated_by 	= Auth::user()->id;
 
         $record->save();
         flash('success','record_added_successfully', 'success');
-    	return redirect(URL_ADMIN_NOTIFICATIONS);
+    	return redirect(URL_MEETINGS);
     }
 
     /**
@@ -244,7 +265,7 @@ class NotificationsController extends Controller
        * Delete the quiz
        * @var [type]
        */
-        $record = Notification::where('slug', $slug)->first();
+        $record = Meeting::where('slug', $slug)->first();
         if(!env('DEMO_MODE')) {
             $record->delete();
         }
@@ -267,20 +288,20 @@ class NotificationsController extends Controller
 
     public function getReturnUrl()
     {
-    	return URL_ADMIN_NOTIFICATIONS;
+    	return URL_MEETINGS;
     }
 
     public function usersList()
     {
 
-        $data['active_class']       = 'notifications';
-        $data['title']              = getPhrase('notifications');
+        $data['active_class']       = 'meetings';
+        $data['title']              = getPhrase('meetings');
         $data['layout']              = getLayout();
         $date = date('Y-m-d');
-        $data['notifications']  	= Notification::where('inst_id',Auth::user()->inst_id)->where('valid_from', '<=', $date)
+        $data['meetings']  	= Meeting::where('inst_id',Auth::user()->inst_id)->where('valid_from', '<=', $date)
         											->where('valid_to', '>=', $date)->paginate(getRecordsPerPage());
 
-    	// return view('notifications.users-list', $data);
+    	// return view('meetings.users-list', $data);
 
             if(checkRole(['parent'])){
               $childs=App\User::where('parent_id',auth()->user()->id)->get();
@@ -291,24 +312,24 @@ class NotificationsController extends Controller
                   }
                   $data['slugs']=$name;
             }
-           $view_name = getTheme().'::notifications.users-list';
+           $view_name = getTheme().'::meetings.users-list';
         return view($view_name, $data);
     }
 
     public function display($slug)
     {
-        $record = Notification::getRecordWithSlug($slug);
+        $record = Meeting::getRecordWithSlug($slug);
         if($isValid = $this->isValidRecord($record))
             return redirect($isValid);
 
-        $data['active_class']       = 'notifications';
+        $data['active_class']       = 'meetings';
         $data['title']              = $record->title;
         $data['layout']             = getLayout();
-        $data['notification']       = $record;
+        $data['meeting']       = $record;
 
-        // return view('notifications.details', $data);
+        // return view('meetings.details', $data);
 
-           $view_name = getTheme().'::notifications.details';
+           $view_name = getTheme().'::meetings.details';
         return view($view_name, $data);
     }
 }

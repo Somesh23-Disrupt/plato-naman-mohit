@@ -218,6 +218,13 @@
 
 
 
+					<li {{ isActive($active_class, 'meetings') }} >
+						<a href="{{URL_MEETINGS}}" ><i class="fa fa-fw fa-window-restore" aria-hidden="true"></i>
+					{{ getPhrase('meetings') }} </a>
+
+					</li>
+
+
 					<li {{ isActive($active_class, 'notifications') }} >
 						<a href="{{URL_ADMIN_NOTIFICATIONS}}" ><i class="fa fa-fw fa-bell" aria-hidden="true"></i>
 					{{ getPhrase('notifications') }} </a>
