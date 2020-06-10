@@ -32,8 +32,35 @@
 						</ol>
 					</div>
 				</div>
+			
+				<div class="row">
+					<div class="col-md-3 col-sm-6">
+						<div class="media state-media box-ws">
+							<div class="media-left">
+								<a href="{{URL_USERS}}"><div class="state-icn bg-icon-info"><i class="fa fa-users"></i></div></a>
+							</div>
+							<div class="media-body">
+								<h4 class="card-title">{{ App\User::where('inst_id',getUserWithSlug()->inst_id)->where('role_id',5)
+								->where('section_id',$sec_id)
+								->count()}}</h4>
+							   <a href="{{URL_USERS}}">{{ getPhrase('Students')}}</a>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3 col-sm-6">
+						<div class="media state-media box-ws">
+							<div class="media-left">
+								<div class="state-icn bg-icon-purple"><i class="fa fa-list"></i></div>
+							</div>
+							<div class="media-body">
+								<h4 class="card-title">{{ $tppforteach }}</h4>
+							   <a>{{ getPhrase('total_pass_percent')}}</a>
+							</div>
+						</div>
+					</div>
+				</div>
 
-			</div> 
+			
 				<div class="row">
 					<div class="col-md-12">
 						<div class="panel panel-primary dsPanel">

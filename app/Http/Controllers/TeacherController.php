@@ -200,6 +200,11 @@ class TeacherController extends Controller
                 prepareBlockUserMessage();
                 return redirect("dashboard");
             }
+
+
+
+            
+
               $userbyinst=App\User::where('inst_id',auth()->user()->inst_id)->where('section_id',$slug)->where('role_id',5)->pluck('id');
                     
                     
@@ -208,7 +213,7 @@ class TeacherController extends Controller
               ->groupBy('quizresults.quiz_id')
               ->get();
               $data['tables']=$records;
-
+            $data['sec_id']=$slug;
 
            //all pass students accross quizes
 
@@ -333,6 +338,24 @@ class TeacherController extends Controller
                       $data['chart_data'][] = (object)$chart_data;
 
 
+                      $data['tppforteach']=0;
+                      $tnps=0;
+                      $data['passpercent']=$this->totalpass($slug);
+                // dd($data['passpercent']);
+                foreach ($data['passpercent'] as $per) {
+                  
+                  if ($per['per']>=50) {
+                    $tnps=$tnps+1;
+                  }
+                  $data['tppforteach']=$per['per']+$data['tppforteach'];
+                }
+                if ($data['tppforteach']>0) {
+                  $data['tppforteach']=round($tnps/count($data['passpercent'])*100,2);
+                }
+                else{
+                  $data['tppforteach']=0;
+                }
+                // dd($data['passpercent']);
               $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
               // dd($sections);
               $data['sections']= $sections;
@@ -344,5 +367,48 @@ class TeacherController extends Controller
               return view($view_name, $data);
 
       }
+
+
+      public function totalpass($slug)
+    {
+      
+          $users=App\User::where('role_id',5)
+          ->where('section_id',$slug)
+          
+          ->select('id','name')->get();
+          
+          $tpp=0;
+          $t=[];
+          // $sum=0;
+          foreach ($users as $user) {
+              $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')
+                ->select(['quizresults.total_marks as total_marks','marks_obtained' ])
+                ->where('user_id', '=', $user->id)
+                ->groupBy('quizresults.quiz_id')
+                ->get();
+
+              // dd($records);
+              $tpp=0;
+              foreach ($records as $record) {
+
+                $percent=($record->marks_obtained/$record->total_marks)*100;
+                $tpp= $percent+$tpp;
+                // $data['name']=$name;
+                // $data['percent']=$tpp;
+
+              }
+              if(count($records)<=0 || $tpp<=0){
+                $data['per']=0;
+              }else{
+                $data['per']=round($tpp/count($records),2);
+              }
+
+              $data['name']=$user->name;
+              $t[]=$data;
+              // dd($data);
+          }
+          // dd($t);
+          return $t;
+     }
 
 }
