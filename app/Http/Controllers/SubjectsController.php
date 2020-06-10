@@ -38,6 +38,9 @@ class SubjectsController extends Controller
         $data['title']              = getPhrase('subjects_list');
     	// return view('mastersettings.subjects.list', $data);
         $data['layout']=getLayout();
+        $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+        // dd($sections);
+        $data['sectionsforteach']= $sections;
           $view_name = getTheme().'::mastersettings.subjects.list';
         return view($view_name, $data);
     }
@@ -104,7 +107,9 @@ class SubjectsController extends Controller
         $data['sections']           = array_pluck(User::where('inst_id',Auth::user()->inst_id)->whereNotNull('section_id')->distinct()->get(),'section_name','section_id');
 
     	// return view('mastersettings.subjects.add-edit', $data);
-
+      $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+        // dd($sections);
+        $data['sectionsforteach']= $sections;
          $view_name = getTheme().'::mastersettings.subjects.add-edit';
         return view($view_name, $data);
     }
@@ -127,7 +132,9 @@ class SubjectsController extends Controller
       $data['title']              = getPhrase('edit_subject');
     	// return view('mastersettings.subjects.add-edit', $data);
 
-
+      $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+      // dd($sections);
+      $data['sectionsforteach']= $sections;
          $view_name = getTheme().'::mastersettings.subjects.add-edit';
         return view($view_name, $data);
     }
@@ -327,7 +334,9 @@ class SubjectsController extends Controller
         $data['title']        = getPhrase('import_subjects');
         $data['layout']        = getLayout();
         // return view('mastersettings.subjects.import.import', $data);
-
+        $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+        // dd($sections);
+        $data['sectionsforteach']= $sections;
             $view_name = getTheme().'::mastersettings.subjects.import.import';
         return view($view_name, $data);
      }

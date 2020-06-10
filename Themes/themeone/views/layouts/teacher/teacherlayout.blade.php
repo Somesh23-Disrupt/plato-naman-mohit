@@ -212,9 +212,20 @@
 							<li><a href="{{ URL_LMS_SERIES }}"> <i class="fa fa-fw fa-list-ol"></i>{{ getPhrase('series') }}</a></li>
 					</ul>
 					</li>
-					@yield('sectiondetails')
-						
+					<li {{ isActive($active_class, 'section') }}>
 
+						<a data-toggle="collapse" data-target="#section"><i class="fa fa-fw fa-tv" ></i>
+						Sections </a>
+							<ul id="section" class="collapse sidemenu-dropdown">
+								@foreach ($sectionsforteach as $section)
+								
+							
+									<li><a href="{{URL_SECDETAILS.'/'.$section }}"> <i class="fa fa-fw fa-random"></i>{{ App\User::select(['section_name'])->where('section_id',$section)->first()->section_name }}</a></li>
+									
+								@endforeach
+							</ul>
+						</li>
+					
 
 
 

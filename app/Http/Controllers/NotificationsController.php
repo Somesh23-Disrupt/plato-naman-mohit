@@ -35,7 +35,9 @@ class NotificationsController extends Controller
         $data['title']              = getPhrase('notifications');
         $data['layout']              = getLayout();
     	// return view('notifications.list', $data);
-
+      $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+      // dd($sections);
+      $data['sectionsforteach']= $sections;
           $view_name = getTheme().'::notifications.list';
         return view($view_name, $data);
     }
@@ -112,7 +114,9 @@ class NotificationsController extends Controller
      	$data['title']              = getPhrase('add_notification');
      	$data['layout']              = getLayout();
     	// return view('notifications.add-edit', $data);
-
+      $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+      // dd($sections);
+      $data['sectionsforteach']= $sections;
          $view_name = getTheme().'::notifications.add-edit';
         return view($view_name, $data);
     }
@@ -140,7 +144,9 @@ class NotificationsController extends Controller
       	$data['title']            	= getPhrase('edit_notification');
       	$data['layout']             = getLayout();
     	// return view('notifications.add-edit', $data);
-
+      $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+      // dd($sections);
+      $data['sectionsforteach']= $sections;
            $view_name = getTheme().'::notifications.add-edit';
         return view($view_name, $data);
     }
@@ -307,7 +313,9 @@ class NotificationsController extends Controller
         $data['notification']       = $record;
 
         // return view('notifications.details', $data);
-
+        $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+        // dd($sections);
+        $data['sectionsforteach']= $sections;
            $view_name = getTheme().'::notifications.details';
         return view($view_name, $data);
     }

@@ -53,7 +53,9 @@ class UsersController extends Controller
         $data['heading']      = getPhrase('users');
         $data['title']        = getPhrase('users');
         // return view('users.list-users', $data);
-
+        $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+        // dd($sections);
+        $data['sectionsforteach']= $sections;
          $view_name = getTheme().'::users.list-users';
         return view($view_name, $data);
      }
@@ -219,7 +221,10 @@ class UsersController extends Controller
         $data['layout']       = getLayout();
 
         // return view('users.add-edit-user', $data);
-        $data['sections']=User::select('section_name')->where('inst_id',Auth::user()->inst_id)->distinct()->pluck('section_name');
+       
+        $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+        // dd($sections);
+        $data['sectionsforteach']= $sections;
          $view_name = getTheme().'::users.add-edit-user';
         return view($view_name, $data);
      }
@@ -542,7 +547,9 @@ class UsersController extends Controller
 
           // dd($data);
           // return view('users.add-edit-user', $data);
-
+          $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+          // dd($sections);
+          $data['sectionsforteach']= $sections;
             $view_name = getTheme().'::users.add-edit-user';
         return view($view_name, $data);
      }
@@ -824,7 +831,9 @@ class UsersController extends Controller
       // $data['right_bar_data']     = array('chart_data' => $data['chart_data']);
 
         // return view('users.user-details', $data);
-
+        $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+        // dd($sections);
+        $data['sectionsforteach']= $sections;
             $view_name = getTheme().'::users.user-details';
         return view($view_name, $data);
     }
@@ -908,7 +917,9 @@ class UsersController extends Controller
         $data['title']        = getPhrase('import_users');
         $data['layout']        = getLayout();
         // return view('users.import.import', $data);
-
+        $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+        // dd($sections);
+        $data['sectionsforteach']= $sections;
            $view_name = getTheme().'::users.import.import';
         return view($view_name, $data);
      }

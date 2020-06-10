@@ -44,6 +44,9 @@ class ExamSeriesController extends Controller
 
         $data['active_class']       = 'exams';
         $data['title']              = getPhrase('exam_series');
+        $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+        // dd($sections);
+        $data['sectionsforteach']= $sections;
     	// return view('exams.examseries.list', $data);
        $view_name = getTheme().'::exams.examseries.list';
         return view($view_name, $data);
@@ -147,7 +150,10 @@ class ExamSeriesController extends Controller
         $data['categories']         = array_pluck(QuizCategory::where('record_updated_by',Auth::user()->id)->get(), 'category', 'id');
     	$data['active_class']       = 'exams';
       	$data['title']              = getPhrase('add_exam_series');
-    	// return view('exams.examseries.add-edit', $data);
+      // return view('exams.examseries.add-edit', $data);
+      $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+        // dd($sections);
+        $data['sectionsforteach']= $sections;
         $view_name = getTheme().'::exams.examseries.add-edit';
         return view($view_name, $data);
     }
@@ -177,7 +183,8 @@ class ExamSeriesController extends Controller
         $data['categories']         = array_pluck(QuizCategory::where('record_updated_by',Auth::user()->id)->get(), 'category', 'id');
         $data['sections']           = array_pluck(User::where('inst_id',Auth::user()->inst_id)->whereNotNull('section_id')->distinct()->get(),'section_name','section_id');
     	$data['title']            = getPhrase('edit_series');
-    	// return view('exams.examseries.add-edit', $data);
+      // return view('exams.examseries.add-edit', $data);
+      
        $view_name = getTheme().'::exams.examseries.add-edit';
         return view($view_name, $data);
     }

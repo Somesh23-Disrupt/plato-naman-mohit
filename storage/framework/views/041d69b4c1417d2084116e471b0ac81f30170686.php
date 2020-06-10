@@ -3,22 +3,7 @@
 	<link href="https://cdn.datatables.net/buttons/1.4.2/css/buttons.dataTables.min.css" type="text/css">
 
 <?php $__env->stopSection(); ?>
-<?php $__env->startSection('sectiondetails'); ?>
-<li <?php echo e(isActive($active_class, 'section')); ?>>
 
-    <a data-toggle="collapse" data-target="#section"><i class="fa fa-fw fa-tv" ></i>
-    Sections </a>
-		<ul id="section" class="collapse sidemenu-dropdown">
-			<?php $__currentLoopData = $sections; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $section): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-			
-		
-				<li><a href="<?php echo e(URL_SECDETAILS.'/'.$section); ?>"> <i class="fa fa-fw fa-random"></i><?php echo e(App\User::select(['section_name'])->where('section_id',$section)->first()->section_name); ?></a></li>
-				
-			<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-		</ul>
-	</li>
-
-<?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('content'); ?>
 
@@ -254,4 +239,4 @@
 	
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('layouts.teacher.teacherlayout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<?php echo $__env->make($layout, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

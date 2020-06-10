@@ -74,7 +74,9 @@ class TeacherController extends Controller
               }
             
           $data['records']      = App\User::whereIn('id', $pass)->get();
-          
+          $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+        // dd($sections);
+        $data['sectionsforteach']= $sections;
         // return view('users.list-users', $data);
                  $view_name = getTheme().'::teacher.list';
         return view($view_name, $data);
@@ -130,6 +132,9 @@ class TeacherController extends Controller
         $data['categories'] = $categories;
         
         // return view('site.faqs',$data);
+        $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+        // dd($sections);
+        $data['sectionsforteach']= $sections;
         $view_name = getTheme().'::teacher.faqs';
         return view($view_name, $data);
      }

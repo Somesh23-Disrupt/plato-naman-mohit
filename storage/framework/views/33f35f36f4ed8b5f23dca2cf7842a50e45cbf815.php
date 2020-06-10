@@ -215,21 +215,29 @@
 							<li><a href="<?php echo e(URL_LMS_SERIES); ?>"> <i class="fa fa-fw fa-list-ol"></i><?php echo e(getPhrase('series')); ?></a></li>
 					</ul>
 					</li>
-					<?php echo $__env->yieldContent('sectiondetails'); ?>
-						
+					<li <?php echo e(isActive($active_class, 'section')); ?>>
+
+						<a data-toggle="collapse" data-target="#section"><i class="fa fa-fw fa-tv" ></i>
+						Sections </a>
+							<ul id="section" class="collapse sidemenu-dropdown">
+								<?php $__currentLoopData = $sectionsforteach; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $section): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+								
+							
+									<li><a href="<?php echo e(URL_SECDETAILS.'/'.$section); ?>"> <i class="fa fa-fw fa-random"></i><?php echo e(App\User::select(['section_name'])->where('section_id',$section)->first()->section_name); ?></a></li>
+									
+								<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+							</ul>
+						</li>
+					
 
 
 
-
-<<<<<<< HEAD
-=======
 					<li <?php echo e(isActive($active_class, 'meetings')); ?> >
 						<a href="<?php echo e(URL_MEETINGS); ?>" ><i class="fa fa-fw fa-window-restore" aria-hidden="true"></i>
 					<?php echo e(getPhrase('meetings')); ?> </a>
 
 					</li>
 
->>>>>>> upstream/master
 
 					<li <?php echo e(isActive($active_class, 'notifications')); ?> >
 						<a href="<?php echo e(URL_ADMIN_NOTIFICATIONS); ?>" ><i class="fa fa-fw fa-bell" aria-hidden="true"></i>
