@@ -215,8 +215,8 @@
 							<li><a href="<?php echo e(URL_LMS_SERIES); ?>"> <i class="fa fa-fw fa-list-ol"></i><?php echo e(getPhrase('series')); ?></a></li>
 					</ul>
 					</li>
-
-
+					<?php echo $__env->yieldContent('sectiondetails'); ?>
+						
 
 
 

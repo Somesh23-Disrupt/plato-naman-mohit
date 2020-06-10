@@ -7,6 +7,7 @@ use \App;
 use App\Http\Requests;
 use App\User;
 use App\Quiz;
+use Illuminate\Support\Str;
 use App\FaqCategory;
 use App\Institution;
 use App\GeneralSettings as Settings;
@@ -160,5 +161,188 @@ class TeacherController extends Controller
            
           return $chart_data;
      }
-    
+
+
+      public function secdetails($slug)
+      {
+
+              
+        // dd($slug);
+            if(!checkRole(getUserGrade(6)))
+            {
+              prepareBlockUserMessage();
+              return back();
+            }
+            if ( strval($slug) !== strval(intval($slug)) ) {
+              prepareBlockUserMessage();
+              return redirect("dashboard");
+            }
+            $teachsec=auth()->user()->section_name;
+            $len=strlen($teachsec);
+            // dd(Str::limit($teachsec,2));
+            $slugstr=App\User::select(['section_name'])->where('section_id',$slug)->first()->section_name;
+            
+            // dd(Str::limit($slugstr,2));
+            // dd(!(Str::limit($slugstr,2)==$teachgrade));
+            if ($len==3) {
+              $teachgrade=Str::limit($teachsec,2);
+              if (!(Str::limit($slugstr,2)==$teachgrade)) {
+                prepareBlockUserMessage();
+                return redirect("dashboard");
+              }
+            }elseif($len==2){
+              $teachgrade=Str::limit($teachsec,1);
+              if (!(Str::limit($slugstr,1)==$teachgrade)) {
+                prepareBlockUserMessage();
+                return redirect("dashboard");
+              }
+            }else{
+                prepareBlockUserMessage();
+                return redirect("dashboard");
+            }
+              $userbyinst=App\User::where('inst_id',auth()->user()->inst_id)->where('section_id',$slug)->where('role_id',5)->pluck('id');
+                    
+                    
+              $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')->where('exam_status','pass')->whereIn('user_id',$userbyinst)
+                ->select(['quiz_id', 'quizzes.category_id','quizzes.total_marks','quizzes.title','quizresults.exam_status',DB::raw('count("") as tp'),DB::raw('round(avg(marks_obtained),2) as avgmarks'), 'quizresults.user_id'])
+              ->groupBy('quizresults.quiz_id')
+              ->get();
+              $data['tables']=$records;
+
+
+           //all pass students accross quizes
+
+                  
+           $dataset = [];
+           $labels = [];
+           $bgcolor = [];
+           $border_color = [];
+           $test=['rgba(196, 219, 250, 1)','rgba(52, 132, 240, 1)','rgba(70, 75, 147, 1)'];
+           foreach($records as $record)
+           {
+               $color_number = rand(0,999);
+               $labels[] = ucfirst($record->title);
+               $dataset[] = $record->tp;
+
+               $border_color[] = 'rgb(247,247,247)';
+           }
+           for ($i=0; $i < 3; $i++) {
+             $bgcolor[] = $test[$i];
+           }
+
+           
+           $dataset_label[] = 'lbl';
+           $chart_data['type'] = 'pie';
+           //horizontalBar, bar, polarArea, line, doughnut, pie
+           $chart_data['data']   = (object) array(
+                   'labels'            => $labels,
+                   'dataset'           => $dataset,
+                   'dataset_label'     => $dataset_label,
+                   'bgcolor'           => $bgcolor,
+                   'border_color'      => $border_color
+                   );
+         
+                   $chart_data['title'] = getPhrase('Overall Performance');
+                 $data['chart_data'][] = (object)$chart_data;
+
+
+
+                   //chart
+                    $labels = [];
+                    $dataset = [];
+                    $bgcolor = [];
+                    $bordercolor = [];
+                   
+                      
+                    // dd($userbyinst);
+                    $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')
+                          ->select(['quiz_id', 'quizzes.title',DB::raw('Avg(percentage) as percentage'), 'quizresults.user_id'])
+                          ->groupBy('quizzes.title')
+                          ->whereIn('user_id',$userbyinst)
+                          ->get();
+                    
+                    foreach($records as $record) {
+                        $color_number = rand(0,999);
+                        $record = (object)$record;
+                        $labels[] = $record->title;
+                        $dataset[] = $record->percentage;
+                        $bgcolor[] = getColor('background',$color_number);
+                        $bordercolor[] = getColor('border', $color_number);
+                  }
+
+                    $labels = $labels;
+                    $dataset = $dataset;
+                    $dataset_label = getPhrase('avg_percent');
+                    $bgcolor  = $bgcolor;
+                    $border_color = $bordercolor;
+                    $chart_data['type'] = 'bar';
+                    //horizontalBar, bar, polarArea, line, doughnut, pie
+                    $chart_data['title'] = getPhrase('Avg. Percent across Subjects');
+
+                    $chart_data['data']   = (object) array(
+                            'labels'            => $labels,
+                            'dataset'           => $dataset,
+                            'dataset_label'     => $dataset_label,
+                            'bgcolor'           => $bgcolor,
+                            'border_color'      => $border_color
+                            );
+                            
+                    $data['chart_data'][] = (object)$chart_data;
+
+
+
+                    $labels = [];
+                    $dataset = [];
+                    $bgcolor = [];
+                    $bordercolor = [];
+                    
+                    
+                    
+                    // dd($userbyinst);
+                    $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')
+                          ->select(['quiz_id', 'quizzes.title',DB::raw('Avg(marks_obtained) as percentage'), 'quizresults.user_id'])
+                          ->groupBy('quizzes.title')
+                          ->whereIn('user_id',$userbyinst)
+                          ->get();
+                    
+                    foreach($records as $record) {
+                        $color_number = rand(0,999);
+                        $record = (object)$record;
+                        $labels[] = $record->title;
+                        $dataset[] = $record->percentage;
+                        $bgcolor[] = getColor('background',$color_number);
+                        $bordercolor[] = getColor('border', $color_number);
+                  }
+
+                    $labels = $labels;
+                    $dataset = $dataset;
+                    $dataset_label = getPhrase('avg_marks');
+                    $bgcolor  = $bgcolor;
+                    $border_color = $bordercolor;
+                    $chart_data['type'] = 'bar';
+                    //horizontalBar, bar, polarArea, line, doughnut, pie
+                    $chart_data['title'] = getPhrase('Avg. Marks across Subjects');
+
+                    $chart_data['data']   = (object) array(
+                            'labels'            => $labels,
+                            'dataset'           => $dataset,
+                            'dataset_label'     => $dataset_label,
+                            'bgcolor'           => $bgcolor,
+                            'border_color'      => $border_color
+                            );
+                      $data['chart_data'][] = (object)$chart_data;
+
+
+              $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+              // dd($sections);
+              $data['sections']= $sections;
+        
+              $data['title']=App\User::select(['section_name'])->where('section_id',$slug)->first()->section_name;
+              $data['active_class']       = 'section';
+              
+              $view_name = getTheme().'::teacher.sec-detail';
+              return view($view_name, $data);
+
+      }
+
 }

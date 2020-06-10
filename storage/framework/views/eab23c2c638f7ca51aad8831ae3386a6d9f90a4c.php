@@ -21,7 +21,6 @@
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('content'); ?>
-
 <div id="page-wrapper">
 			<div class="container-fluid">
 			<div class="row">
@@ -33,94 +32,7 @@
 					</div>
 				</div>
 
-				 <div class="row">
-				 	<div class="col-md-3 col-sm-6">
-				 		<div class="media state-media box-ws">
-				 			<div class="media-left">
-				 				<a href="<?php echo e(URL_USERS); ?>"><div class="state-icn bg-icon-info"><i class="fa fa-users"></i></div></a>
-				 			</div>
-				 			<div class="media-body">
-								 <h4 class="card-title"><?php echo e(App\User::where('inst_id',getUserWithSlug()->inst_id)->where('role_id',5)
-								 ->where('section_name',getUserWithSlug()->section_name)
-								 ->count()); ?></h4>
-								<a href="<?php echo e(URL_USERS); ?>"><?php echo e(getPhrase('Students')); ?></a>
-				 			</div>
-				 		</div>
-				 	</div>
-					<!-- <div class="col-md-3 col-sm-6">
-				 		<div class="media state-media box-ws">
-				 			<div class="media-left">
-				 				<a href="<?php echo e(URL_QUIZ_CATEGORIES); ?>"><div class="state-icn bg-icon-pink"><i class="fa fa-list-alt"></i></div></a>
-				 			</div>
-				 			<div class="media-body">
-				 				<h4 class="card-title"><?php echo e(App\QuizCategory::get()->count()); ?></h4>
-								<a href="<?php echo e(URL_QUIZ_CATEGORIES); ?>"><?php echo e(getPhrase('quiz_categories')); ?></a>
-				 			</div>
-				 		</div>
-				 	</div>
-				 	 -->
-				 	 <div class="col-md-3 col-sm-6">
-				 		<div class="media state-media box-ws">
-				 			<div class="media-left">
-				 				<a href="<?php echo e(URL_QUIZZES); ?>"><div class="state-icn bg-icon-purple"><i class="fa fa-desktop"></i></div></a>
-				 			</div>
-				 			<div class="media-body">
-				 				<h4 class="card-title"><?php echo e(App\Quiz::get()->count()); ?></h4>
-								<a href="<?php echo e(URL_QUIZZES); ?>"><?php echo e(getPhrase('quizzes')); ?></a>
-				 			</div>
-				 		</div>
-				 	</div>
-				 	<div class="col-md-3 col-sm-6">
-				 		<div class="media state-media box-ws">
-				 			<div class="media-left">
-				 				<a href="<?php echo e(URL_SUBJECTS); ?>"><div class="state-icn bg-icon-success"><i class="fa fa-book"></i></div></a>
-				 			</div>
-				 			<div class="media-body">
-				 				<h4 class="card-title"><?php echo e(App\Subject::get()->count()); ?></h4>
-								<a href="<?php echo e(URL_SUBJECTS); ?>"><?php echo e(getPhrase('subjects')); ?></a>
-				 			</div>
-				 		</div>
-				 	</div>
-
-
-				 	 <div class="col-md-3 col-sm-6">
-				 		<div class="media state-media box-ws">
-				 			<div class="media-left">
-				 				<div class="state-icn bg-icon-purple"><i class="fa fa-list"></i></div>
-				 			</div>
-				 			<div class="media-body">
-				 				<h4 class="card-title"><?php echo e($tppforteach); ?></h4>
-								<a><?php echo e(getPhrase('total_pass_percent')); ?></a>
-				 			</div>
-				 		</div>
-				 	</div>
-					 
-
-				 	 <!-- <div class="col-md-3 col-sm-6">
-				 		<div class="media state-media box-ws">
-				 			<div class="media-left">
-				 				<a href="<?php echo e(URL_SUBSCRIBED_USERS); ?>"><div class="state-icn bg-icon-blue"><i class="fa fa-users"></i></div></a>
-				 			</div>
-				 			<div class="media-body">
-				 				<h4 class="card-title"><?php echo e(App\UserSubscription::get()->count()); ?></h4>
-								<a href="<?php echo e(URL_SUBSCRIBED_USERS); ?>"><?php echo e(getPhrase('subscribed_users')); ?></a>
-				 			</div>
-				 		</div>
-				 	</div>
-
-				 		 <div class="col-md-3 col-sm-6">
-				 		<div class="media state-media box-ws">
-				 			<div class="media-left">
-				 				<a href="<?php echo e(URL_THEMES_LIST); ?>"><div class="state-icn bg-icon-pink"><i class="fa fa-fw fa-th-large" ></i> </div></a>
-				 			</div>
-				 			<div class="media-body">
-				 				<h4 class="card-title"><?php echo e(App\SiteTheme::get()->count()); ?></h4>
-								<a href="<?php echo e(URL_THEMES_LIST); ?>"><?php echo e(getPhrase('themes')); ?></a>
-				 			</div>
-				 		</div>
-				 	</div>
- -->
-				</div>
+			</div> 
 				<div class="row">
 					<div class="col-md-12">
 						<div class="panel panel-primary dsPanel">
@@ -228,7 +140,7 @@
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('footer_scripts'); ?>
-	<?php echo $__env->make('common.chart', array($chart_data,'ids' =>$ids,'scale'=>TRUE), array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>;
+	<?php echo $__env->make('common.chart', array($chart_data,'ids' =>$ids), array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>;
 	<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
 
 	<script src="https://cdn.datatables.net/buttons/1.4.2/js/dataTables.buttons.min.js"></script>

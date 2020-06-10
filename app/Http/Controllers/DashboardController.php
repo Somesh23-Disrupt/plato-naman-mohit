@@ -270,8 +270,9 @@ class DashboardController extends Controller
               $data['chart_data'][] = (object)$chart_data;
               
           
-            
-
+                $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+                        // dd($sections);
+                        $data['sections']= $sections;
               $view_name = getTheme().'::teacher.dashboard';
               return view($view_name, $data);
         }
