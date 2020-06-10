@@ -304,6 +304,17 @@ define('URL_COUPONS_USAGE_AJAXDATA', PREFIX.'coupons/get-usage-data');
 
 
 
+// Meetings Module
+define('URL_MEETINGS', PREFIX.'meetings');
+define('URL_MEETINGS_ADD', PREFIX.'meetings/add');
+define('URL_MEETINGS_EDIT', PREFIX.'meetings/edit/');
+define('URL_MEETINGS_DELETE', PREFIX.'meetings/delete/');
+define('URL_MEETINGS_GETLIST', PREFIX.'meetings/getList');
+
+//Meetings Student
+define('URL_MEETITNGS_LIST', PREFIX.'meetings/list');
+define('URL_MEETINGS_VIEW', PREFIX.'meetings/show/');
+
 // Notifications Module
 define('URL_ADMIN_NOTIFICATIONS', PREFIX.'admin/notifications');
 define('URL_ADMIN_NOTIFICATIONS_ADD', PREFIX.'admin/notifications/add');
