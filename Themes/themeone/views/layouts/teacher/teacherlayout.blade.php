@@ -218,6 +218,7 @@
 
 
 
+
 					<li {{ isActive($active_class, 'notifications') }} >
 						<a href="{{URL_ADMIN_NOTIFICATIONS}}" ><i class="fa fa-fw fa-bell" aria-hidden="true"></i>
 					{{ getPhrase('notifications') }} </a>
