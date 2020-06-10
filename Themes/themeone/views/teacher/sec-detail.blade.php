@@ -34,7 +34,7 @@
 				</div>
 			
 				<div class="row">
-					<div class="col-md-3 col-sm-6">
+					<div class="col-md-6 col-sm-6">
 						<div class="media state-media box-ws">
 							<div class="media-left">
 								<a href="{{URL_USERS}}"><div class="state-icn bg-icon-info"><i class="fa fa-users"></i></div></a>
@@ -47,7 +47,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-md-3 col-sm-6">
+					<div class="col-md-6 col-sm-6">
 						<div class="media state-media box-ws">
 							<div class="media-left">
 								<div class="state-icn bg-icon-purple"><i class="fa fa-list"></i></div>

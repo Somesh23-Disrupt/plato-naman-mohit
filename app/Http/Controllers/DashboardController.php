@@ -286,7 +286,6 @@ class DashboardController extends Controller
             $data['user']           = $user;
             $data['childs_names']=$this->gettingavgscore()->names;
             $data['childs_totals']=$this->gettingavgscore()->totals;
-            $data['chart_data']=$this->getstudents();
             $childs=App\User::where('parent_id',10)->get();
             $i=0;
             $name=[];
@@ -304,6 +303,8 @@ class DashboardController extends Controller
             $data['slugs']=$name;
             // dd($data['slugs']);
             // dd($new);
+            $data['chart_data']=$this->getstudents();
+
             // $data['chart_data'][] = (object)$this->examanalysisbytotalmarks();
             $data['examattends']=$new;
             // dd($data['examattends']);
@@ -804,24 +805,11 @@ class DashboardController extends Controller
     }
     public function getstudents()
     {
-          $user                   = getUserWithSlug();
-          $data['user']           = $user;
-          if(checkRole(['parent']))
-          {
-            $id='parent_id';
-          }
-          else{
-            $id='section_id';
-          }
-          $data['chart_data']=[];
-        if(App\User::where('section_name',$user->section_name)->where('role_id',5)->get()->count()>0){
-          if (checkRole(['teacher'])) {
-            $users=App\User::where('section_name',$user->section_name)->where('role_id',5)->get();
-          }else{
-            $users=App\User::where($id, '=', $user->id)->get();
-          }
+          
+        
+            $user=App\User::where('parent_id',auth()->user()->id)->where('role_id',5)->first();
 
-          foreach ($users as $user) {
+          
                 $data['user']               = $user;
                 // Chart code start
                 $records = array();
@@ -974,10 +962,8 @@ class DashboardController extends Controller
                                 );
 
                                 $data['chart_data'][]=(object)$chart_data;
-          }
-        }
-          return $data['chart_data'];
-    }
+                return $data['chart_data'];
+      }
     public function totalpass()
     {
       if(checkRole('teacher')){
