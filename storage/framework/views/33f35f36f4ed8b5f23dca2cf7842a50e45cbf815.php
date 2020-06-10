@@ -221,6 +221,15 @@
 
 
 
+<<<<<<< HEAD
+=======
+					<li <?php echo e(isActive($active_class, 'meetings')); ?> >
+						<a href="<?php echo e(URL_MEETINGS); ?>" ><i class="fa fa-fw fa-window-restore" aria-hidden="true"></i>
+					<?php echo e(getPhrase('meetings')); ?> </a>
+
+					</li>
+
+>>>>>>> upstream/master
 
 					<li <?php echo e(isActive($active_class, 'notifications')); ?> >
 						<a href="<?php echo e(URL_ADMIN_NOTIFICATIONS); ?>" ><i class="fa fa-fw fa-bell" aria-hidden="true"></i>

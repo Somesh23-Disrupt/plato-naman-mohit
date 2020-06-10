@@ -927,6 +927,25 @@ INSERT INTO `migrations` (`migration`, `batch`) VALUES
 -- Table structure for table `notifications`
 --
 
+CREATE TABLE `meetings` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `slug` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `short_description` text COLLATE utf8_unicode_ci NOT NULL,
+  `description` text COLLATE utf8_unicode_ci NOT NULL,
+  `inst_id` bigint(20) UNSIGNED NOT NULL,
+  `section_id` bigint(11) UNSIGNED NULL DEFAULT NULL,
+  `valid_from` date NOT NULL,
+  `valid_to` date NOT NULL,
+  `record_updated_by` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Table structure for table `notifications`
+--
+
 CREATE TABLE `notifications` (
   `id` int(10) UNSIGNED NOT NULL,
   `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -2454,6 +2473,11 @@ ALTER TABLE `messenger_threads`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `meetings`
+--
+ALTER TABLE `meetings`
+  ADD PRIMARY KEY (`id`);
+--
 -- Indexes for table `notifications`
 --
 ALTER TABLE `notifications`
@@ -2805,6 +2829,11 @@ ALTER TABLE `messenger_participants`
 ALTER TABLE `messenger_threads`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
+--
+-- AUTO_INCREMENT for table `meetings`
+--
+ALTER TABLE `meetings`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `notifications`
 --

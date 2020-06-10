@@ -4,6 +4,7 @@
 @stop
 @section('content')
 
+
 <div id="page-wrapper">
 			<div class="container-fluid">
 				<!-- Page Heading -->
@@ -21,17 +22,9 @@
 					<div class="panel-heading">
 
 						<div class="pull-right messages-buttons">
-
-							<a href="{{URL_USERS_IMPORT}}" class="btn  btn-primary button" >{{ getPhrase('import_excel')}}</a>
-							<a href="{{URL_USERS_ADD}}" class="btn  btn-primary button" >
-							@if(checkRole(['teacher']))
-								{{ getPhrase('add_student')}}
-							@else
-								{{ getPhrase('add_user')}}
-							@endif
-							</a>
-
+							<a href="{{URL_MEETINGS_ADD}}" class="btn  btn-primary button" >{{ getPhrase('create')}}</a>
 						</div>
+
 						<h1>{{ $title }}</h1>
 					</div>
 					<div class="panel-body packages">
@@ -39,31 +32,33 @@
 						<table class="table table-striped table-bordered datatable" cellspacing="0" width="100%">
 							<thead>
 								<tr>
-								 	<th>{{ getPhrase('name')}}</th>
-									<th>{{ getPhrase('email')}}</th>
-									<th>{{ getPhrase('image')}}</th>
-									<th>{{ getPhrase('role')}}</th>
+									<th>{{ getPhrase('title')}}</th>
+									<th>{{ getPhrase('meeting_id')}}</th>
+									@if(!checkRole(['student']))
 									<th>{{ getPhrase('section')}}</th>
-									<th>{{ getPhrase('status')}}</th>
+									@endif
+									<th>{{ getPhrase('start_date')}}</th>
+									<th>{{ getPhrase('end_date')}}</th>
+									@if(!checkRole(['student']))
 									<th>{{ getPhrase('action')}}</th>
+									@endif
 								</tr>
 							</thead>
 
 						</table>
 						</div>
 
-
 					</div>
-
 				</div>
 			</div>
 			<!-- /.container-fluid -->
 		</div>
 @endsection
 
-@section('footer_scripts')
- @include('common.datatables', array('route'=>'users.dataTable'))
- @include('common.deletescript', array('route'=>URL_USERS_DELETE))
 
-  @include('common.account-status', array('route'=>URL_USERS_STATUS))
+@section('footer_scripts')
+
+ @include('common.datatables', array('route'=>URL_MEETINGS_GETLIST, 'route_as_url' => TRUE))
+ @include('common.deletescript', array('route'=>URL_MEETINGS_DELETE))
+
 @stop

@@ -20,7 +20,7 @@
 
 							'required'=> 'true',
 
-							'ng-class'=>'{"has-error": formNotifications.title.$touched && formNotifications.title.$invalid}',
+							'ng-class'=>'{"has-error": formMeetings.title.$touched && formMeetings.title.$invalid}',
 
 							'ng-minlength' => '4',
 
@@ -28,7 +28,7 @@
 
 							)) }}
 
-						<div class="validation-error" ng-messages="formNotifications.title.$error" >
+						<div class="validation-error" ng-messages="formMeetings.title.$error" >
 
 	    					{!! getValidationMessage()!!}
 
@@ -44,18 +44,11 @@
 
 
 
-					<fieldset class="form-group col-md-6">
+                    <fieldset class="form-group col-md-6">
 
-
-
-						{{ Form::label('url', getphrase('url')) }}
-
-
-
-						{{ Form::text('url', $value = null , $attributes = array('class'=>'form-control', 'placeholder' => 'www.sitename.com',
-
-							)) }}
-
+						{{ Form::label('section_id', getphrase('section')) }}
+						<span class="text-red">*</span>
+						{{Form::select('section_id', $sections, null, ['class'=>'form-control'])}}
 
 					</fieldset>
 
@@ -211,6 +204,6 @@
 
 							<button class="btn btn-lg btn-success button"
 
-							ng-disabled='!formNotifications.$valid'>{{ $button_name }}</button>
+							ng-disabled='!formMeetings.$valid'>{{ $button_name }}</button>
 
 						</div>
