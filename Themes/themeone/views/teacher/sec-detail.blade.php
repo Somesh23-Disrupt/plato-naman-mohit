@@ -22,7 +22,6 @@
 @endsection
 
 @section('content')
-
 <div id="page-wrapper">
 			<div class="container-fluid">
 			<div class="row">
@@ -34,129 +33,7 @@
 					</div>
 				</div>
 
-				 <div class="row">
-				 	<div class="col-md-3 col-sm-6">
-				 		<div class="media state-media box-ws">
-				 			<div class="media-left">
-				 				<a href="{{URL_USERS}}"><div class="state-icn bg-icon-info"><i class="fa fa-users"></i></div></a>
-				 			</div>
-				 			<div class="media-body">
-								 <h4 class="card-title">{{ App\User::where('inst_id',getUserWithSlug()->inst_id)->where('role_id',5)
-								 ->where('section_name',getUserWithSlug()->section_name)
-								 ->count()}}</h4>
-								<a href="{{URL_USERS}}">{{ getPhrase('Students')}}</a>
-				 			</div>
-				 		</div>
-				 	</div>
-					<!-- <div class="col-md-3 col-sm-6">
-				 		<div class="media state-media box-ws">
-				 			<div class="media-left">
-				 				<a href="{{URL_QUIZ_CATEGORIES}}"><div class="state-icn bg-icon-pink"><i class="fa fa-list-alt"></i></div></a>
-				 			</div>
-				 			<div class="media-body">
-				 				<h4 class="card-title">{{ App\QuizCategory::get()->count()}}</h4>
-								<a href="{{URL_QUIZ_CATEGORIES}}">{{ getPhrase('quiz_categories')}}</a>
-				 			</div>
-				 		</div>
-				 	</div>
-				 	 -->
-				 	 <div class="col-md-3 col-sm-6">
-				 		<div class="media state-media box-ws">
-				 			<div class="media-left">
-				 				<a href="{{URL_QUIZZES}}"><div class="state-icn bg-icon-purple"><i class="fa fa-desktop"></i></div></a>
-				 			</div>
-				 			<div class="media-body">
-				 				<h4 class="card-title">{{ App\Quiz::get()->count()}}</h4>
-								<a href="{{URL_QUIZZES}}">{{ getPhrase('quizzes')}}</a>
-				 			</div>
-				 		</div>
-				 	</div>
-				 	<div class="col-md-3 col-sm-6">
-				 		<div class="media state-media box-ws">
-				 			<div class="media-left">
-				 				<a href="{{URL_SUBJECTS}}"><div class="state-icn bg-icon-success"><i class="fa fa-book"></i></div></a>
-				 			</div>
-				 			<div class="media-body">
-				 				<h4 class="card-title">{{ App\Subject::get()->count()}}</h4>
-								<a href="{{URL_SUBJECTS}}">{{ getPhrase('subjects')}}</a>
-				 			</div>
-				 		</div>
-				 	</div>
-
-
-				 	 <div class="col-md-3 col-sm-6">
-				 		<div class="media state-media box-ws">
-				 			<div class="media-left">
-				 				<div class="state-icn bg-icon-purple"><i class="fa fa-list"></i></div>
-				 			</div>
-				 			<div class="media-body">
-				 				<h4 class="card-title">{{ $tppforteach }}</h4>
-								<a>{{ getPhrase('total_pass_percent')}}</a>
-				 			</div>
-				 		</div>
-				 	</div>
-					 {{-- <div class="col-md-3 col-sm-6">
-						<div class="media state-media box-ws">
-							<div class="media-left">
-								<div class="state-icn bg-icon-purple"><i class="fa fa-users"></i></div>
-							</div>
-							<div class="media-body">
-								<h4 class="card-title">{{ $tnps }}</h4>
-								{{ getPhrase('Total Pass Student')}}
-							</div>
-						</div>
-					</div>
-
-
-				 	 <div class="col-md-3 col-sm-6">
-				 		<div class="media state-media box-ws">
-				 			<div class="media-left">
-				 				<a href="{{URL_TOPLIST}}"><div class="state-icn bg-icon-orange"><i class="fa fa-question-circle"></i></div></a>
-				 			</div>
-				 			<div class="media-body">
-				 				<h4 class="card-title">{{ $tnps }}</h4>
-								<a href="{{URL_TOPLIST}}">{{ getPhrase('Top Students')}}</a>
-				 			</div>
-				 		</div>
-				 	</div>
-					 <div class="col-md-3 col-sm-6">
-				 		<div class="media state-media box-ws">
-				 			<div class="media-left">
-				 				<a href=""><div class="state-icn bg-icon-orange"><i class="fa fa-question-circle"></i></div></a>
-				 			</div>
-				 			<div class="media-body">
-				 				<h4 class="card-title">{{round($avg,0) }}</h4>
-								<a href="{{URL_TOPLIST}}">{{ getPhrase('Average score ')}}</a>
-				 			</div>
-				 		</div>
-				 	</div>
- --}}
-
-				 	 <!-- <div class="col-md-3 col-sm-6">
-				 		<div class="media state-media box-ws">
-				 			<div class="media-left">
-				 				<a href="{{URL_SUBSCRIBED_USERS}}"><div class="state-icn bg-icon-blue"><i class="fa fa-users"></i></div></a>
-				 			</div>
-				 			<div class="media-body">
-				 				<h4 class="card-title">{{  App\UserSubscription::get()->count() }}</h4>
-								<a href="{{URL_SUBSCRIBED_USERS}}">{{ getPhrase('subscribed_users')}}</a>
-				 			</div>
-				 		</div>
-				 	</div>
-
-				 		 <div class="col-md-3 col-sm-6">
-				 		<div class="media state-media box-ws">
-				 			<div class="media-left">
-				 				<a href="{{URL_THEMES_LIST}}"><div class="state-icn bg-icon-pink"><i class="fa fa-fw fa-th-large" ></i> </div></a>
-				 			</div>
-				 			<div class="media-body">
-				 				<h4 class="card-title">{{ App\SiteTheme::get()->count() }}</h4>
-								<a href="{{URL_THEMES_LIST}}">{{ getPhrase('themes')}}</a>
-				 			</div>
-				 		</div>
-				 	</div>
- -->
-				</div>
+			</div> 
 				<div class="row">
 					<div class="col-md-12">
 						<div class="panel panel-primary dsPanel">
@@ -264,7 +141,7 @@
 @stop
 
 @section('footer_scripts')
-	@include('common.chart', array($chart_data,'ids' =>$ids,'scale'=>TRUE));
+	@include('common.chart', array($chart_data,'ids' =>$ids));
 	<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
 
 	<script src="https://cdn.datatables.net/buttons/1.4.2/js/dataTables.buttons.min.js"></script>
