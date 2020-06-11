@@ -181,6 +181,10 @@
 					</ul>
 
 					</li>
+					<li  <?php echo e(isActive($active_class, 'submissions')); ?>>
+					<a href="<?php echo e(URL_SUBMISSION_QUIZE); ?>" ><i class="fa fa-fw fa-bar-chart" aria-hidden="true"></i>
+						<?php echo e(getPhrase('Submissions')); ?> </a>
+	
 					<li <?php echo e(isActive($active_class, 'exams')); ?> >
 
 					<a data-toggle="collapse" data-target="#exams"><i class="fa fa-fw fa-desktop" ></i>

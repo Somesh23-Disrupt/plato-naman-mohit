@@ -214,7 +214,7 @@ class TeacherController extends Controller
                     
                     
               $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')->where('exam_status','pass')->whereIn('user_id',$userbyinst)
-                ->select(['quiz_id', 'quizzes.category_id','quizzes.total_marks','quizzes.title','quizresults.exam_status',DB::raw('count("") as tp'),DB::raw('round(avg(marks_obtained),2) as avgmarks'), 'quizresults.user_id'])
+                ->select(['quiz_id', 'quizzes.category_id','quizzes.total_marks','quizzes.title','quizresults.exam_status',DB::raw('count(distinct(quizresults.user_id)) as tp'),DB::raw('round(avg(marks_obtained),2) as avgmarks'), 'quizresults.user_id'])
               ->groupBy('quizresults.quiz_id')
               ->get();
               $data['tables']=$records;
@@ -361,9 +361,10 @@ class TeacherController extends Controller
                   $data['tppforteach']=0;
                 }
                 // dd($data['passpercent']);
-              $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
-              // dd($sections);
-              $data['sections']= $sections;
+                $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+                // dd($sections);
+                $data['sectionsforteach']= $sections;
+        
         
               $data['title']=App\User::select(['section_name'])->where('section_id',$slug)->first()->section_name;
               $data['active_class']       = 'section';
@@ -416,4 +417,47 @@ class TeacherController extends Controller
           return $t;
      }
 
+     public function subdetail()
+     {
+      $data['title']="Quizzes";
+      $data['active_class']= 'submissions';
+
+      $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+      // dd($sections);
+      $data['sectionsforteach']= $sections;
+
+      $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')->where('record_updated_by',auth()->user()->id)->where('section_id',auth()->user()->section_id)
+                ->select(['quiz_id', 'quizzes.category_id', 'quizzes.slug as slug','quizzes.total_marks','quizzes.title',DB::raw('count(user_id) as attempts'),'quizresults.user_id'])
+              ->groupBy('quizresults.quiz_id')
+              ->get();
+              $data['tables']=$records;
+      $view_name = getTheme().'::teacher.submission-details';
+      return view($view_name, $data);
+     }
+
+     public function subdetailbystd($slug)
+     {
+        $data['title']="Quizzes";
+        $data['active_class']= 'submissions';
+        $quizid=Quiz::where('slug',$slug)->first()->id;
+        // dd($quizid);
+        $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+        // dd($sections);
+        $data['sectionsforteach']= $sections;
+
+        $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')
+        ->where('quiz_id',$quizid)->where('section_id',auth()->user()->section_id)
+                ->select(['quiz_id', 'quizzes.category_id', 'quizzes.slug as quiz_slug','quizzes.total_marks','quizzes.title','quizresults.exam_status as  result','quizresults.marks_obtained','quizresults.user_id','quizresults.slug as result_slug']) 
+              ->get();
+        // // $records =App\QuizResult::select([ 'quiz_id','total_marks','user_id','marks_obtained','exam_status as  result','slug'])
+                
+        //         ->get();
+                $data['tables']=$records;
+        // dd($quizid);
+        $data['table_title']=Quiz::find($quizid)->title;
+        // dd($data['table_title']);
+        $view_name = getTheme().'::teacher.submission-slug';
+        return view($view_name, $data);
+
+     }
 }

@@ -352,7 +352,7 @@ function getUserWithSlug($slug='')
      {
         if(!validateUser($slug)) 
         {
-            if(!checkRole(['parent']) || !isActualParent($slug))
+            if((!checkRole(['parent']) || !isActualParent($slug))&&!checkRole(['teacher']))
             {
                prepareBlockUserMessage();
                return FALSE;

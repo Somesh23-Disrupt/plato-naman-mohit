@@ -178,6 +178,10 @@
 					</ul>
 
 					</li>
+					<li  {{ isActive($active_class, 'submissions') }}>
+					<a href="{{URL_SUBMISSION_QUIZE}}" ><i class="fa fa-fw fa-bar-chart" aria-hidden="true"></i>
+						{{ getPhrase('Submissions') }} </a>
+	
 					<li {{ isActive($active_class, 'exams') }} >
 
 					<a data-toggle="collapse" data-target="#exams"><i class="fa fa-fw fa-desktop" ></i>

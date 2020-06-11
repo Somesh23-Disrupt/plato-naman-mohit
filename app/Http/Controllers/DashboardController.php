@@ -219,7 +219,7 @@ class DashboardController extends Controller
 //Going to work on table in teachers dashboard
               $stdbysec=App\User::where('section_id',auth()->user()->section_id)->where('role_id',5)->pluck('id');
               $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')->where('exam_status','pass')->whereIN('user_id',$stdbysec)
-                ->select(['quiz_id', 'quizzes.category_id','quizzes.total_marks','quizzes.title','quizresults.exam_status',DB::raw('count("") as tp'),DB::raw('round(avg(marks_obtained),2) as avgmarks'), 'quizresults.user_id'])
+                ->select(['quiz_id', 'quizzes.category_id','quizzes.total_marks','quizzes.title','quizresults.exam_status',DB::raw('count(distinct(quizresults.user_id)) as tp'),DB::raw('round(avg(marks_obtained),2) as avgmarks'), 'quizresults.user_id'])
               ->groupBy('quizresults.quiz_id')
               ->get();
               $data['tables']=$records;
