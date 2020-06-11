@@ -563,7 +563,9 @@ class QuizController extends Controller
       // dd($data);
 
       // return view('exams.quiz.update-questions', $data);
-
+      $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+      // dd($sections);
+      $data['sectionsforteach']= $sections;
         $view_name = getTheme().'::exams.quiz.update-questions';
         return view($view_name, $data);
 
