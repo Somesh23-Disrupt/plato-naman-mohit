@@ -219,7 +219,7 @@ class DashboardController extends Controller
 //Going to work on table in teachers dashboard
               $stdbysec=App\User::where('section_id',auth()->user()->section_id)->where('role_id',5)->pluck('id');
               $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')->where('exam_status','pass')->whereIN('user_id',$stdbysec)
-                ->select(['quiz_id', 'quizzes.category_id','quizzes.total_marks','quizzes.title','quizresults.exam_status',DB::raw('count("") as tp'),DB::raw('round(avg(marks_obtained),2) as avgmarks'), 'quizresults.user_id'])
+                ->select(['quiz_id', 'quizzes.category_id','quizzes.total_marks','quizzes.title','quizresults.exam_status',DB::raw('count(distinct(quizresults.user_id)) as tp'),DB::raw('round(avg(marks_obtained),2) as avgmarks'), 'quizresults.user_id'])
               ->groupBy('quizresults.quiz_id')
               ->get();
               $data['tables']=$records;
@@ -272,7 +272,7 @@ class DashboardController extends Controller
           
                 $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
                         // dd($sections);
-                        $data['sections']= $sections;
+                        $data['sectionsforteach']= $sections;
               $view_name = getTheme().'::teacher.dashboard';
               return view($view_name, $data);
         }
@@ -286,7 +286,6 @@ class DashboardController extends Controller
             $data['user']           = $user;
             $data['childs_names']=$this->gettingavgscore()->names;
             $data['childs_totals']=$this->gettingavgscore()->totals;
-            $data['chart_data']=$this->getstudents();
             $childs=App\User::where('parent_id',10)->get();
             $i=0;
             $name=[];
@@ -304,6 +303,8 @@ class DashboardController extends Controller
             $data['slugs']=$name;
             // dd($data['slugs']);
             // dd($new);
+            $data['chart_data']=$this->getstudents();
+
             // $data['chart_data'][] = (object)$this->examanalysisbytotalmarks();
             $data['examattends']=$new;
             // dd($data['examattends']);
@@ -804,24 +805,11 @@ class DashboardController extends Controller
     }
     public function getstudents()
     {
-          $user                   = getUserWithSlug();
-          $data['user']           = $user;
-          if(checkRole(['parent']))
-          {
-            $id='parent_id';
-          }
-          else{
-            $id='section_id';
-          }
-          $data['chart_data']=[];
-        if(App\User::where('section_name',$user->section_name)->where('role_id',5)->get()->count()>0){
-          if (checkRole(['teacher'])) {
-            $users=App\User::where('section_name',$user->section_name)->where('role_id',5)->get();
-          }else{
-            $users=App\User::where($id, '=', $user->id)->get();
-          }
+          
+        
+            $user=App\User::where('parent_id',auth()->user()->id)->where('role_id',5)->first();
 
-          foreach ($users as $user) {
+          
                 $data['user']               = $user;
                 // Chart code start
                 $records = array();
@@ -974,10 +962,8 @@ class DashboardController extends Controller
                                 );
 
                                 $data['chart_data'][]=(object)$chart_data;
-          }
-        }
-          return $data['chart_data'];
-    }
+                return $data['chart_data'];
+      }
     public function totalpass()
     {
       if(checkRole('teacher')){

@@ -58,6 +58,9 @@ class ReportsController extends Controller
         $data['title']              = $exam_record->title.' '.getPhrase('answers');
         $data['layout']             = getLayout();
     	// return view('student.exams.results.answers', $data);
+        $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+        // dd($sections);
+        $data['sectionsforteach']= $sections;
 
          $view_name = getTheme().'::student.exams.results.answers';
         return view($view_name, $data);

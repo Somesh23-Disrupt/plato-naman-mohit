@@ -38,7 +38,9 @@ class MeetingsController extends Controller
         $data['title']              = getPhrase('meetings');
         $data['layout']              = getLayout();
     	// return view('meetings.list', $data);
-
+      $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+        // dd($sections);
+        $data['sectionsforteach']= $sections;
           $view_name = getTheme().'::meetings.list';
         return view($view_name, $data);
     }
@@ -131,7 +133,9 @@ class MeetingsController extends Controller
         $data['sections']           = array_pluck(User::where('inst_id',Auth::user()->inst_id)->whereNotNull('section_id')->distinct()->get(),'section_name','section_id');
 
     	// return view('meetings.add-edit', $data);
-
+      $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+      // dd($sections);
+      $data['sectionsforteach']= $sections;
          $view_name = getTheme().'::meetings.add-edit';
         return view($view_name, $data);
     }
@@ -161,7 +165,9 @@ class MeetingsController extends Controller
         $data['sections']           = array_pluck(User::where('inst_id',Auth::user()->inst_id)->whereNotNull('section_id')->distinct()->get(),'section_name','section_id');
 
     	// return view('meetings.add-edit', $data);
-
+      $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+      // dd($sections);
+      $data['sectionsforteach']= $sections;
            $view_name = getTheme().'::meetings.add-edit';
         return view($view_name, $data);
     }
@@ -312,6 +318,9 @@ class MeetingsController extends Controller
                   }
                   $data['slugs']=$name;
             }
+            $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+        // dd($sections);
+        $data['sectionsforteach']= $sections;
            $view_name = getTheme().'::meetings.users-list';
         return view($view_name, $data);
     }
@@ -328,7 +337,9 @@ class MeetingsController extends Controller
         $data['meeting']       = $record;
 
         // return view('meetings.details', $data);
-
+        $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+        // dd($sections);
+        $data['sectionsforteach']= $sections;
            $view_name = getTheme().'::meetings.details';
         return view($view_name, $data);
     }

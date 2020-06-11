@@ -42,7 +42,9 @@ class QuestionBankController extends Controller
         $data['active_class']       = 'exams';
         $data['title']              = getPhrase('question_subjects');
     	// return view('exams.questionbank.list', $data);
-
+      $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+      // dd($sections);
+      $data['sectionsforteach']= $sections;
          $view_name = getTheme().'::exams.questionbank.list';
         return view($view_name, $data);
     }
@@ -119,7 +121,9 @@ class QuestionBankController extends Controller
         $data['subject']			= $subject;
 
     	// return view('exams.questionbank.questions', $data);
-
+      $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+      // dd($sections);
+      $data['sectionsforteach']= $sections;
          $view_name = getTheme().'::exams.questionbank.questions';
         return view($view_name, $data);
     }
@@ -227,7 +231,9 @@ class QuestionBankController extends Controller
     	$data['subject']			= $subject;
     	// $data['settings']			= json_encode($settings);
     	// return view('exams.questionbank.add-edit', $data);
-
+      $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+      // dd($sections);
+      $data['sectionsforteach']= $sections;
          $view_name = getTheme().'::exams.questionbank.add-edit';
         return view($view_name, $data);
     }
@@ -1046,7 +1052,9 @@ class QuestionBankController extends Controller
         $data['title']        = getPhrase('import_questions');
         $data['layout']        = getLayout();
         // return view('exams.questionbank.import.import', $data);
-
+        $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+        // dd($sections);
+        $data['sectionsforteach']= $sections;
          $view_name = getTheme().'::exams.questionbank.import.import';
         return view($view_name, $data);
      }

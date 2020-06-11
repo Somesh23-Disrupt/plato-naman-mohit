@@ -294,14 +294,14 @@ if(isset($block_navigation))
 
 					</li>
 
-					<!-- <li {{ isActive($active_class, 'analysis') }} >
+					<li {{ isActive($active_class, 'analysis') }} >
 
 
 
 					<a data-toggle="collapse" data-target="#analysis">
 					<i class="fa fa-fw fa-bar-chart" aria-hidden="true"></i>
 
-					{{ getPhrase('analysis') }} </a>
+					{{ getPhrase('submissions') }} </a>
 
 
 
@@ -319,8 +319,7 @@ if(isset($block_navigation))
 
 					</li>
 
- -->
-
+ 
 
 
 					<li {{ isActive($active_class, 'lms') }} >

@@ -53,7 +53,9 @@ class QuizController extends Controller
         $data['active_class']       = 'exams';
         $data['title']              = getPhrase('quizzes');
       // return view('exams.quiz.list', $data);
-
+      $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+      // dd($sections);
+      $data['sectionsforteach']= $sections;
         $view_name = getTheme().'::exams.quiz.list';
         return view($view_name, $data);
     }
@@ -147,6 +149,9 @@ class QuizController extends Controller
       $data['exam_types']         = App\ExamType::where('status','=',1)->get()->pluck('title','code')->toArray();
       $data['title']              = getPhrase('create_quiz');
       // return view('exams.quiz.add-edit', $data);
+      $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+        // dd($sections);
+        $data['sectionsforteach']= $sections;
           $view_name = getTheme().'::exams.quiz.add-edit';
         return view($view_name, $data);
     }
@@ -179,7 +184,9 @@ class QuizController extends Controller
 
       $data['title']            = getPhrase('edit_quiz');
       // return view('exams.quiz.add-edit', $data);
-
+      $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+      // dd($sections);
+      $data['sectionsforteach']= $sections;
         $view_name = getTheme().'::exams.quiz.add-edit';
         return view($view_name, $data);
     }
@@ -683,7 +690,9 @@ class QuizController extends Controller
         $data['title']              = getPhrase('exam_types');
         $data['exam_types']         = App\ExamType::get();
         // return view('exams.exam-types', $data);
-
+        $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+        // dd($sections);
+        $data['sectionsforteach']= $sections;
           $view_name = getTheme().'::exams.exam-types';
         return view($view_name, $data);
     }
@@ -704,7 +713,9 @@ class QuizController extends Controller
         $data['layout']      = getLayout();
 
         // return view('exams.edit-exam-type', $data);
-
+        $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+        // dd($sections);
+        $data['sectionsforteach']= $sections;
           $view_name = getTheme().'::exams.edit-exam-type';
         return view($view_name, $data);
 

@@ -52,7 +52,9 @@ class LmsContentController extends Controller
         $data['title']              = 'LMS'.' '.getPhrase('content');
         $data['layout']              = getLayout();
     	// return view('lms.lmscontents.list', $data);
-
+      $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+      // dd($sections);
+      $data['sectionsforteach']= $sections;
           $view_name = getTheme().'::lms.lmscontents.list';
         return view($view_name, $data);
     }
@@ -119,7 +121,9 @@ class LmsContentController extends Controller
     	$data['subjects']       	= array_pluck(App\Subject::where('record_updated_by',Auth::user()->id)->get(), 'subject_title', 'id');
         $data['title']              = getPhrase('add_content');
     	$data['layout']              = getLayout();
-
+      $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+      // dd($sections);
+      $data['sectionsforteach']= $sections;
     	// return view('lms.lmscontents.add-edit', $data);
          $view_name = getTheme().'::lms.lmscontents.add-edit';
         return view($view_name, $data);
@@ -147,7 +151,10 @@ class LmsContentController extends Controller
     	$data['subjects']           = array_pluck(App\Subject::all(), 'subject_title', 'id');
     	$data['settings']           = json_encode($record);
         $data['layout']              = getLayout();
-    	// return view('lms.lmscontents.add-edit', $data);
+      // return view('lms.lmscontents.add-edit', $data);
+      $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+        // dd($sections);
+        $data['sectionsforteach']= $sections;
           $view_name = getTheme().'::lms.lmscontents.add-edit';
         return view($view_name, $data);
     }

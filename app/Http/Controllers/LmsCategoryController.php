@@ -50,7 +50,9 @@ class LmsCategoryController extends Controller
         $data['active_class']       = 'lms';
         $data['title']              = 'LMS'.' '.getPhrase('categories');
     	// return view('lms.lmscategories.list', $data);
-
+      $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+      // dd($sections);
+      $data['sectionsforteach']= $sections;
            $view_name = getTheme().'::lms.lmscategories.list';
         return view($view_name, $data);
     }
@@ -113,7 +115,9 @@ class LmsCategoryController extends Controller
     	$data['title']              = getPhrase('create_category');
         $data['sections']           = array_pluck(User::where('inst_id',Auth::user()->inst_id)->whereNotNull('section_id')->distinct()->get(),'section_name','section_id');
     	// return view('lms.lmscategories.add-edit', $data);
-
+      $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+      // dd($sections);
+      $data['sectionsforteach']= $sections;
          $view_name = getTheme().'::lms.lmscategories.add-edit';
         return view($view_name, $data);
     }
@@ -141,6 +145,9 @@ class LmsCategoryController extends Controller
         $data['sections']           = array_pluck(User::where('inst_id',Auth::user()->inst_id)->whereNotNull('section_id')->distinct()->get(),'section_name','section_id');
 
         $data['layout']=getLayout();
+        $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+        // dd($sections);
+        $data['sectionsforteach']= $sections;
     	// return view('lms.lmscategories.add-edit', $data);
           $view_name = getTheme().'::lms.lmscategories.add-edit';
         return view($view_name, $data);
