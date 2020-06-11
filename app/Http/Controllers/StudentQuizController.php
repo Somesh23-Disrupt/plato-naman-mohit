@@ -1164,9 +1164,10 @@ class StudentQuizController extends Controller
       if($isValid = $this->isValidRecord($user))
         return redirect($isValid);
 
-      if(!isEligible($slug))
-          return back();
-
+      if((!isEligible($slug))&&(!checkRole(['teacher'])))
+         { 
+           return back();
+         }
       $exam_record = FALSE;
 
       if($exam_slug)
@@ -1221,12 +1222,15 @@ class StudentQuizController extends Controller
 
         $data['chart_data'] = (object)$chart_data;
 
-      $data['active_class']       = 'analysis';
+      $data['active_class']       = 'submissions';
       $data['title']              = getPhrase('quiz_attempts');
       $data['user']               = $user;
       $data['exam_record']        = $exam_record;
 
         $data['layout']             = getLayout();
+        $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+        // dd($sections);
+        $data['sectionsforteach']= $sections;
 
       // return view('student.exams.attempts-history', $data);
 
@@ -1254,13 +1258,13 @@ class StudentQuizController extends Controller
          $records = array();
           if(!$exam_slug)
              $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')
-            ->select(['title','is_paid' , 'marks_obtained', 'exam_status','quizresults.created_at', 'quizzes.total_marks','quizzes.slug', 'quizresults.slug as resultsslug','user_id' ])
+            ->select(['title','record_updated_by' , 'marks_obtained', 'exam_status','quizresults.created_at', 'quizzes.total_marks','quizzes.slug', 'quizresults.slug as resultsslug','user_id' ])
             ->where('user_id', '=', $user->id)
             ->orderBy('quizresults.updated_at', 'desc')
             ->get();
           else
             $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')
-            ->select(['title','is_paid' , 'marks_obtained', 'exam_status','quizresults.created_at', 'quizzes.total_marks','quizzes.slug', 'quizresults.slug as resultsslug','user_id' ])
+            ->select(['title','record_updated_by' , 'marks_obtained', 'exam_status','quizresults.created_at', 'quizzes.total_marks','quizzes.slug', 'quizresults.slug as resultsslug','user_id' ])
             ->where('user_id', '=', $user->id)
             ->where('quiz_id', '=', $exam_record->id )
             ->orderBy('quizresults.updated_at', 'desc')
@@ -1300,9 +1304,9 @@ class StudentQuizController extends Controller
         {
           return $records->marks_obtained.' / '.$records->total_marks;
         })
-        ->editColumn('is_paid', function($records)
+        ->editColumn('record_updated_by', function($records)
         {
-            return ($records->is_paid) ? '<span class="label label-primary">'.getPhrase('paid') .'</span>' : '<span class="label label-success">'.getPhrase('free').'</span>';
+            return App\User::where('id',$records->record_updated_by)->first()->name;
         })
         ->editColumn('exam_status', function($records)
         {
@@ -1338,7 +1342,7 @@ class StudentQuizController extends Controller
       if($isValid = $this->isValidRecord($user))
         return redirect($isValid);
 
-      if(!isEligible($slug))
+      if(!isEligible($slug)&&(!checkRole(['teacher'])))
           return back();
 
         $userid = $user->id;
@@ -1389,7 +1393,9 @@ class StudentQuizController extends Controller
         //Chart Code End
         $data['layout']             = getLayout();
       // return view('student.exams.analysis-by-exam', $data);
-
+      $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+      // dd($sections);
+      $data['sectionsforteach']= $sections;
            $view_name = getTheme().'::student.exams.analysis-by-exam';
         return view($view_name, $data);
     }
@@ -1405,7 +1411,7 @@ class StudentQuizController extends Controller
          $records = array();
 
             $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')
-            ->select(['title','is_paid' ,'dueration', 'quizzes.total_marks',  \DB::raw('count(quizresults.user_id) as attempts, quizzes.slug, user_id') ])
+            ->select(['title','record_updated_by' ,'dueration', 'quizzes.total_marks',  \DB::raw('count(quizresults.user_id) as attempts, quizzes.slug, user_id') ])
             ->where('user_id', '=', $user->id)
             ->groupBy('quizresults.quiz_id')
             ->get();
@@ -1420,6 +1426,10 @@ class StudentQuizController extends Controller
         ->editColumn('is_paid', function($records)
         {
             return ($records->is_paid) ? '<span class="label label-primary">'.getPhrase('paid') .'</span>' : '<span class="label label-success">'.getPhrase('free').'</span>';
+        })
+        ->editColumn('record_updated_by', function($records)
+        {
+            return App\User::where('id',$records->record_updated_by)->first()->name;
         })
 
         ->editColumn('dueration', function($records)
@@ -1446,7 +1456,7 @@ class StudentQuizController extends Controller
         return redirect($isValid);
       $exam_record = FALSE;
 
-      if(!isEligible($slug))
+      if(!isEligible($slug)&&!checkRole(['teacher']))
           return back();
 
       if($exam_slug)
@@ -1550,7 +1560,9 @@ class StudentQuizController extends Controller
       $data['layout']             = getLayout();
 
       // return view('student.exams.analysis-by-subject', $data);
-
+      $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+      // dd($sections);
+      $data['sectionsforteach']= $sections;
          $view_name = getTheme().'::student.exams.analysis-by-subject';
         return view($view_name, $data);
 
@@ -1568,7 +1580,7 @@ class StudentQuizController extends Controller
       if($isValid = $this->isValidRecord($user))
         return redirect($isValid);
 
-      if(!isEligible($slug))
+      if(!isEligible($slug)&&(!checkRole(['teacher'])))
           return back();
 
         $records = array();
@@ -1695,6 +1707,9 @@ class StudentQuizController extends Controller
       $data['layout']             = getLayout();
 
       // return view('student.exams.subject-analysis.subject-analysis', $data);
+      $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+      // dd($sections);
+      $data['sectionsforteach']= $sections;
 
               $view_name = getTheme().'::student.exams.subject-analysis.subject-analysis';
         return view($view_name, $data);

@@ -64,7 +64,7 @@
 
 									<th>{{ getPhrase('title')}}</th>
 
-									<th>{{ getPhrase('type')}}</th>
+									<th>{{ getPhrase('Teacher')}}</th>
 
 									<th>{{ getPhrase('duration')}}</th>
 

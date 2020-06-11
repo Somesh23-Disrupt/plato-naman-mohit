@@ -546,4 +546,5 @@ define('URL_INSTITUTIONS', PREFIX.'institution');
 //teacher url
 define('URL_PASSLIST', PREFIX.'users/passlist');
 define('URL_TOPLIST', PREFIX.'users/toplist');
+define('URL_SUBMISSION_QUIZE', PREFIX.'sebmission/quizzes');
 define('URL_SECDETAILS', PREFIX.'section');

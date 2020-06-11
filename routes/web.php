@@ -736,6 +736,8 @@ Route::get('/institution/{inst_name?}/admin','InstitutionController@admin');
 //Teachers Route
 Route::get('users/toplist','TeacherController@toplist');
 Route::get('section/{slug}','TeacherController@secdetails');
+Route::get('sebmission/quizzes','TeacherController@subdetail');
+Route::get('sebmission/quizzes/{slug}','TeacherController@subdetailbystd');
 Route::get('users/passlist','TeacherController@passlist');
 Route::get('faqs/all','TeacherController@faqs');
 //Run new migrations

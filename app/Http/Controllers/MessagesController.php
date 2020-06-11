@@ -55,7 +55,9 @@ class MessagesController extends Controller
         $data['layout']       = getLayout();
 
         // return view('messaging-system.index', $data);
-
+        $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+        // dd($sections);
+        $data['sectionsforteach']= $sections;
          $view_name = getTheme().'::messaging-system.index';
         return view($view_name, $data);
     }
@@ -114,7 +116,9 @@ class MessagesController extends Controller
         $data['layout'] 	= getLayout();
 
         // return view('messaging-system.show', $data);
-
+        $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+        // dd($sections);
+        $data['sectionsforteach']= $sections;
           $view_name = getTheme().'::messaging-system.show';
         return view($view_name, $data);
         // return view('messenger.show', compact('thread', 'users'));
@@ -168,7 +172,9 @@ class MessagesController extends Controller
         $data['layout'] 	= getLayout();
 
         // return view('messaging-system.create', $data);
-
+        $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+        // dd($sections);
+        $data['sectionsforteach']= $sections;
           $view_name = getTheme().'::messaging-system.create';
         return view($view_name, $data);
         // return view('messenger.create', compact('users'));

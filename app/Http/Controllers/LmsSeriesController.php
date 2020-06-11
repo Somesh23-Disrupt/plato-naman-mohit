@@ -38,7 +38,9 @@ class LmsSeriesController extends Controller
         $data['active_class']       = 'lms';
         $data['title']              = 'LMS'.' '.getPhrase('series');
     	// return view('lms.lmsseries.list', $data);
-
+      $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+      // dd($sections);
+      $data['sectionsforteach']= $sections;
         $view_name = getTheme().'::lms.lmsseries.list';
         return view($view_name, $data);
     }
@@ -138,7 +140,10 @@ class LmsSeriesController extends Controller
     	$data['categories']       	= array_pluck(App\LmsCategory::where('record_updated_by',Auth::user()->id)->get(),'category', 'id');
 
       	$data['title']              = getPhrase('add_series');
-    	// return view('lms.lmsseries.add-edit', $data);
+      // return view('lms.lmsseries.add-edit', $data);
+      $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+        // dd($sections);
+        $data['sectionsforteach']= $sections;
        	$view_name = getTheme().'::lms.lmsseries.add-edit';
         return view($view_name, $data);
     }
@@ -166,7 +171,10 @@ class LmsSeriesController extends Controller
     	$data['settings']         = FALSE;
     	$data['categories']       	= array_pluck(App\LmsCategory::all(),'category', 'id');
     	$data['title']            = getPhrase('edit_series');
-    	// return view('lms.lmsseries.add-edit', $data);
+      // return view('lms.lmsseries.add-edit', $data);
+      $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+        // dd($sections);
+        $data['sectionsforteach']= $sections;
          $view_name = getTheme().'::lms.lmsseries.add-edit';
         return view($view_name, $data);
     }
