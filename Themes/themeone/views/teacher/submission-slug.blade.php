@@ -31,6 +31,7 @@
 									<tr>
 										<th>{{ getPhrase('Student Name')}}</th>
 										<th>{{ getPhrase('Section')}}</th>
+										<th>{{ getPhrase('Obtained Marks')}}</th>
 										<th>{{ getPhrase('Total Marks')}}</th>
 										<th>{{ getPhrase('Result')}}</th>
 									</tr>
@@ -40,7 +41,8 @@
 										<tr>
                                         <td><a href="{{URL_RESULTS_VIEW_ANSWERS.$table->quiz_slug.'/'.$table->result_slug}}">{{ucfirst(App\User::findOrFail($table->user_id)->name)}}</a></td>
 											<td>{{App\User::findOrFail($table->user_id)->section_name}}</td>
-										    <td>{{$table->marks_obtained.'/'.$table->total_marks}}</td>
+										    <td>{{$table->marks_obtained}}</td>
+										    <td>{{$table->total_marks}}</td>
 										    <td>{{$table->result}}</td>
 										</tr>
 									

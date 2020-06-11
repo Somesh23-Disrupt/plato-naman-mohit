@@ -29,6 +29,7 @@
 										<th>{{ getPhrase('Test Name')}}</th>
 										<th>{{ getPhrase('Section')}}</th>
 										<th>{{ getPhrase('Total Marks')}}</th>
+										<th>{{ getPhrase('Total_questions')}}</th>
 										<th>{{ getPhrase('Attempts')}}</th>
 									</tr>
 								</thead>
@@ -40,6 +41,7 @@
 										<td>{{App\QuizCategory::find($table->category_id)->category}}</td>
 											<td>{{auth()->user()->section_name}}</td>
 											<td>{{$table->total_marks}}</td>
+											<td>{{$table->total_questions}}</td>
 											<td>{{$table->attempts}}</td>
 										</tr>
 									

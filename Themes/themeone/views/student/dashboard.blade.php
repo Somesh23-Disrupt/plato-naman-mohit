@@ -194,7 +194,7 @@
             <a href="{{ URL_STUDENT_LMS_CATEGORIES }}"><div class="state-icn bg-icon-purple"><i class="fa fa-tv"></i></div></a>
           </div>
           <div class="media-body">
-            <h4 class="card-title">{{  App\User::getUserSeleted('lms_categories')+-1 }}</h4>
+            <h4 class="card-title">{{  App\User::getUserSeleted('lms_categories')>0?App\User::getUserSeleted('lms_categories')-1:0 }}</h4>
             <a href="{{ URL_STUDENT_LMS_CATEGORIES }}">LMS {{ getPhrase('categories')}}</a>
           </div>
         </div>

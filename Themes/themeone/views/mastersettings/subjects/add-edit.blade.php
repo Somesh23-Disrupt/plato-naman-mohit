@@ -32,10 +32,9 @@
 					@else
 						{!! Form::open(array('url' => URL_SUBJECTS_ADD, 'method' => 'POST', 'name'=>'formSubjects ', 'novalidate'=>'')) !!}
 					@endif
-
-					 @include('mastersettings.subjects.form_elements',
-					 array('button_name'=> $button_name),
-					 array('sections'=> $sections))
+					<?php #dd($teachers); ?>
+					 @include('mastersettings.subjects.form_elements',array('button_name'=> $button_name),array('sections'=> $sections,'teachers'=>$teachers))
+					
 
 					{!! Form::close() !!}
 
