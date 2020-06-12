@@ -2,7 +2,7 @@
 
 
 
- 
+
 
  <?php
 
@@ -18,15 +18,15 @@
 
  * @user_answers                    -- It will hold all the user answers specific to question
 
- * @time_spent_correct_answers      -- It will maintain the list of time to spend and time spent on 
+ * @time_spent_correct_answers      -- It will maintain the list of time to spend and time spent on
 
  *                                     question associated to question id
 
- * @time_spent_wrong_answers        -- It will maintain the list of time to spend and time spent on 
+ * @time_spent_wrong_answers        -- It will maintain the list of time to spend and time spent on
 
  *                                     question associated to question id
 
- * @time_spent_not_answers          -- It will maintain the list of time to spend and time spent on 
+ * @time_spent_not_answers          -- It will maintain the list of time to spend and time spent on
 
  *                                     question associated to question id
 
@@ -62,33 +62,33 @@
 
                 <!-- /.statistic -->
 
-                                   
+
 
 
                 <div class="panel panel-custom">
 
                     <div class="panel-heading">
 
-                        <h1>{{$exam_record->title}} 
+                        <h1>{{$exam_record->title}}
 
 
 
                         <span class="result-pf-text">{{getPhrase('result').': '.$result_record->exam_status}} </span>
-                            
+
                               <span class="pull-right">
-                               
+
                                 @include('student.exams.languages',['quiz'=>$exam_record])
                             </span>
 
-                        </h1> 
+                        </h1>
 
-                        
+
 
                         </div>
 
-                    <?php 
+                    <?php
 
-                   
+
 
                     $submitted_answers = [];
 
@@ -104,19 +104,19 @@
 
                     $correct_answer_questions = [];
 
-                    $correct_answer_questions = (array) 
+                    $correct_answer_questions = (array)
 
                                                 json_decode($result_record->correct_answer_questions);
 
-                     
 
 
 
-                    $time_spent_correct_answers = 
+
+                    $time_spent_correct_answers =
 
                             getArrayFromJson($result_record->time_spent_correct_answer_questions);
 
-                                                    
+
 
                     $time_spent_wrong_answers = getArrayFromJson($result_record->time_spent_wrong_answer_questions);
 
@@ -124,7 +124,7 @@
 
                     $time_spent_not_answers = getArrayFromJson($result_record->time_spent_not_answered_questions);
 
-                                                
+
 
 
 
@@ -137,9 +137,9 @@
 
                     @foreach($questions as $question)
 
-                           <?php 
+                           <?php
 
-                          
+
                            $question_number++;
 
                                 $user_answers   = FALSE;
@@ -156,43 +156,43 @@
 
                                 }
 
- 
+
 
                                  //Pull Timing details for this question for correct answers
 
-                                if(array_key_exists($question->id, $time_spent_correct_answers)) 
+                                if(array_key_exists($question->id, $time_spent_correct_answers))
 
                                     $time_spent = $time_spent_correct_answers[$question->id];
 
-                                
+
 
                                  //Pull Timing details for this question for wrong answers
 
-                                if(array_key_exists($question->id, $time_spent_wrong_answers)) 
+                                if(array_key_exists($question->id, $time_spent_wrong_answers))
 
                                     $time_spent = $time_spent_wrong_answers[$question->id];
 
-                                 
+
 
                                  //Pull Timing details for this question which are not answered
 
-                                if(array_key_exists($question->id, $time_spent_not_answers)) 
+                                if(array_key_exists($question->id, $time_spent_not_answers))
 
                                     $time_spent = $time_spent_not_answers[$question->id];
 
-                          
 
 
 
-                    ?> 
+
+                    ?>
 
 
 
                     <div class="panel-body question-ans-box" id="{{$question->id}}"  style="display:none;">
 
-                    <?php 
+                    <?php
 
-                   
+
 
                         $question_type = $question->question_type;
 
@@ -224,7 +224,7 @@
 
                                     'question_number' => $question_number,
 
-                                    'time_spent'    => $time_spent,   
+                                    'time_spent'    => $time_spent,
 
                                 );
 
@@ -238,11 +238,11 @@
 
                          @include('student.exams.results.'.$question_type.'-answers', $inject_data)
 
-                       
+
 
                          @if($question->explanation)
 
-                         
+
 
                           <div class="answer-status-container">
 
@@ -265,37 +265,34 @@
 
                             </div>
 
-                            
+
 
                         </div>
 
                         </div>
 
                         @endif
-                        
+
                         @if(checkRole(['teacher']))
-                       
+
                             <div  style="align:left" >
                             @if($question_type=="descriptive")
                                 <input type="number"  name="new[]" style="width:50px" value="0">
                             @else
                                 <input type="number"  name="new[]" style="width:50px" value="{{$question->correct_answers==1?$question->marks:0}}">
-                            
-                            @endif
-                            <label style="font-size:20px" for="">/{{$question->marks}}</label> 
-                            </div>
-                            <button style="float:right" class="btn btn-lg btn-primary button" type="button">
 
-                                {{ getPhrase('Update Score')}}
-                            </button>   
+                            @endif
+                            <label style="font-size:20px" for="">/{{$question->marks}}</label>
+                            </div>
+
                         @endif
-                         
+
 
                     </div>
 
                     @endforeach
 
-     
+
 
                             <div class="row">
 
@@ -311,7 +308,7 @@
 
                                     </button>
 
-                                  
+
 
                                     <button class="btn btn-lg btn-success button next" type="button">
 
@@ -322,10 +319,16 @@
                                         </i>
 
                                     </button>
-                                    
-                                                  
+                                    @if(checkRole(['teacher']))
+                                    <button style="float:right" class="btn btn-lg btn-primary button" type="button">
+
+                                        {{ getPhrase('update_scores')}}
+                                    </button>
+                                    @endif
+
+
  </div>
-        
+
 
                                 </div>
 
@@ -333,7 +336,7 @@
 
                         </hr>
 
-                    
+
 
                 </div>
 
@@ -345,11 +348,11 @@
 
         </div>
 
-          
+
 
 @stop
 
- 
+
 
 @section('footer_scripts')
 @include('student.exams.results.scripts.js-scripts')
@@ -364,9 +367,9 @@
       }
       else {
         $('.language_l2').hide();
-        $('.language_l1').show(); 
+        $('.language_l1').show();
       }
-      
+
     }
 
 </script>
@@ -391,5 +394,5 @@ MathJax.Hub.Register.StartupHook("End Jax",function () {
 });
 </script>
 
-  
+
 @stop
