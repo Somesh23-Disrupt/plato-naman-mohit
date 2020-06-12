@@ -38,6 +38,7 @@
 									<th>{{ getPhrase('id')}}</th>
 									<th>{{ getPhrase('subject')}}</th>
 									<th>{{ getPhrase('section')}}</th>
+									<th>{{ getPhrase('teacher')}}</th>
 									<th>{{ getPhrase('code')}}</th>
 								 	<th>{{ getPhrase('action')}}</th>
 								</tr>
