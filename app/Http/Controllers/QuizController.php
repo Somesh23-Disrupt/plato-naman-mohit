@@ -601,6 +601,7 @@ class QuizController extends Controller
 
         foreach ($questions as $ques_key => $q)
         {
+
            // dd($q);
           if($quiz->exam_type!='NSNT')
           {
@@ -633,7 +634,7 @@ class QuizController extends Controller
           }
 
           else {
-
+            
             $temp = array();
             $temp['subject_id']       = $q->subject_id;
             $temp['questionbank_id']  = $q->question_id;
@@ -642,6 +643,8 @@ class QuizController extends Controller
             $marks                   += $q->marks;
 
             array_push($questions_to_update, $temp);
+          // dd($questions_to_update);
+
           }
         }
 
@@ -649,9 +652,9 @@ class QuizController extends Controller
 
         $total_questions = count($questions_to_update);
 
-
+       
           //Clear all previous questions
-          DB::table('questionbank_quizzes')->where('quize_id', '=', $quiz_id)->delete();
+         DB::table('questionbank_quizzes')->where('quize_id', '=', $quiz_id)->delete();
           //Insert New Questions
           DB::table('questionbank_quizzes')->insert($questions_to_update);
           $quiz->total_questions = $total_questions;
