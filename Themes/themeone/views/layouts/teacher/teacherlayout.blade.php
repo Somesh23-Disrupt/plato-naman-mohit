@@ -216,6 +216,7 @@
 							<li><a href="{{ URL_LMS_SERIES }}"> <i class="fa fa-fw fa-list-ol"></i>{{ getPhrase('series') }}</a></li>
 					</ul>
 					</li>
+					@if(auth()->user()->section_id!=NULL)
 					<li {{ isActive($active_class, 'section') }}>
 
 						<a data-toggle="collapse" data-target="#section"><i class="fa fa-fw fa-tv" ></i>
@@ -229,7 +230,7 @@
 								@endforeach
 							</ul>
 						</li>
-					
+					@endif
 
 
 

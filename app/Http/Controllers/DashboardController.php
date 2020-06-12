@@ -216,14 +216,32 @@ class DashboardController extends Controller
               $data['tnps']=$tnps;
               $data['avg']= $this->gettingavgscore()->avg;
               $data['avgsection']=getUserWithSlug()->section_name;
+          
+              $sub_id=auth()->user()->section_id;
 //Going to work on table in teachers dashboard
-              $stdbysec=App\User::where('section_id',auth()->user()->section_id)->where('role_id',5)->pluck('id');
-              $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')->where('exam_status','pass')->whereIN('user_id',$stdbysec)
-                ->select(['quiz_id', 'quizzes.category_id','quizzes.total_marks','quizzes.title','quizresults.exam_status',DB::raw('count(distinct(quizresults.user_id)) as tp'),DB::raw('round(avg(marks_obtained),2) as avgmarks'), 'quizresults.user_id'])
-              ->groupBy('quizresults.quiz_id')
-              ->get();
-              $data['tables']=$records;
+                  if ($sub_id!=NULL) {
 
+                    // dd("dd");
+
+                    $stdbysec=App\User::where('section_id',auth()->user()->section_id)->where('role_id',5)->pluck('id');
+
+                    $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')->where('exam_status','pass')->whereIN('user_id',$stdbysec)
+                      ->select(['quiz_id', 'quizzes.category_id','quizzes.total_marks','quizzes.title','quizresults.exam_status',DB::raw('count(distinct(quizresults.user_id)) as tp'),DB::raw('round(avg(marks_obtained),2) as avgmarks'), 'quizresults.user_id'])
+                    ->groupBy('quizresults.quiz_id')
+                    ->get();
+                    $data['tables']=$records;
+                      
+                }else{
+                  $sec=App\Subject::select(['section_id'])->where('teacher_id',auth()->user()->id)->pluck('section_id')->first();
+                  // dd($sec);
+                  $stdbysec=App\User::where('section_id',$sec)->where('role_id',5)->pluck('id');
+                    $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')->where('exam_status','pass')->whereIN('user_id',$stdbysec)
+                      ->select(['quiz_id', 'quizzes.category_id','quizzes.total_marks','quizzes.title','quizresults.exam_status',DB::raw('count(distinct(quizresults.user_id)) as tp'),DB::raw('round(avg(marks_obtained),2) as avgmarks'), 'quizresults.user_id'])
+                    ->groupBy('quizresults.quiz_id')
+                    ->get();
+                    $data['tables']=$records;
+                }
+             
 
               // return view('admin.dashboard', $data);
               //dd(App\User::where('teacher_id', '=', $user->id)->get());
@@ -1023,7 +1041,21 @@ class DashboardController extends Controller
       $bgcolor = [];
       $bordercolor = [];
       if (checkRole(['teacher'])) {
-        $userbyinst=App\User::where('inst_id',auth()->user()->inst_id)->where('section_id',auth()->user()->section_id)->where('role_id',5)->pluck('id');
+        $sub_id=auth()->user()->section_id;
+        //Going to work on table in teachers dashboard
+         if ($sub_id!=NULL) {
+        
+                            // dd("dd");
+        
+          $userbyinst=App\User::where('inst_id',auth()->user()->inst_id)->where('section_id',auth()->user()->section_id)->where('role_id',5)->pluck('id');
+
+         }
+         else{
+          
+            $sec=App\Subject::select(['section_id'])->where('teacher_id',auth()->user()->id)->pluck('section_id')->first();
+            // dd($sec);-
+             $userbyinst=App\User::where('inst_id',auth()->user()->inst_id)->where('section_id',$sec)->where('role_id',5)->pluck('id');
+         }
       }else{
         $userbyinst=App\User::where('inst_id',auth()->user()->inst_id)->where('role_id',5)->pluck('id');
       }
@@ -1071,7 +1103,22 @@ class DashboardController extends Controller
       $bgcolor = [];
       $bordercolor = [];
       if (checkRole(['teacher'])) {
-        $userbyinst=App\User::where('inst_id',auth()->user()->inst_id)->where('section_id',auth()->user()->section_id)->where('role_id',5)->pluck('id');
+
+        $sub_id=auth()->user()->section_id;
+        //Going to work on table in teachers dashboard
+        if ($sub_id!=NULL) {
+        
+                            // dd("dd");
+        
+          $userbyinst=App\User::where('inst_id',auth()->user()->inst_id)->where('section_id',auth()->user()->section_id)->where('role_id',5)->pluck('id');
+
+         }
+         else{
+            $sec=App\Subject::select(['section_id'])->where('teacher_id',auth()->user()->id)->pluck('section_id')->first();
+             $userbyinst=App\User::where('inst_id',auth()->user()->inst_id)->where('section_id',$sec)->where('role_id',5)->pluck('id');
+         }
+
+       
       }else{
         $userbyinst=App\User::where('inst_id',auth()->user()->inst_id)->where('role_id',5)->pluck('id');
       }

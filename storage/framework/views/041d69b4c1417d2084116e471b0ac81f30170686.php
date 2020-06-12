@@ -25,9 +25,16 @@
 				 				<a href="<?php echo e(URL_USERS); ?>"><div class="state-icn bg-icon-info"><i class="fa fa-users"></i></div></a>
 				 			</div>
 				 			<div class="media-body">
-								 <h4 class="card-title"><?php echo e(App\User::where('inst_id',getUserWithSlug()->inst_id)->where('role_id',5)
+								 <?php $sec=App\Subject::where('teacher_id',auth()->user()->id)->get()->pluck('section_id')?>
+								 <?php if(auth()->user()->section_id!=NULL): ?>
+								 	<h4 class="card-title"><?php echo e(App\User::where('inst_id',getUserWithSlug()->inst_id)->where('role_id',5)
 								 ->where('section_name',getUserWithSlug()->section_name)
 								 ->count()); ?></h4>
+								 <?php else: ?>
+								 	<h4 class="card-title"><?php echo e(App\User::where('inst_id',getUserWithSlug()->inst_id)->where('role_id',5)
+									->where('section_id',$sec)
+									->count()); ?></h4>
+								 <?php endif; ?>
 								<a href="<?php echo e(URL_USERS); ?>"><?php echo e(getPhrase('Students')); ?></a>
 				 			</div>
 				 		</div>
