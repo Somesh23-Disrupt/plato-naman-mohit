@@ -32,6 +32,7 @@ class GeneralSettings extends Model
                                         'para'          => 'Paragraph',
                                         'video'         => 'Video',
                                         'audio'         => 'Audio',
+                                        'para_with_ans' =>'Paragraph with Answers'
                                         );
     protected $difficultyLevels = array(
                                         'easy'          => 'Easy',
