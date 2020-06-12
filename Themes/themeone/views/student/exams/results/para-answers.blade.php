@@ -2,7 +2,6 @@
 <?php 
     $options = json_decode($question->answers); 
     $correct_answers = json_decode($question->correct_answers);
-    
      $outer_index=0;
 
 ?>
@@ -68,6 +67,7 @@
                                 @endif
                                   </label>
                         </li>
+                        
                         <?php $index++; } ?>
                     </ul>
                 </div>

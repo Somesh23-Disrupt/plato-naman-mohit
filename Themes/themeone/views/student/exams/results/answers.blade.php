@@ -240,7 +240,7 @@
 
                          @include('student.exams.results.'.$question_type.'-answers', $inject_data)
 
-                        
+                       
 
                          @if($question->explanation)
 
@@ -274,7 +274,12 @@
                         </div>
 
                         @endif
-
+                        @if(checkRole(['teacher']))
+                        <div  style="float:right" >
+                            <input type="number"  name="new[]" style="width:50px" value="0">
+                           <label style="font-size:20px" for="">/10</label> 
+                        </div>
+                        @endif
                          
 
                     </div>
