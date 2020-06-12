@@ -229,7 +229,7 @@
 							</tr>
 						</thead>
 						@foreach($tables as $table)
-							
+
 								<tr>
 									<td>{{App\QuizCategory::find($table->category_id)->category}}</td>
 									<td>{{$table->title}}</td>
@@ -238,7 +238,7 @@
 									<td>{{App\User::select(['name'])->where('section_id',$id)->where('role_id',3)->first()->name}}</td>
 									<td>{{$table->start_date}}</td>
 								</tr>
-							
+
 						@endforeach
 						</table>
 					</div>
@@ -260,20 +260,20 @@
 
 				<?php $ids=[];?>
 				@for($i=0; $i<count($chart_data); $i++)
-				<?php 
+				<?php
 				$newid = 'myChart'.$i;
 				$ids[] = $newid; ?>
 
-				<div class="col-md-6">  				  
-					<div class="panel panel-primary dsPanel">				   				    
+				<div class="col-md-6">
+					<div class="panel panel-primary dsPanel">
 						<div class="panel-body" >
-						<canvas id="{{$newid}}" width="100" height="60"></canvas>					
-						</div>				
-					</div>				
+						<canvas id="{{$newid}}" width="100" height="60"></canvas>
+						</div>
+					</div>
 				</div>
 
-				@endfor	
-							
+				@endfor
+
 				</div>
 
 
@@ -317,10 +317,10 @@
 				            'copy', 'csv', 'excel', 'pdf', 'print'
 
 				        ],
-				
+
 			});
         });
     </script>
- 
+
 
 @stop

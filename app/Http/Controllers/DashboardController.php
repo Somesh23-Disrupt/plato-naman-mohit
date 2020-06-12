@@ -74,7 +74,7 @@ class DashboardController extends Controller
                $bgcolor[] = $test[$i];
              }
 
-             
+
             $dataset_label[] = 'lbl';
             $chart_data['type'] = 'pie';
             //horizontalBar, bar, polarArea, line, doughnut, pie
@@ -85,10 +85,10 @@ class DashboardController extends Controller
                     'bgcolor'           => $bgcolor,
                     'border_color'      => $border_color
                     );
-           
+
                     $chart_data['title'] = getPhrase('User Statistics');
            $data['chart_data'][] = (object)$chart_data;
-           
+
            $data['chart_heading']         = getPhrase('user_statistics');
             $avgscacrquizes=0;
            $data['payments_chart_data'] = (object)$this->getPaymentStats();
@@ -97,7 +97,7 @@ class DashboardController extends Controller
              $avgscacrquizes=$d+$avgscacrquizes;
            }
            if (count($data['payments_chart_data']->data->dataset)>0) {
-             
+
            $data['avgscacrquizes']=$avgscacrquizes/count($data['payments_chart_data']->data->dataset);
           }else{
             $data['avgscacrquizes']=0;
@@ -115,7 +115,7 @@ class DashboardController extends Controller
           //  dd($sec_inst);
               $records = Quiz::select(['title', 'category_id', 'start_date'])->get()->sortByDesc('start_date');
               $data['tables']=$records;
-             
+
             $view_name = getTheme().'::admin.dashboard';
 
             return view($view_name, $data);
@@ -201,7 +201,7 @@ class DashboardController extends Controller
               $data['passpercent']=$this->totalpass();
               // dd($data['passpercent']);
               foreach ($data['passpercent'] as $per) {
-                
+
                 if ($per['per']>=50) {
                   $tnps=$tnps+1;
                 }
@@ -246,7 +246,7 @@ class DashboardController extends Controller
               // return view('admin.dashboard', $data);
               //dd(App\User::where('teacher_id', '=', $user->id)->get());
               // $data['chart_data']=$this->getstudents();
-              
+
               $data['chart_data'][]=(object)$this->scorebysub();
               $data['chart_data'][]=(object)$this->marksbysub();
 
@@ -254,7 +254,7 @@ class DashboardController extends Controller
 
               //all pass students accross quizes
 
-                  
+
                 $dataset = [];
                 $labels = [];
                 $bgcolor = [];
@@ -272,7 +272,7 @@ class DashboardController extends Controller
                   $bgcolor[] = $test[$i];
                 }
 
-                
+
                 $dataset_label[] = 'lbl';
                 $chart_data['type'] = 'pie';
                 //horizontalBar, bar, polarArea, line, doughnut, pie
@@ -283,11 +283,11 @@ class DashboardController extends Controller
                         'bgcolor'           => $bgcolor,
                         'border_color'      => $border_color
                         );
-              
+
                         $chart_data['title'] = getPhrase('Overall Performance');
               $data['chart_data'][] = (object)$chart_data;
-              
-          
+
+
                 $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
                         // dd($sections);
                         $data['sectionsforteach']= $sections;
@@ -438,8 +438,8 @@ class DashboardController extends Controller
             // dd($sections);
              $payment_dataset =[];
              $payment_labels = [];
-            
-            
+
+
             foreach ($sections as $section) {
               // dd($section);
              $percent=0;
@@ -453,7 +453,7 @@ class DashboardController extends Controller
                 ->groupBy('quizresults.quiz_id')
                 ->get();
                 // dd($records);
-                
+
                 foreach ($records as $record) {
                   $percent=$record->percentage+$percent;
                 }
@@ -462,19 +462,19 @@ class DashboardController extends Controller
                   $percent=$percent/($records->count());
                 }
                 // dd($percent);
-                
-                
+
+
               }
               // dd($percent);
               $payment_dataset[] = round($percent/(App\User::where('section_id',$section)->where('role_id',5)->get()->count()),2);
               // dd($payment_dataset);
               $payment_labels[] = getPhrase('Class ').$user->section_name;
-              
+
               // dd($payment_dataset);
-                
-                
-                
-                
+
+
+
+
             }
             // dd($payment_labels);
             // $payment_dataset = [$payment_data->success_count, $payment_data->cancelled_count, $payment_data->pending_count];
@@ -823,11 +823,11 @@ class DashboardController extends Controller
     }
     public function getstudents()
     {
-          
-        
+
+
             $user=App\User::where('parent_id',auth()->user()->id)->where('role_id',5)->first();
 
-          
+
                 $data['user']               = $user;
                 // Chart code start
                 $records = array();
@@ -987,7 +987,7 @@ class DashboardController extends Controller
       if(checkRole('teacher')){
           $users=App\User::where('role_id',5)
           ->where('section_id',getUserWithSlug()->section_id)
-          
+
           ->select('id','name')->get();
       }
       if(checkRole('admin')){
@@ -1059,14 +1059,14 @@ class DashboardController extends Controller
       }else{
         $userbyinst=App\User::where('inst_id',auth()->user()->inst_id)->where('role_id',5)->pluck('id');
       }
-      
+
       // dd($userbyinst);
       $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')
              ->select(['quiz_id', 'quizzes.title',DB::raw('Avg(percentage) as percentage'), 'quizresults.user_id'])
              ->groupBy('quizzes.title')
              ->whereIn('user_id',$userbyinst)
              ->get();
-      
+
       foreach($records as $record) {
           $color_number = rand(0,999);
           $record = (object)$record;
@@ -1092,9 +1092,9 @@ class DashboardController extends Controller
               'bgcolor'           => $bgcolor,
               'border_color'      => $border_color
               );
-      
+
       return $chart_data;
-       
+
     }
     public function marksbysub()
     {
@@ -1122,14 +1122,14 @@ class DashboardController extends Controller
       }else{
         $userbyinst=App\User::where('inst_id',auth()->user()->inst_id)->where('role_id',5)->pluck('id');
       }
-      
+
       // dd($userbyinst);
       $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')
              ->select(['quiz_id', 'quizzes.title',DB::raw('Avg(marks_obtained) as percentage'), 'quizresults.user_id'])
              ->groupBy('quizzes.title')
              ->whereIn('user_id',$userbyinst)
              ->get();
-      
+
       foreach($records as $record) {
           $color_number = rand(0,999);
           $record = (object)$record;
@@ -1155,9 +1155,9 @@ class DashboardController extends Controller
               'bgcolor'           => $bgcolor,
               'border_color'      => $border_color
               );
-      
+
       return $chart_data;
-       
+
     }
 
 }

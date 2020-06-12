@@ -9,19 +9,19 @@ class GeneralSettings extends Model
     protected $pageLength 		= 10;
 
     protected $staffIDPrefix    = 'ACA';
-    
+
     protected $studentIDPrefix  = 'ACASTU';
-    
+
     protected $studentAdmissionNoLength = 5;
 
     protected $staffSettings	= array();
 
     protected $staffExtraFields = array();
-    
+
     protected $systemDateFormat	= "yyyy/mm/dd";
 
     protected $countries        = array();
-    
+
 
     protected $questionTypes    = array(
                                         ''              => 'Select',
@@ -32,7 +32,7 @@ class GeneralSettings extends Model
                                         'para'          => 'Paragraph',
                                         'video'         => 'Video',
                                         'audio'         => 'Audio',
-                                        'para_with_ans' =>'Paragraph with Answers'
+                                        'descriptive'   => 'Descriptive'
                                         );
     protected $difficultyLevels = array(
                                         'easy'          => 'Easy',
