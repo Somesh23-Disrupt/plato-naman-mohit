@@ -49,7 +49,7 @@ class ReportsController extends Controller
                                     ->prepareQuestions($exam_record->getQuestions(),'examcomplted');
         $data['questions']       = $prepared_records->questions;
         $data['subjects']        = $prepared_records->subjects;
-                                    
+                    //  dd( $result_slug);               
 
         $data['exam_record']        = $exam_record;
         $data['result_record']      = $result_record;

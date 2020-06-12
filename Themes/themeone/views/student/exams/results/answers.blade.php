@@ -134,7 +134,7 @@
 
                     $question_number =0;
 
-                     //dd($questions);
+                    //  dd($questions);
                    ?>
 
                     @foreach($questions as $question)
@@ -240,7 +240,7 @@
 
                          @include('student.exams.results.'.$question_type.'-answers', $inject_data)
 
-                        
+                       
 
                          @if($question->explanation)
 
@@ -274,7 +274,14 @@
                         </div>
 
                         @endif
-
+                        @if(checkRole(['teacher']))
+                       
+                        <div  style="align:left" >
+                            <input type="number"  name="new[]" style="width:50px" value="0">
+                        <label style="font-size:20px" for="">/{{$question->total_marks}}</label> 
+                        </div>
+                        
+                        @endif
                          
 
                     </div>
