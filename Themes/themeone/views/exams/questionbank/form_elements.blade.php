@@ -197,8 +197,12 @@ $show = TRUE;
 			$show = FALSE;
 		} 
 		?>
+		
 		@if($show)
 	@include('exams.questionbank.form_elements_para', array('record'=>$record))
+		@endif
+		@if($show)
+	@include('exams.questionbank.form_elements_para_with_ans', array('record'=>$record))
 		@endif
 	
 

@@ -264,6 +264,8 @@ class QuestionBankController extends Controller
     	 * If no topics available in selected subject,
     	 * redirect back with message to update topics
     	 */
+
+
     		$message =
     		$subject->subject_title.'  have no topics, please add topics to upload questions';
     		flash('Ooops...!', $message, 'overlay');
@@ -286,7 +288,9 @@ class QuestionBankController extends Controller
         $data['layout'] = getLayout();
       $settings                 = (object)$settings;
     	$data['settings']			    = json_encode($settings);
-
+ $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+      // dd($sections);
+      $data['sectionsforteach']= $sections;
     	// return view('exams.questionbank.add-edit', $data);
          $view_name = getTheme().'::exams.questionbank.add-edit';
         return view($view_name, $data);
@@ -535,6 +539,7 @@ class QuestionBankController extends Controller
         $record->hint					  = $request->hint;
         $record->explanation		= $request->explanation;
         $record->marks					= $request->marks;
+        $record->question_type  = $request->question_type;
         $record->question_type  = $request->question_type;
         $record->time_to_spend  = $request->time_to_spend;
         if($request->has('question_l2'))
