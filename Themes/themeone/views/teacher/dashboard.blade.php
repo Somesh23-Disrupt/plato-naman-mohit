@@ -26,9 +26,16 @@
 				 				<a href="{{URL_USERS}}"><div class="state-icn bg-icon-info"><i class="fa fa-users"></i></div></a>
 				 			</div>
 				 			<div class="media-body">
-								 <h4 class="card-title">{{ App\User::where('inst_id',getUserWithSlug()->inst_id)->where('role_id',5)
+								 <?php $sec=App\Subject::where('teacher_id',auth()->user()->id)->get()->pluck('section_id')?>
+								 @if(auth()->user()->section_id!=NULL)
+								 	<h4 class="card-title">{{ App\User::where('inst_id',getUserWithSlug()->inst_id)->where('role_id',5)
 								 ->where('section_name',getUserWithSlug()->section_name)
 								 ->count()}}</h4>
+								 @else
+								 	<h4 class="card-title">{{ App\User::where('inst_id',getUserWithSlug()->inst_id)->where('role_id',5)
+									->where('section_id',$sec)
+									->count()}}</h4>
+								 @endif
 								<a href="{{URL_USERS}}">{{ getPhrase('Students')}}</a>
 				 			</div>
 				 		</div>

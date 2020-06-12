@@ -221,6 +221,7 @@ class UsersController extends Controller
         $data['layout']       = getLayout();
 
         // return view('users.add-edit-user', $data);
+        $data['sections']=User::select('section_name')->where('inst_id',Auth::user()->inst_id)->distinct()->pluck('section_name');
        
         $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
         // dd($sections);
@@ -545,7 +546,7 @@ class UsersController extends Controller
           $data['layout']             = getLayout();
           $data['sections']=User::select('section_name')->where('inst_id',Auth::user()->inst_id)->distinct()->pluck('section_name');
 
-          // dd($data);
+          // dd($data['sections']);
           // return view('users.add-edit-user', $data);
           $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
           // dd($sections);

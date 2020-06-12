@@ -201,9 +201,6 @@ class TeacherController extends Controller
                 prepareBlockUserMessage();
                 return redirect("dashboard");
               }
-            }else{
-                prepareBlockUserMessage();
-                return redirect("dashboard");
             }
 
 
@@ -421,15 +418,17 @@ class TeacherController extends Controller
      {
       $data['title']="Quizzes";
       $data['active_class']= 'submissions';
-
+      $users_ids=App\User::where('section_id',auth()->user()->section_id)->pluck('id');
       $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
       // dd($sections);
       $data['sectionsforteach']= $sections;
 
-      $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')->where('record_updated_by',auth()->user()->id)->where('section_id',auth()->user()->section_id)
-                ->select(['quiz_id', 'quizzes.category_id', 'quizzes.slug as slug','quizzes.total_marks','quizzes.title',DB::raw('count(user_id) as attempts'),'quizresults.user_id'])
+      $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')->where('record_updated_by',auth()->user()->id)
+                ->select(['quiz_id', 'quizzes.category_id','quizzes.total_questions', 'quizzes.slug as slug','quizzes.total_marks','quizzes.title',DB::raw('count(user_id) as attempts'),'quizresults.user_id','quizresults.subject_analysis'])
               ->groupBy('quizresults.quiz_id')
               ->get();
+              $sub=$records->pluck('subject_analysis');
+              
               $data['tables']=$records;
       $view_name = getTheme().'::teacher.submission-details';
       return view($view_name, $data);
@@ -444,8 +443,8 @@ class TeacherController extends Controller
         $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
         // dd($sections);
         $data['sectionsforteach']= $sections;
-
         $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')
+        
         ->where('quiz_id',$quizid)->where('section_id',auth()->user()->section_id)
                 ->select(['quiz_id', 'quizzes.category_id', 'quizzes.slug as quiz_slug','quizzes.total_marks','quizzes.title','quizresults.exam_status as  result','quizresults.marks_obtained','quizresults.user_id','quizresults.slug as result_slug']) 
               ->get();

@@ -60,7 +60,7 @@ class SubjectsController extends Controller
 
 
          $records = Subject::select([
-         	'id','subject_title','section_id', 'subject_code','maximum_marks', 'pass_marks', 'is_lab', 'is_elective_type', 'slug', 'updated_at'])
+         	'id','subject_title','section_id', 'teacher_id','subject_code','maximum_marks', 'pass_marks', 'is_lab', 'is_elective_type', 'slug', 'updated_at'])
             ->where('record_updated_by',Auth::user()->id)
          ->orderBy('updated_at','desc');
 
@@ -80,6 +80,9 @@ class SubjectsController extends Controller
         ->editColumn('section_id', function($records) {
                return User::select('section_name')->where('section_id',$records->section_id)->pluck('section_name')->first();
            })
+        ->editColumn('teacher_id', function($records) {
+            return User::select('name')->where('id',$records->teacher_id)->pluck('name')->first();
+        })
         ->removeColumn('slug')
         ->removeColumn('is_elective_type')
         ->removeColumn('is_lab')
@@ -109,6 +112,9 @@ class SubjectsController extends Controller
     	// return view('mastersettings.subjects.add-edit', $data);
       $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
         // dd($sections);
+        
+        $data['teachers']  = array_pluck(User::where('inst_id',Auth::user()->inst_id)->where('role_id',3)->whereNotIn('id',[auth()->user()->id])->get(),'name','id');
+        // dd($data['teachers']);
         $data['sectionsforteach']= $sections;
          $view_name = getTheme().'::mastersettings.subjects.add-edit';
         return view($view_name, $data);
@@ -128,12 +134,15 @@ class SubjectsController extends Controller
       }
     	$record = Subject::where('slug', $slug)->first();
       $data['record']       		= $record;
-    	$data['active_class']       = 'exams';
+        $data['layout']             = getLayout();
+        $data['active_class']       = 'exams';
       $data['title']              = getPhrase('edit_subject');
     	// return view('mastersettings.subjects.add-edit', $data);
-
+      $data['sections']           = array_pluck(User::where('inst_id',Auth::user()->inst_id)->whereNotNull('section_id')->distinct()->get(),'section_name','section_id');
       $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
       // dd($sections);
+      $data['teachers']  = array_pluck(User::where('inst_id',Auth::user()->inst_id)->where('role_id',3)->whereNotIn('id',[auth()->user()->id])->get(),'name','id');
+        // dd($data['teachers']);
       $data['sectionsforteach']= $sections;
          $view_name = getTheme().'::mastersettings.subjects.add-edit';
         return view($view_name, $data);
@@ -172,6 +181,7 @@ class SubjectsController extends Controller
             $record->slug = $record->makeSlug($name, TRUE);
         $record->subject_title 			= $name;
         $record->slug 			        = $record->makeSlug($name);
+        $record->teacher_id=$request->teacher_id;
         $record->subject_code			= $request->subject_code;
         $record->maximum_marks			= 0;
         $record->pass_marks				= 0;
@@ -231,6 +241,9 @@ class SubjectsController extends Controller
         $record->is_lab					  = 0;
         $record->is_elective_type 		= 0;
         $record->section_id             = $request->section_id;
+        // dd($request->teacher_id);
+
+        $record->teacher_id=$request->teacher_id;
         $record->record_updated_by      = Auth::user()->id;
         $record->save();
        DB::commit();

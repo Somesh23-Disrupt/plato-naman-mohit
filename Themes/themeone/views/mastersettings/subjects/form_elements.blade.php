@@ -18,13 +18,20 @@
 						</div>
 					</fieldset>
 
-                    <fieldset class="form-group col-md-6">
+                    <fieldset class="form-group col-md-4">
 
 						{{ Form::label('section_id', getphrase('section')) }}
 						<span class="text-red">*</span>
 						{{Form::select('section_id', $sections, null, ['class'=>'form-control'])}}
 
 					</fieldset>
+
+					<fieldset class="form-group col-md-4">
+						{{ Form::label('teacher_id', getphrase('teacher')) }}
+						<span class="text-red">*</span>
+						{{Form::select('teacher_id', $teachers, null, ['class'=>'form-control'])}}
+					</fieldset>
+
 
 
 					<fieldset class="form-group">

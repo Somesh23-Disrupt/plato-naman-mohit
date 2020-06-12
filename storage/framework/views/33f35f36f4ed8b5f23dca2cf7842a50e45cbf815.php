@@ -219,6 +219,7 @@
 							<li><a href="<?php echo e(URL_LMS_SERIES); ?>"> <i class="fa fa-fw fa-list-ol"></i><?php echo e(getPhrase('series')); ?></a></li>
 					</ul>
 					</li>
+					<?php if(auth()->user()->section_id!=NULL): ?>
 					<li <?php echo e(isActive($active_class, 'section')); ?>>
 
 						<a data-toggle="collapse" data-target="#section"><i class="fa fa-fw fa-tv" ></i>
@@ -232,7 +233,7 @@
 								<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 							</ul>
 						</li>
-					
+					<?php endif; ?>
 
 
 
