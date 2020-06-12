@@ -94,8 +94,6 @@
 
                             $answers = (array)json_decode($result_record->answers);
 
-
-
                             foreach ($answers as $key => $value) {
 
                                 $submitted_answers[$key] = $value;
@@ -274,13 +272,22 @@
                         </div>
 
                         @endif
+                        
                         @if(checkRole(['teacher']))
                        
-                        <div  style="align:left" >
-                            <input type="number"  name="new[]" style="width:50px" value="0">
-                        <label style="font-size:20px" for="">/{{$question->marks}}</label> 
-                        </div>
-                        
+                            <div  style="align:left" >
+                            @if($question_type=="descriptive")
+                                <input type="number"  name="new[]" style="width:50px" value="0">
+                            @else
+                                <input type="number"  name="new[]" style="width:50px" value="{{$question->correct_answers==1?$question->marks:0}}">
+                            
+                            @endif
+                            <label style="font-size:20px" for="">/{{$question->marks}}</label> 
+                            </div>
+                            <button style="float:right" class="btn btn-lg btn-primary button" type="button">
+
+                                {{ getPhrase('Update Score')}}
+                            </button>   
                         @endif
                          
 
@@ -315,9 +322,10 @@
                                         </i>
 
                                     </button>
- </div>
-
                                     
+                                                  
+ </div>
+        
 
                                 </div>
 
