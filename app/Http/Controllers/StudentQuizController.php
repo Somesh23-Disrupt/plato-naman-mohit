@@ -999,6 +999,20 @@ class StudentQuizController extends Controller
                                 }
                     break;
 
+                    default:
+                        $wrong_answer_question[] = $question_record->id;
+                        $subject[$subject_id]['wrong_answers'] += 1;
+                         $subject[$subject_id]['time_spent_wrong_answers']
+                                                    += $time_spent[$question_record->id];
+                        $obtained_marks                   -= $negative_mark;
+                        $obtained_negative_marks          += $negative_mark;
+                        $time_spent_wrong_answer_question[$question_record->id]['time_to_spend']
+                                                           = $question_record->time_to_spend;
+                        $time_spent_wrong_answer_question[$question_record->id]['time_spent']
+                                                           = $time_spent[$question_record->id];
+
+
+
             }
 
           }
@@ -1165,7 +1179,7 @@ class StudentQuizController extends Controller
         return redirect($isValid);
 
       if((!isEligible($slug))&&(!checkRole(['teacher'])))
-         { 
+         {
            return back();
          }
       $exam_record = FALSE;
