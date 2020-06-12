@@ -47,6 +47,7 @@ class ReportsController extends Controller
        
         $prepared_records        = (object) $exam_record
                                     ->prepareQuestions($exam_record->getQuestions(),'examcomplted');
+                                    // dd($result_record);
         $data['questions']       = $prepared_records->questions;
         $data['subjects']        = $prepared_records->subjects;
                     //  dd( $result_slug);               
