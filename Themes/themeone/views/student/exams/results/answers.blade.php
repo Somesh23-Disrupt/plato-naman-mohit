@@ -134,7 +134,7 @@
 
                     $question_number =0;
 
-                     //dd($questions);
+                    //  dd($questions);
                    ?>
 
                     @foreach($questions as $question)
@@ -278,7 +278,7 @@
                        
                         <div  style="align:left" >
                             <input type="number"  name="new[]" style="width:50px" value="0">
-                        <label style="font-size:20px" for="">/{{$question->marks}}</label> 
+                        <label style="font-size:20px" for="">/{{$question->total_marks}}</label> 
                         </div>
                         
                         @endif
