@@ -20,7 +20,6 @@ if(env('DB_DATABASE')=='')
 }
 
 Route::get('/', function () {
-
     if(Auth::check())
     {
         return redirect('dashboard');
@@ -379,6 +378,7 @@ Route::get('meetings/edit/{slug}', 'MeetingsController@edit');
 Route::patch('meetings/edit/{slug}', 'MeetingsController@update');
 Route::delete('meetings/delete/{slug}', 'MeetingsController@delete');
 Route::get('meetings/getList', 'MeetingsController@getDatatable');
+Route::get('meetings/record', 'MeetingsController@record');
 
 // MEETINGS FOR STUDENT
 Route::get('meetings/list', 'MeetingsController@usersList');

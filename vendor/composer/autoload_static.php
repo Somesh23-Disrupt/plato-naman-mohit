@@ -36,6 +36,10 @@ class ComposerStaticInitf33343e5047e95fea9a2e5be8603bee4
         array (
             'jlawrence\\eos\\' => 14,
         ),
+        'd' => 
+        array (
+            'dawood\\PhpScreenRecorder\\' => 25,
+        ),
         'Z' => 
         array (
             'Zizaco\\Entrust\\' => 15,
@@ -170,6 +174,10 @@ class ComposerStaticInitf33343e5047e95fea9a2e5be8603bee4
         'jlawrence\\eos\\' => 
         array (
             0 => __DIR__ . '/..' . '/jlawrence/eos/src',
+        ),
+        'dawood\\PhpScreenRecorder\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dawood/phpscreenrecorder/src',
         ),
         'Zizaco\\Entrust\\' => 
         array (

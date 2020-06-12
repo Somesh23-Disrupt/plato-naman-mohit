@@ -12,6 +12,7 @@ use Yajra\Datatables\Datatables;
 use DB;
 use Auth;
 use App\User;
+use dawood\PhpScreenRecorder\ScreenRecorder;
 
 class MeetingsController extends Controller
 {
@@ -342,5 +343,21 @@ class MeetingsController extends Controller
         $data['sectionsforteach']= $sections;
            $view_name = getTheme().'::meetings.details';
         return view($view_name, $data);
+    }
+
+
+    public function record(){
+                $screenRecorder=new ScreenRecorder();
+                $screenRecorder->setScreenSizeToCapture(1280,720);
+                $options=['-show_region'=>'1'];
+                $screenRecorder->setOptions($options);
+                $screenRecorder->startRecording('public/recordings/'.'myVideo');
+                //sleep(5+2);//doing random stuff
+                //when done stop recording
+                $screenRecorder->stopRecording(0);
+
+                //dd("video is saved at :".$screenRecorder->getVideo().'"'.PHP_EOL);
+
+
     }
 }
