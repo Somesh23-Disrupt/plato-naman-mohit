@@ -273,27 +273,29 @@
 
                         @endif
                         
-                        @if(checkRole(['teacher']))
-                       
-                            <div  style="align:left" >
-                            @if($question_type=="descriptive")
-                                <input type="number"  name="new[]" style="width:50px" value="0">
-                            @else
-                                <input type="number"  name="new[]" style="width:50px" value="{{$question->correct_answers==1?$question->marks:0}}">
-                            
-                            @endif
-                            <label style="font-size:20px" for="">/{{$question->marks}}</label> 
-                            </div>
-                            <button style="float:right" class="btn btn-lg btn-primary button" type="button">
-
-                                {{ getPhrase('Update Score')}}
-                            </button>   
-                        @endif
-                         
-
                     </div>
 
                     @endforeach
+                    <form action="/plato-naman-mohit/tttttt" method="post">
+                              
+                        @if(checkRole(['teacher']))
+                             
+                                <div  style="align:left" >
+                                @if($question_type=="descriptive")
+                                    <input type="number"  name="new[]" style="width:50px" value="0">
+                                @else
+                                    <input type="number"  name="new[]" style="width:50px" value="{{$question->marks}}">
+                                
+                                @endif
+                                <label style="font-size:20px" for="">/{{$question->marks}}</label> 
+                                </div>
+                                <button style="float:right" class="btn btn-lg btn-primary button" type="submit">
+
+                                    {{ getPhrase('Update Score')}}
+                                </button>  
+                            
+                        @endif
+                        <form> 
 
      
 
