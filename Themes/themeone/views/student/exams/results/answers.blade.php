@@ -275,10 +275,12 @@
 
                         @endif
                         @if(checkRole(['teacher']))
-                        <div  style="float:right" >
+                       
+                        <div  style="align:left" >
                             <input type="number"  name="new[]" style="width:50px" value="0">
-                           <label style="font-size:20px" for="">/10</label> 
+                        <label style="font-size:20px" for="">/{{$question->marks}}</label> 
                         </div>
+                        
                         @endif
                          
 
