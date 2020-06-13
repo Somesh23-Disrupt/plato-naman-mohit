@@ -532,6 +532,7 @@ class StudentQuizController extends Controller
       // if(checkRole(['student'])){
       //   return redirect('dashboard') ;
       //      }
+      // dd($request->all());
         $quiz = Quiz::getRecordWithSlug($slug);
 
        $user_record = Auth::user();
