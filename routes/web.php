@@ -283,6 +283,7 @@ Route::get('student/analysis/subject/{user_slug}', 'StudentQuizController@overal
 
 //Student Reports
 Route::get('student/exam/answers/{quiz_slug}/{result_slug}', 'ReportsController@viewExamAnswers');
+Route::patch('student/exam/answers/{quiz_slug}/{result_slug}', 'ReportsController@updatescore');
 
 
 //Quiz

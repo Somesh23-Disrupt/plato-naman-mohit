@@ -1,9 +1,3 @@
-@extends($layout)
-
-
-
-
-
  <?php
 
 /**
@@ -34,7 +28,7 @@
 
  ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 
   <div id="page-wrapper" class="answer-sheet" ng-controller="angExamScript" >
 
@@ -48,11 +42,11 @@
 
                         <ol class="breadcrumb">
 
-                            <li><a href="{{PREFIX}}"><i class="mdi mdi-home"></i></a> </li>
+                            <li><a href="<?php echo e(PREFIX); ?>"><i class="mdi mdi-home"></i></a> </li>
 
-                            <li><a href="{{URL_STUDENT_ANALYSIS_BY_EXAM.$user_details->slug}}">{{getPhrase('analysis')}}</a></li>
+                            <li><a href="<?php echo e(URL_STUDENT_ANALYSIS_BY_EXAM.$user_details->slug); ?>"><?php echo e(getPhrase('analysis')); ?></a></li>
 
-                            <li>{{$exam_record->title.' '.getPhrase('answers')}}</li>
+                            <li><?php echo e($exam_record->title.' '.getPhrase('answers')); ?></li>
 
                         </ol>
 
@@ -69,15 +63,16 @@
 
                     <div class="panel-heading">
 
-                        <h1>{{$exam_record->title}}
+                        <h1><?php echo e($exam_record->title); ?>
 
 
 
-                        <span class="result-pf-text">{{getPhrase('result').': '.$result_record->exam_status}} </span>
+
+                        <span class="result-pf-text"><?php echo e(getPhrase('result').': '.$result_record->exam_status); ?> </span>
 
                               <span class="pull-right">
 
-                                @include('student.exams.languages',['quiz'=>$exam_record])
+                                <?php echo $__env->make('student.exams.languages',['quiz'=>$exam_record], array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
                             </span>
 
                         </h1>
@@ -138,7 +133,7 @@
 
                    ?>
 
-                    @foreach($questions as $question)
+                    <?php $__currentLoopData = $questions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $question): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 
                            <?php
 
@@ -190,7 +185,7 @@
 
 
 
-                    <div class="panel-body question-ans-box" id="{{$question->id}}"  style="display:none;">
+                    <div class="panel-body question-ans-box" id="<?php echo e($question->id); ?>"  style="display:none;">
 
                     <?php
 
@@ -236,13 +231,13 @@
                     ?>
 
 
-                      @include('student.exams.results.question-metainfo',array('meta'=> $inject_data))
+                      <?php echo $__env->make('student.exams.results.question-metainfo',array('meta'=> $inject_data), array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 
-                         @include('student.exams.results.'.$question_type.'-answers', $inject_data)
+                         <?php echo $__env->make('student.exams.results.'.$question_type.'-answers', $inject_data, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 
 
 
-                         @if($question->explanation)
+                         <?php if($question->explanation): ?>
 
 
 
@@ -254,14 +249,14 @@
 
                                 <div class="question-status">
 
-                                    <strong>{{getPhrase('explanation')}}: </strong>
+                                    <strong><?php echo e(getPhrase('explanation')); ?>: </strong>
 
-                                       <span class="language_l1"> {!! $question->explanation!!}</span>
-                                       @if(isset($question->explanation_l2))
-                                       <span class="language_l2" style="display: none;"> {!! $question->explanation_l2!!}</span>
-                                       @else
-                                       <span class="language_l2" style="display: none;"> {!! $question->explanation!!}</span>
-                                       @endif
+                                       <span class="language_l1"> <?php echo $question->explanation; ?></span>
+                                       <?php if(isset($question->explanation_l2)): ?>
+                                       <span class="language_l2" style="display: none;"> <?php echo $question->explanation_l2; ?></span>
+                                       <?php else: ?>
+                                       <span class="language_l2" style="display: none;"> <?php echo $question->explanation; ?></span>
+                                       <?php endif; ?>
 
                                 </div>
 
@@ -273,21 +268,21 @@
 
                         </div>
 
-                        @endif
+                        <?php endif; ?>
 
-                        @if(checkRole(['teacher']))
+                        <?php if(checkRole(['teacher'])): ?>
                             <div  style="align:left" >
-                                <input type="text" class="marks-1"  name="{{$question->id}}" style="width:55px"
+                                <input type="text" class="marks-1"  name="<?php echo e($question->id); ?>" style="width:55px"
                                 value="<?php if(array_key_exists($question->id, $result_marks_obtained)) echo $result_marks_obtained[$question->id]; ?>">
-                            <label style="font-size:20px" for="">/{{$question->marks}}</label>
+                            <label style="font-size:20px" for="">/<?php echo e($question->marks); ?></label>
                             </div>
 
-                        @else
-                            <label style="font-size:20px" for=""><?php if(array_key_exists($question->id, $result_marks_obtained)) echo $result_marks_obtained[$question->id]; ?>/{{$question->marks}}</label>
-                        @endif
+                        <?php else: ?>
+                            <label style="font-size:20px" for=""><?php if(array_key_exists($question->id, $result_marks_obtained)) echo $result_marks_obtained[$question->id]; ?>/<?php echo e($question->marks); ?></label>
+                        <?php endif; ?>
                     </div>
 
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
 
 
@@ -301,7 +296,8 @@
 
                                         </i>
 
-                                        {{getPhrase('previous')}}
+                                        <?php echo e(getPhrase('previous')); ?>
+
 
                                     </button>
 
@@ -309,23 +305,27 @@
 
                                     <button class="btn btn-lg btn-success button next" type="button">
 
-                                        {{ getPhrase('next')}}
+                                        <?php echo e(getPhrase('next')); ?>
+
 
                                         <i class="mdi mdi-chevron-right">
 
                                         </i>
 
                                     </button>
-                                    @if(checkRole(['teacher']))
-                                    <form id="form-updatescore" method="POST" action="{{URL_RESULTS_VIEW_ANSWERS}}{{$exam_record->slug}}/{{$result_record->slug}}">
-                                        {{csrf_field()}}
-                                        {{ method_field('PATCH') }}
-                                    <input type="hidden" name="updated_marks"  id="marks_obtained" value="{{json_encode($result_marks_obtained)}}">
+                                    <?php if(checkRole(['teacher'])): ?>
+                                    <form id="form-updatescore" method="POST" action="<?php echo e(URL_RESULTS_VIEW_ANSWERS); ?><?php echo e($exam_record->slug); ?>/<?php echo e($result_record->slug); ?>">
+                                        <?php echo e(csrf_field()); ?>
+
+                                        <?php echo e(method_field('PATCH')); ?>
+
+                                    <input type="hidden" name="updated_marks"  id="marks_obtained" value="<?php echo e(json_encode($result_marks_obtained)); ?>">
                                     <button onclick="updatescore()" style="float:right" class="btn btn-lg btn-primary button" type="button">
 
-                                        {{ getPhrase('update_scores')}}
+                                        <?php echo e(getPhrase('update_scores')); ?>
+
                                     </button>
-                                    @endif
+                                    <?php endif; ?>
 
 
  </div>
@@ -351,12 +351,12 @@
 
 
 
-@stop
+<?php $__env->stopSection(); ?>
 
 
 
-@section('footer_scripts')
-@include('student.exams.results.scripts.js-scripts')
+<?php $__env->startSection('footer_scripts'); ?>
+<?php echo $__env->make('student.exams.results.scripts.js-scripts', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 <script>
 
     function languageChanged(language_value)
@@ -374,7 +374,7 @@
     }
 
 </script>
-@if(checkRole(['teacher']))
+<?php if(checkRole(['teacher'])): ?>
 <script>
     function updatescore() {
         var res=new Object();
@@ -391,7 +391,7 @@
     }
 
 </script>
-@endif
+<?php endif; ?>
 
 
 <script type="text/x-mathjax-config">
@@ -414,4 +414,6 @@ MathJax.Hub.Register.StartupHook("End Jax",function () {
 </script>
 
 
-@stop
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make($layout, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

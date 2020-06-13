@@ -26,10 +26,6 @@
                                 <h2>{{$meeting->title}}</h2></div>
                             <div class="meeting-content text-center">
                                 {!!$meeting->description!!}
-                                <textarea id="result"></textarea>
-                                <div id="resul"></div>
-                                <button id="button" type="button" name="button">Start Listening</button>
-                                or press Ctrl button to toggle
                             </div>
                             <div id="meet" class="meeting-footer text-center"></div>
                             @if($meeting->slug)
@@ -69,8 +65,8 @@
             api.executeCommand('startRecording', {
                 mode: 'stream', //recording mode, either `file` or `stream`.
                 //dropboxToken: string, //dropbox oauth2 token.
-                shouldShare: true, //whether the recording should be shared with the participants or not. Only applies to certain jitsi meet deploys.
-                youtubeStreamKey: 'rd6k-ck2r-rt5b-yxbp-bx4r', //the youtube stream key.
+                //shouldShare: true, //whether the recording should be shared with the participants or not. Only applies to certain jitsi meet deploys.
+                //youtubeStreamKey: '', //the youtube stream key.
                 //youtubeBroadcastID: string //the youtube broacast ID.
             });
             //api.executeCommand('password', 'password');
