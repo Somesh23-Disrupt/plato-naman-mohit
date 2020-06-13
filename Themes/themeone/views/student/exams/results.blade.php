@@ -7,7 +7,15 @@
 @section('content')
 
 <div id="page-wrapper">
+	@if($record->publish_results_immediately==0)
+		<h1 style="margin:20px">Quize Submitted Successfully</h1>
+		<div class="col-lg-12 text-center">
 
+		<a onClick="setLocalItem('{{URL_USERS_DASHBOARD}}')" href="javascript:void(0);" class="btn t btn-primary">{{ getPhrase('Back To Dashboard') }}</a>
+
+		</div>
+	
+	@else
 			<div class="container-fluid">
 
 				<!-- Page Heading -->
@@ -156,7 +164,7 @@
 					<br/>
 					 
 					<div class="row">
-
+						<h1></h1>
 						<div class="col-lg-12 text-center">
 
 							<a onClick="setLocalItem('{{URL_RESULTS_VIEW_ANSWERS.$quiz->slug.'/'.$record->slug}}')" href="javascript:void(0);" class="btn t btn-primary">{{ getPhrase('view_key') }}</a>
@@ -182,7 +190,7 @@
 			<!-- /.container-fluid -->
 
 		</div>
-
+		
 		<!-- /#page-wrapper -->
 
 	</div>
@@ -195,24 +203,24 @@
 
 
 
-@section('footer_scripts')
+	@section('footer_scripts')
 
-   <script src="{{JS}}chart-vue.js"></script>
+	<script src="{{JS}}chart-vue.js"></script>
 
 
 
-@if(isset($marks_data))
+	@if(isset($marks_data))
 
-	@include('common.chart', array('chart_data'=>$marks_data,'ids' => $mark_ids));
+		@include('common.chart', array('chart_data'=>$marks_data,'ids' => $mark_ids));
 
+	@endif
+
+	@if(isset($time_data))
+
+		@include('common.chart', array('chart_data'=>$time_data,'ids' => $time_ids));
+
+	@endif
 @endif
-
-@if(isset($time_data))
-
-	@include('common.chart', array('chart_data'=>$time_data,'ids' => $time_ids));
-
-@endif
-
 <script>
 function setLocalItem(url) {
 	localStorage.setItem('redirect_url',url);

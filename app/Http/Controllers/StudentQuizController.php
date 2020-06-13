@@ -529,6 +529,9 @@ class StudentQuizController extends Controller
     public function finishExam(Request $request, $slug)
     {
 
+      // if(checkRole(['student'])){
+      //   return redirect('dashboard') ;
+      //      }
         $quiz = Quiz::getRecordWithSlug($slug);
 
        $user_record = Auth::user();
@@ -629,7 +632,7 @@ class StudentQuizController extends Controller
         $content = 'You have attempted exam. The score percentage is '.formatPercentage($record->percentage);
 
         $record->save();
-
+        
 
 
         $template    = new EmailTemplate();
@@ -646,6 +649,12 @@ class StudentQuizController extends Controller
         // dd($e->getMessage());
       }
 
+      // if($quiz->publish_result_immediately==0){
+          
+       
+      //   return redirect('dashboard');
+      //   // return view('student.exams.results', $data);
+      // }
         $topperStatus = false;
         $data['isUserTopper']       = $topperStatus;
         $data['rank_details']       = FALSE;
@@ -729,8 +738,6 @@ class StudentQuizController extends Controller
 
         $data['toppers']      = $toppers;
         $data['block_navigation']          = TRUE;
-
-        // return view('student.exams.results', $data);
 
          $view_name = getTheme().'::student.exams.results';
         return view($view_name, $data);
@@ -1292,14 +1299,16 @@ class StudentQuizController extends Controller
         return Datatables::of($records)
          ->addColumn('action', function($records)
         {
-
+          $user = User::where('id', '=', $records->user_id)->get()->first();
+          
           $options = '<div class="dropdown more">
                         <a id="dLabel" type="button" class="more-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="mdi mdi-dots-vertical"></i>
                         </a>
 
                         <ul class="dropdown-menu" aria-labelledby="dLabel">
-                           <li><a href="'.URL_RESULTS_VIEW_ANSWERS.$records->slug.'/'.$records->resultsslug.'"><i class="fa fa-pencil"></i>'.getPhrase("view_answers").'</a></li>';
+                           <li><a href="'.URL_STUDENT_EXAM_ANALYSIS_BYSUBJECT.$user->slug.'/'.$records->slug.'/'.$records->resultsslug.'">'.getPhrase("SUBJECT WISE ANALYSIS").'</a></li>';
+                           
 
                            $certificate_link = '';
                         if(checkRole(getUserGrade(5))){
@@ -1316,8 +1325,7 @@ class StudentQuizController extends Controller
         })
         ->editColumn('title', function($records)
         {
-           $user = User::where('id', '=', $records->user_id)->get()->first();
-          return '<a href="'.URL_STUDENT_EXAM_ANALYSIS_BYSUBJECT.$user->slug.'/'.$records->slug.'/'.$records->resultsslug.'">'.ucfirst($records->title).'</a>';
+          return '<a href="'.URL_RESULTS_VIEW_ANSWERS.$records->slug.'/'.$records->resultsslug.'">'.ucfirst($records->title).'</a>';
         })
         ->editColumn('marks_obtained', function($records)
         {
