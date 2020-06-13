@@ -22,7 +22,7 @@
 
                 <ol class="breadcrumb">
 
-                 
+
 
                     <li class="active">
 
@@ -52,11 +52,11 @@
 
                         </i>
 
-                    </li>  
+                    </li>
 
                       <li>
 
-                        <a class="positive" data-placement="bottom" data-toggle="tooltip" href="#" 
+                        <a class="positive" data-placement="bottom" data-toggle="tooltip" href="#"
 
                         title="Left Arrow for Previous Question">
 
@@ -68,11 +68,11 @@
 
                     <li>
 
-                        <a class="positive" data-placement="bottom" data-toggle="tooltip" href="#" 
+                        <a class="positive" data-placement="bottom" data-toggle="tooltip" href="#"
 
                         title="Right Arrow for Next Question">
 
-                           &nbsp;{{getPhrase('next')}} &nbsp;<i class="fa fa-arrow-right fa-2"></i> 
+                           &nbsp;{{getPhrase('next')}} &nbsp;<i class="fa fa-arrow-right fa-2"></i>
 
                         </a>
 
@@ -96,12 +96,12 @@
 
                         </a>
 
-                    </li> 
+                    </li>
                     <li>
                           @include('student.exams.languages',['quiz'=>$quiz])
-                    </li> 
+                    </li>
 
-                   
+
 
                 </ul>
 
@@ -109,18 +109,19 @@
 
         </div>
 
-       
-       
-       
-         
 
 
 
-        <!-- /.row -->
+
+
+
 
         <!-- /.row -->
 
-        {!! Form::open(array('url' => URL_STUDENT_EXAM_FINISH_EXAM.$quiz->slug, 'method' => 'POST', 'id'=>'onlineexamform')) !!}
+        <!-- /.row -->
+<!--
+        {!! Form::open(array('url' => URL_STUDENT_EXAM_FINISH_EXAM.$quiz->slug, 'method' => 'POST','enctype'=>'multipart/form-data', 'files' => true,'novalidate'=>'', 'id'=>'onlineexamform')) !!} -->
+        <form  action="URL_STUDENT_EXAM_FINISH_EXAM.$quiz->slug" files=true method="post" enctype="multipart/form-data" id='onlineexamform' >
 
         <div class="row">
 
@@ -147,12 +148,12 @@
                         </span>
                         <label class="checkbox-inline">
                             <input ng-model="hints" style="display:block;" type="checkbox">
-                        
+
                                 </input>
                             </input>
                         </label>
                     </div>
-                       
+
 
                         <h1>
 
@@ -174,7 +175,7 @@
 
                         </h1>
 
-    
+
 
                     </div>
 
@@ -184,9 +185,9 @@
 
                         <div id="questions_list">
 
-                        
 
-                        <?php 
+
+                        <?php
 
 
 
@@ -206,18 +207,18 @@
 
                             } ?>
 
-                            <?php    
+                            <?php
 
                                     $image_path = PREFIX.(new App\ImageSettings())->
 
-                                    getExamImagePath(); 
+                                    getExamImagePath();
 
 
 
                                     ?>
 
 
-                             <?php 
+                             <?php
 
                             $display_question = 'display:none;';
                             $previous_answers = [];
@@ -230,40 +231,40 @@
                                 else
                                     $display_question = 'display:none;';
                             }
-                               if($current_state) 
+                               if($current_state)
                                {
-                                    if(array_key_exists($question->id, $current_state)) 
+                                    if(array_key_exists($question->id, $current_state))
                                     {
-                                        
+
                                         $previous_answers = $current_state[$question->id]->answers;
                                         $time_spent = $current_state[$question->id]->time_spent;
                                     }
-                                    else 
-                                    { 
-                                        
+                                    else
+                                    {
+
                                     }
                                 }
 
                                 ?>
 
 
-      
 
-                            <div 
-                            class="question_div subject_{{$question->subject_id}}" 
-                            name="question[{{$question->id}}]" 
-                            id="{{$question->id}}" 
+
+                            <div
+                            class="question_div subject_{{$question->subject_id}}"
+                            name="question[{{$question->id}}]"
+                            id="{{$question->id}}"
                             style="display:none;" value="0">
 
- 
+
 
                             <input type="hidden" name="time_spent[{{$question->id}}]" id="time_spent_{{$question->id}}" value="0">
 
-                                
+
                                 <div class="questions">
 
                                     <span class="language_l1">{!! $question->question !!}   </span>
-                                    @if($question->question_l2) 
+                                    @if($question->question_l2)
                                      @if($question->question_type == 'radio' || $question->question_type == 'checkbox' || $question->question_type == 'blanks' || $question->question_type == 'match')
                                    <span class="language_l2" style="display: none;"> {!! $question->question_l2 !!}   </span>
                                    @else
@@ -282,26 +283,26 @@
   @endif
   </div>
   <div class="col-md-4">
-   <span class="pull-right"> <a ng-if="bookmarks[{{$question->id}}] >= 0" 
+   <span class="pull-right"> <a ng-if="bookmarks[{{$question->id}}] >= 0"
 
-                                title="{{getPhrase('unbookmark_this_question')}}" 
+                                title="{{getPhrase('unbookmark_this_question')}}"
 
-                                ng-click="bookmark({{$question->id}},'delete','questions');" 
+                                ng-click="bookmark({{$question->id}},'delete','questions');"
 
-                                href="javascript:void(0)" class="pull-right btn btn-link"> 
+                                href="javascript:void(0)" class="pull-right btn btn-link">
 
                                 <i class="fa fa-star item-bookmark"></i></a>
 
-                
 
-                                
+
+
 
                                 <a ng-if="bookmarks[{{$question->id}}] == -1" title="{{getPhrase('bookmark_this_question')}}" ng-click="bookmark({{$question->id}},'add','questions');" href="javascript:void(0)" class="pull-right btn btn-link"> <i class="fa fa-star-o item-bookmark"></i></a>
                                    {{$question->marks}} Mark(s)</span>
   </div>
   </div>
 
-                                 
+
 
                                     <div class="option-hints pull-right default" data-placement="left" data-toggle="tooltip" ng-show="hints" title="{{ $question->hint }}">
 
@@ -315,11 +316,11 @@
 
                                 <hr>
 
-                                    <?php	 
+                                    <?php
 
                                     $image_path = PREFIX.(new App\ImageSettings())->
 
-                                    getExamImagePath(); 
+                                    getExamImagePath();
 
 
 
@@ -328,7 +329,7 @@
 
 
 								@include('student.exams.question_'.$question->question_type, array('question', $question, 'image_path' => $image_path,'previous_answers'=>$previous_answers  ))
-	
+
 
                                 </hr>
 
@@ -340,7 +341,7 @@
 
                         {{-- End of questions List --}}
 
-                        
+
 
                         <hr>
 
@@ -398,7 +399,7 @@
 
             </div>
 
-            {!! Form::close() !!}
+            <!--{!! Form::close() !!}-->
 
              <input type="hidden" name="quiz_id" id="quiz_id" value="{{$quiz->id}}">
             <input type="hidden" name="student_id" id="student_id" value="{{$user->id}}">
@@ -417,7 +418,7 @@
 
 @section('footer_scripts')
 
-  
+
 
 @include('student.exams.scripts.js-scripts');
 @include('common.editor')
@@ -438,20 +439,20 @@
 
 
     $(document).ready(function () {
-    
-    current_hours = {{ $time_hours }}; 
-    current_minutes = {{ $time_minutes }}; 
-    current_seconds = {{ $time_seconds }}; 
 
-     intilizetimer(current_hours, current_minutes, current_seconds); 
+    current_hours = {{ $time_hours }};
+    current_minutes = {{ $time_minutes }};
+    current_seconds = {{ $time_seconds }};
+
+     intilizetimer(current_hours, current_minutes, current_seconds);
 
      @if($current_question_id)
         resumeSetup('{{$current_question_id}}');
      @endif
-    
+
      $('input').click(function(){
         qn = parseInt($(this).attr('name'));
-        
+
          saveResumeExamData(qn);
      });
 
@@ -461,14 +462,14 @@
 
 function resumeSetup(current_question_id) {
     DIV_REFERENCE.first().hide();
-    
+
     current_question_number = $('#'+current_question_id).attr('data-current-question');
     $('#question_number').html(current_question_number);
-    
-    $('#'+current_question_id).fadeIn(300);
-    
 
- 
+    $('#'+current_question_id).fadeIn(300);
+
+
+
 }
 
 /**
@@ -486,11 +487,11 @@ document.onmousedown=disableclick;
     {
       if(event.button==2)
        {
-         
-         return false;    
+
+         return false;
        }
-    } 
-  
+    }
+
 
 
     function languageChanged(language_value)
@@ -502,9 +503,9 @@ document.onmousedown=disableclick;
       }
       else {
         $('.language_l2').hide();
-        $('.language_l1').show(); 
+        $('.language_l1').show();
       }
-      
+
     }
 
 
@@ -517,13 +518,13 @@ $('.finish').click(function(){
 
  alertify.confirm('Are you sure you want to submit examination and once submitted you cannot make any changes',
 
-    function(e){ 
-     
+    function(e){
+
       if(e){
 
         $("#onlineexamform").submit();
 
-          alertify.success('Ok') 
+          alertify.success('Ok')
       }
 
       else{
@@ -534,15 +535,8 @@ $('.finish').click(function(){
 
 });
 
- 
+
 
 </script>
 
 @stop
-
-
-
- 
-   
- 
-

@@ -528,7 +528,7 @@ class StudentQuizController extends Controller
      */
     public function finishExam(Request $request, $slug)
     {
-
+    //dd( $request->file('image'));
       // if(checkRole(['student'])){
       //   return redirect('dashboard') ;
       //      }
@@ -595,14 +595,19 @@ class StudentQuizController extends Controller
             }
         }
 
-        $result =   $this->processAnswers($answers, $subject, $time_spent, $quiz->negative_mark);
+
+        $record = new QuizResult();
+        $record->slug = getHashCode();
+
+        $result =   $this->processAnswers($answers, $subject, $time_spent,$record->slug,$request, $quiz->negative_mark);
         $result['not_answered_questions'] = json_encode($not_answered_questions);
         $result['time_spent_not_answered_questions'] = json_encode($time_spent_not_answered);
 
         $result = (object) $result;
         $answers = json_encode($answers);
 
-        $record = new QuizResult();
+
+
         $record->quiz_id = $quiz->id;
         $record->user_id = Auth::user()->id;
         $record->marks_obtained = json_encode($result->marks_obtained);
@@ -626,13 +631,12 @@ class StudentQuizController extends Controller
         $record->time_spent_wrong_answer_questions = $result->time_spent_wrong_answer_questions;
         $record->time_spent_not_answered_questions = $result->time_spent_not_answered_questions;
 
-        $record->slug = getHashCode();
+
 
 
         $content = 'You have attempted exam. The score percentage is '.formatPercentage($record->percentage);
 
         $record->save();
-        
 
 
         $template    = new EmailTemplate();
@@ -650,8 +654,8 @@ class StudentQuizController extends Controller
       }
 
       // if($quiz->publish_result_immediately==0){
-          
-       
+
+
       //   return redirect('dashboard');
       //   // return view('student.exams.results', $data);
       // }
@@ -764,9 +768,8 @@ class StudentQuizController extends Controller
      * @param  [type] $answers [description]
      * @return [type]          [description]
      */
-    public function processAnswers($answers, $subject, $time_spent, $negative_mark = 0)
+    public function processAnswers($answers, $subject, $time_spent, $slug ,$request, $negative_mark = 0)
     {
-
         $obtained_marks     = [];
         $correct_answers    = 0;
         $obtained_negative_marks = 0;
@@ -1009,7 +1012,8 @@ class StudentQuizController extends Controller
                                 $obtained_marks[$question_record->id]          = $obtained_marks['total'];
                     break;
 
-                    default:
+                    case 'descriptive':
+                        //$answers[$question_record->id][1]=$question_record->id."-".$slug;
                         $wrong_answer_question[] = $question_record->id;
                         $subject[$subject_id]['wrong_answers'] += 1;
                          $subject[$subject_id]['time_spent_wrong_answers']
@@ -1021,8 +1025,14 @@ class StudentQuizController extends Controller
                         $time_spent_wrong_answer_question[$question_record->id]['time_spent']
                                                            = $time_spent[$question_record->id];
                         $obtained_marks[$question_record->id]          = $obtained_marks['total'];
+                        $file_name = $question_record->id."-".$slug;
 
-
+                        // /$file = $request->file('qwertyuiop');
+                        //$name = rand(11111, 99999) . '.' . $file->getClientOriginalExtension();
+                        //$request->file('qwertyuiop')->move("fotoupload", $file);
+                        dd($request);
+                        //dd($answers);
+                    break;
 
             }
 
@@ -1300,7 +1310,7 @@ class StudentQuizController extends Controller
          ->addColumn('action', function($records)
         {
           $user = User::where('id', '=', $records->user_id)->get()->first();
-          
+
           $options = '<div class="dropdown more">
                         <a id="dLabel" type="button" class="more-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="mdi mdi-dots-vertical"></i>
@@ -1308,7 +1318,7 @@ class StudentQuizController extends Controller
 
                         <ul class="dropdown-menu" aria-labelledby="dLabel">
                            <li><a href="'.URL_STUDENT_EXAM_ANALYSIS_BYSUBJECT.$user->slug.'/'.$records->slug.'/'.$records->resultsslug.'">'.getPhrase("SUBJECT WISE ANALYSIS").'</a></li>';
-                           
+
 
                            $certificate_link = '';
                         if(checkRole(getUserGrade(5))){

@@ -4,10 +4,11 @@
         <div class="textarea-hint">
             <fieldset class="form-group">
                 <textarea class="{{$question->id}}" class="form-control" name="{{$question->id}}[]" placeholder="Enter Your answer" rows="20"></textarea>
+                <button class="{{$question->id}}-button" type="button" name="button"><i class="fa fa-microphone" aria-hidden="true"></i></button>
+
             </fieldset>
-            <button class="{{$question->id}}-button" type="button" name="button"><i class="fa fa-microphone" aria-hidden="true"></i></button>
             <fieldset class="form-group">
-                <input type="file" name="{{$question->id}}[]">
+                <input data-preview="#preview" type="file" name="qwertyuiop">
             </fieldset>
         </div>
 
@@ -37,6 +38,7 @@
           const start = () => {
               recognition.start();
               button.classList.add('btn-danger');
+              console.log(button);
               buffer=result.value+" ";
           };
           const stop = () => {

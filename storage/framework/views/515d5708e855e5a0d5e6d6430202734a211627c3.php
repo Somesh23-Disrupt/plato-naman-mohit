@@ -5,7 +5,15 @@
 <?php $__env->startSection('content'); ?>
 
 <div id="page-wrapper">
+	<?php if($record->publish_results_immediately==0): ?>
+		<center><h1 style="margin:20px">Quiz Submitted Successfully</h1></center>
+		<div class="col-lg-12 text-center">
 
+		<a onClick="setLocalItem('<?php echo e(URL_USERS_DASHBOARD); ?>')" href="javascript:void(0);" class="btn t btn-primary"><?php echo e(getPhrase('Back To Dashboard')); ?></a>
+
+		</div>
+
+	<?php else: ?>
 			<div class="container-fluid">
 
 				<!-- Page Heading -->
@@ -54,8 +62,8 @@
 
 						</div>
 
-					
- 
+
+
 
 						<div class="panel-body">
 							<div class="row">
@@ -85,30 +93,30 @@
 						</ul>
 								</div>
 								<div class="col-sm-4">
-									
+
 						 <?php if(isset($marks_data)): ?>
 
 	 						<div class="row">
 
-						
+
 
 							<?php $ids=[];?>
 
 							<?php for($i=0; $i<count($marks_data); $i++): ?>
 
-							<?php 
+							<?php
 
 							$newid = 'myMarksChart'.$i;
 
 							$mark_ids[] = $newid; ?>
 
-							
 
-							 
+
+
 
 								<canvas id="<?php echo e($newid); ?>" width="100" height="60"></canvas>
 
-							 
+
 
 
 
@@ -124,13 +132,13 @@
 
 	 						<div class="row">
 
-						
+
 
 							<?php $ids=[];?>
 
 							<?php for($i=0; $i<count($time_data); $i++): ?>
 
-							<?php 
+							<?php
 
 							$newid = 'myTimeChart'.$i;
 
@@ -146,23 +154,23 @@
 								</div>
 							</div>
 
-						
 
-				 
+
+
 
 
 					<br/>
-					 
-					<div class="row">
 
+					<div class="row">
+						<h1></h1>
 						<div class="col-lg-12 text-center">
 
 							<a onClick="setLocalItem('<?php echo e(URL_RESULTS_VIEW_ANSWERS.$quiz->slug.'/'.$record->slug); ?>')" href="javascript:void(0);" class="btn t btn-primary"><?php echo e(getPhrase('view_key')); ?></a>
 
 						</div>
 
-					</div>	
-					 
+					</div>
+
 					</div>
 
 
@@ -187,30 +195,30 @@
 
 	<!-- /#wrapper -->
 
-	 
+
 
 <?php $__env->stopSection(); ?>
 
 
 
-<?php $__env->startSection('footer_scripts'); ?>
+	<?php $__env->startSection('footer_scripts'); ?>
 
-   <script src="<?php echo e(JS); ?>chart-vue.js"></script>
+	<script src="<?php echo e(JS); ?>chart-vue.js"></script>
 
 
 
-<?php if(isset($marks_data)): ?>
+	<?php if(isset($marks_data)): ?>
 
-	<?php echo $__env->make('common.chart', array('chart_data'=>$marks_data,'ids' => $mark_ids), array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>;
+		<?php echo $__env->make('common.chart', array('chart_data'=>$marks_data,'ids' => $mark_ids), array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>;
 
+	<?php endif; ?>
+
+	<?php if(isset($time_data)): ?>
+
+		<?php echo $__env->make('common.chart', array('chart_data'=>$time_data,'ids' => $time_ids), array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>;
+
+	<?php endif; ?>
 <?php endif; ?>
-
-<?php if(isset($time_data)): ?>
-
-	<?php echo $__env->make('common.chart', array('chart_data'=>$time_data,'ids' => $time_ids), array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>;
-
-<?php endif; ?>
-
 <script>
 function setLocalItem(url) {
 	localStorage.setItem('redirect_url',url);
@@ -219,4 +227,5 @@ function setLocalItem(url) {
 </script>
 
 <?php $__env->stopSection(); ?>
+
 <?php echo $__env->make('layouts.examlayout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

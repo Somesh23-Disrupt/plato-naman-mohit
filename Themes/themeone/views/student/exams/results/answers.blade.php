@@ -74,6 +74,7 @@
 
 
                         <span class="result-pf-text">{{getPhrase('result').': '.$result_record->exam_status}} </span>
+                        <span class="result-pf-text">{{getPhrase('marks_scored').': '.getArrayFromJson($result_record->marks_obtained)['total']}} </span>
 
                               <span class="pull-right">
 
@@ -277,13 +278,13 @@
 
                         @if(checkRole(['teacher']))
                             <div  style="align:left" >
-                                <input type="text" class="marks-1"  name="{{$question->id}}" style="width:55px"
-                                value="<?php if(array_key_exists($question->id, $result_marks_obtained)) echo $result_marks_obtained[$question->id]; ?>">
+                                <input type="number" class="marks-1"  name="{{$question->id}}" style="width:55px"
+                                value="<?php if(array_key_exists($question->id, $result_marks_obtained)) echo $result_marks_obtained[$question->id]; else echo 0; ?>">
                             <label style="font-size:20px" for="">/{{$question->marks}}</label>
                             </div>
 
                         @else
-                            <label style="font-size:20px" for=""><?php if(array_key_exists($question->id, $result_marks_obtained)) echo $result_marks_obtained[$question->id]; ?>/{{$question->marks}}</label>
+                            <label style="font-size:20px" for=""><?php if(array_key_exists($question->id, $result_marks_obtained)) echo $result_marks_obtained[$question->id]; else echo 0; ?>/{{$question->marks}}</label>
                         @endif
                     </div>
 
