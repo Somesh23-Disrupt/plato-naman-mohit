@@ -775,7 +775,14 @@ class QuizController extends Controller
         File::delete($files);
     }
 
-
+    public function submitgrade()
+    {
+      if(!checkRole(getUserGrade(3)))
+      {
+          prepareBlockUserMessage();
+          return back();
+      }
+    }
 
 
 }

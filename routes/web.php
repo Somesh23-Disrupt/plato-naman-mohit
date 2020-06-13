@@ -734,6 +734,7 @@ Route::get('/institution/{inst_name?}/teacher','InstitutionController@teacher');
 Route::get('/institution/{inst_name?}/parent','InstitutionController@parent');
 Route::get('/institution/{inst_name?}/admin','InstitutionController@admin');
 //Teachers Route
+Route::post('/tttttt','QuizController@submitgrade');
 Route::get('users/toplist','TeacherController@toplist');
 Route::get('section/{slug}','TeacherController@secdetails');
 Route::get('sebmission/quizzes','TeacherController@subdetail');
