@@ -528,7 +528,7 @@ class StudentQuizController extends Controller
      */
     public function finishExam(Request $request, $slug)
     {
-    dd( $request->file);
+    //dd( $request->file);
       // if(checkRole(['student'])){
       //   return redirect('dashboard') ;
       //      }
@@ -1030,7 +1030,7 @@ class StudentQuizController extends Controller
                         // /$file = $request->file('qwertyuiop');
                         //$name = rand(11111, 99999) . '.' . $file->getClientOriginalExtension();
                         //$request->file('qwertyuiop')->move("fotoupload", $file);
-                        dd($request);
+                        //dd($request);
                         //dd($answers);
                     break;
 
