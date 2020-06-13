@@ -1718,7 +1718,7 @@ CREATE TABLE `quizresults` (
   `slug` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `quiz_id` bigint(20) UNSIGNED NOT NULL,
   `user_id` bigint(20) UNSIGNED NOT NULL,
-  `marks_obtained` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `marks_obtained` text COLLATE utf8_unicode_ci DEFAULT NULL,
   `negative_marks` decimal(10,2) NOT NULL DEFAULT 0.00,
   `total_marks` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `percentage` decimal(10,2) NOT NULL,

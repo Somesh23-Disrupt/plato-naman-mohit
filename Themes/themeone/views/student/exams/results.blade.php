@@ -8,13 +8,13 @@
 
 <div id="page-wrapper">
 	@if($record->publish_results_immediately==0)
-		<h1 style="margin:20px">Quize Submitted Successfully</h1>
+		<center><h1 style="margin:20px">Quiz Submitted Successfully</h1></center>
 		<div class="col-lg-12 text-center">
 
 		<a onClick="setLocalItem('{{URL_USERS_DASHBOARD}}')" href="javascript:void(0);" class="btn t btn-primary">{{ getPhrase('Back To Dashboard') }}</a>
 
 		</div>
-	
+
 	@else
 			<div class="container-fluid">
 
@@ -64,8 +64,8 @@
 
 						</div>
 
-					
- 
+
+
 
 						<div class="panel-body">
 							<div class="row">
@@ -95,30 +95,30 @@
 						</ul>
 								</div>
 								<div class="col-sm-4">
-									
+
 						 @if(isset($marks_data))
 
 	 						<div class="row">
 
-						
+
 
 							<?php $ids=[];?>
 
 							@for($i=0; $i<count($marks_data); $i++)
 
-							<?php 
+							<?php
 
 							$newid = 'myMarksChart'.$i;
 
 							$mark_ids[] = $newid; ?>
 
-							
 
-							 
+
+
 
 								<canvas id="{{$newid}}" width="100" height="60"></canvas>
 
-							 
+
 
 
 
@@ -134,13 +134,13 @@
 
 	 						<div class="row">
 
-						
+
 
 							<?php $ids=[];?>
 
 							@for($i=0; $i<count($time_data); $i++)
 
-							<?php 
+							<?php
 
 							$newid = 'myTimeChart'.$i;
 
@@ -156,13 +156,13 @@
 								</div>
 							</div>
 
-						
 
-				 
+
+
 
 
 					<br/>
-					 
+
 					<div class="row">
 						<h1></h1>
 						<div class="col-lg-12 text-center">
@@ -171,8 +171,8 @@
 
 						</div>
 
-					</div>	
-					 
+					</div>
+
 					</div>
 
 
@@ -190,14 +190,14 @@
 			<!-- /.container-fluid -->
 
 		</div>
-		
+
 		<!-- /#page-wrapper -->
 
 	</div>
 
 	<!-- /#wrapper -->
 
-	 
+
 
 @stop
 

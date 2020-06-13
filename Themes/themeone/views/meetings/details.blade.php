@@ -26,10 +26,6 @@
                                 <h2>{{$meeting->title}}</h2></div>
                             <div class="meeting-content text-center">
                                 {!!$meeting->description!!}
-                                <textarea id="result"></textarea>
-                                <div id="resul"></div>
-                                <button id="button" type="button" name="button">Start Listening</button>
-                                or press Ctrl button to toggle
                             </div>
                             <div id="meet" class="meeting-footer text-center"></div>
                             @if($meeting->slug)
@@ -45,62 +41,6 @@
             </div>
             <!-- /.container-fluid -->
         </div>
-
-        <script>
-            window.addEventListener("DOMContentLoaded", () => {
-              const button = document.getElementById("button");
-              const result = document.getElementById("result");
-              //const main = document.getElementsByTagName("main")[0];
-              const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
-              if (typeof SpeechRecognition === "undefined") {
-                button.remove();
-                const message = document.getElementById("message");
-                message.removeAttribute("hidden");
-                message.setAttribute("aria-hidden", "false");
-              } else {
-                  let listening = false;
-                  var buffer = "";
-                  const recognition =  new webkitSpeechRecognition() ;
-                  const start = () => {
-                      recognition.start();
-                      button.textContent = "Stop listening";
-                      //main.classList.add("speaking");
-                      buffer=result.value+" ";
-                  };
-                  const stop = () => {
-                      recognition.stop();
-                      button.textContent = "Start listening";
-                      //main.classList.remove("speaking");
-                      buffer=result.value+" ";
-                  };
-                  const onResult = event => {
-                      result.value = '';
-                      result.value = buffer;
-                      for (const res of event.results) {
-                        var text =  res[0].transcript;
-                        if (res.isFinal) {
-                            ;//buffer=result.value;
-                        }
-                        result.value+=text;
-
-                      }
-                  };
-                  recognition.continuous = true;
-                  recognition.interimResults = true;
-                  recognition.addEventListener("result", onResult);
-                  document.addEventListener('keyup', event => {
-                      if (event.key === 'Control') {
-                          listening ? stop() : start();
-                          listening = !listening;
-                      }
-                  });
-                  button.addEventListener("click", () => {
-                    listening ? stop() : start();
-                    listening = !listening;
-                  });
-              }
-            });
-        </script>
 
 
 
@@ -125,8 +65,8 @@
             api.executeCommand('startRecording', {
                 mode: 'stream', //recording mode, either `file` or `stream`.
                 //dropboxToken: string, //dropbox oauth2 token.
-                shouldShare: true, //whether the recording should be shared with the participants or not. Only applies to certain jitsi meet deploys.
-                youtubeStreamKey: 'rd6k-ck2r-rt5b-yxbp-bx4r', //the youtube stream key.
+                //shouldShare: true, //whether the recording should be shared with the participants or not. Only applies to certain jitsi meet deploys.
+                //youtubeStreamKey: '', //the youtube stream key.
                 //youtubeBroadcastID: string //the youtube broacast ID.
             });
             //api.executeCommand('password', 'password');

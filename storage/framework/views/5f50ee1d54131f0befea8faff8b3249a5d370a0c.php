@@ -3,8 +3,8 @@
 
         <div class="textarea-hint">
             <fieldset class="form-group">
-                <textarea class="{{$question->id}}" class="form-control" name="{{$question->id}}[]" placeholder="Enter Your answer" rows="20"></textarea>
-                <button class="{{$question->id}}-button" type="button" name="button"><i class="fa fa-microphone" aria-hidden="true"></i></button>
+                <textarea class="<?php echo e($question->id); ?>" class="form-control" name="<?php echo e($question->id); ?>[]" placeholder="Enter Your answer" rows="20"></textarea>
+                <button class="<?php echo e($question->id); ?>-button" type="button" name="button"><i class="fa fa-microphone" aria-hidden="true"></i></button>
 
             </fieldset>
             <fieldset class="form-group">
@@ -22,8 +22,8 @@
       const button_next = document.getElementsByClassName("next")[0];
       const button_prev = document.getElementsByClassName("prev")[0];
       const button_review = document.getElementsByClassName("review")[0];
-      const button = document.getElementsByClassName("{{$question->id}}-button")[0];
-      const result = document.getElementsByClassName("{{$question->id}}")[0];
+      const button = document.getElementsByClassName("<?php echo e($question->id); ?>-button")[0];
+      const result = document.getElementsByClassName("<?php echo e($question->id); ?>")[0];
 
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
       if (typeof SpeechRecognition === "undefined") {
