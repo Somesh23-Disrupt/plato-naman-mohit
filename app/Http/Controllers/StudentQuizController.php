@@ -528,7 +528,7 @@ class StudentQuizController extends Controller
      */
     public function finishExam(Request $request, $slug)
     {
-    //dd( $request->file('image'));
+    dd( $request->file);
       // if(checkRole(['student'])){
       //   return redirect('dashboard') ;
       //      }
