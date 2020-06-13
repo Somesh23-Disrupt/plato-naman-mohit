@@ -8,7 +8,7 @@
 
             </fieldset>
             <fieldset class="form-group">
-                <input data-preview="#preview" type="file" name="qwertyuiop">
+                <input type="file" name="description[]">
             </fieldset>
         </div>
 
