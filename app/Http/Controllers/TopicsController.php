@@ -37,7 +37,7 @@ class TopicsController extends Controller
       }
         $data['layout']=getLayout();
 
-        $data['active_class']       = 'exams';
+        $data['active_class']       = 'subjects';
         $data['title']              = getPhrase('topics_list');
     	// return view('mastersettings.topics.list', $data);
       $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
@@ -60,9 +60,11 @@ class TopicsController extends Controller
       }
          $records = Topic::join('subjects', 'topics.subject_id', '=' ,'subjects.id')
          ->select([
-            'subject_title','parent_id', 'topic_name','section_id','description','topics.slug', 'topics.id', 'topics.updated_at'])
-        ->where('record_updated_by',Auth::user()->id)
+            'subject_title', 'topic_name','section_id','description','topics.slug', 'topics.id', 'topics.updated_at'])
+        ->where('topics.record_updated_by',Auth::user()->id)
          ->orderBy('updated_at','desc');
+
+
 
         return Datatables::of($records)
         ->addColumn('action', function ($records) {
@@ -94,9 +96,10 @@ class TopicsController extends Controller
         ->removeColumn('id')
         ->removeColumn('slug')
         ->removeColumn('updated_at')
-        ->editColumn('parent_id', function($records){
-        	return ($records->parent_id == 0) ? '<i class="fa fa-check text-success"></i>' : $records->topic_name;
-        })
+        
+        // ->editColumn('parent_id', function($records){
+        // 	return ($records->parent_id == 0) ? '<i class="fa fa-check text-success"></i>' : $records->topic_name;
+        // })
         ->make();
     }
 
@@ -113,7 +116,7 @@ class TopicsController extends Controller
       }
     	$data['record']         	= FALSE;
     	$data['active_class']       = 'exams';
-    	$data['parent_topics']      = array();
+    	
     	$list 						= App\Subject::all();
     	$subjects			= array_pluck($list, 'subject_title', 'id');
       $data['subjects'] = array(''=>getPhrase('select')) + $subjects;
@@ -121,7 +124,6 @@ class TopicsController extends Controller
         $data['layout']=getLayout();
 
 
-        $data['parent_topics'][0]   = getPhrase('select');
 
       $data['title']              = getPhrase('add_topic');
       $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
@@ -153,8 +155,7 @@ class TopicsController extends Controller
     	$data['record']       		= $record;
     	$list 						= App\Subject::all();
     	$data['subjects']			= array_pluck($list, 'subject_title', 'id');
-    	$data['parent_topics']		= array_pluck(Topic::getTopics($record->subject_id,0),'topic_name','id');
-	   	$data['parent_topics'][0] = 'Parent';
+    
     	$data['active_class']       = 'exams';
         $data['title']              = getPhrase('edit_topic');
     	// return view('mastersettings.topics.add-edit', $data);
@@ -186,7 +187,7 @@ class TopicsController extends Controller
 
           $this->validate($request, [
        	  'subject_id'        => 'bail|required|integer',
-          'parent_id'         => 'bail|required|integer',
+         
           'topic_name'        => 'bail|required|max:40',
           ]);
 
@@ -200,8 +201,10 @@ class TopicsController extends Controller
             $record->slug = $record->makeSlug($name);
         $record->topic_name 			= $name;
         $record->slug 			        = $record->makeSlug($name);
-        $record->parent_id				= $request->parent_id;
+       
         $record->subject_id				= $request->subject_id;
+        $record->record_updated_by				=auth()->user()->id;
+
         $record->description      = '';
         if(isset($request->description))
         $record->description 			= $request->description;
@@ -225,14 +228,15 @@ class TopicsController extends Controller
       }
        $this->validate($request, [
          'subject_id'          	 => 'bail|required|integer',
-         'parent_id'             => 'bail|required|integer',
          'topic_name'          	 => 'bail|required|max:40',
          ]);
     	$record = new Topic();
         $name 					        = $request->topic_name;
         $record->topic_name 			= $name;
+        // dd($request->all());
         $record->slug 			        = $record->makeSlug($name);
-        $record->parent_id				= $request->parent_id;
+       
+        $record->record_updated_by				=auth()->user()->id;
         $record->subject_id				= $request->subject_id;
         $record->description 			= $request->description;
         $record->save();

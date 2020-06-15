@@ -34,7 +34,12 @@ class SubjectsController extends Controller
         prepareBlockUserMessage();
         return back();
       }
-        $data['active_class']       = 'exams';
+      if(auth()->user()->section_id==NULL)
+      {
+        prepareBlockUserMessage();
+        return back();
+      }
+        $data['active_class']       = 'subjects';
         $data['title']              = getPhrase('subjects_list');
     	// return view('mastersettings.subjects.list', $data);
         $data['layout']=getLayout();
@@ -83,6 +88,7 @@ class SubjectsController extends Controller
         ->editColumn('teacher_id', function($records) {
             return User::select('name')->where('id',$records->teacher_id)->pluck('name')->first();
         })
+        ->removeColumn('id')
         ->removeColumn('slug')
         ->removeColumn('is_elective_type')
         ->removeColumn('is_lab')

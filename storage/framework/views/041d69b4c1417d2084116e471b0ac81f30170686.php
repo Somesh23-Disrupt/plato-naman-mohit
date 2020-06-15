@@ -1,6 +1,5 @@
 <?php $__env->startSection('header_scripts'); ?>
 	<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
-	<link href="https://cdn.datatables.net/buttons/1.4.2/css/buttons.dataTables.min.css" type="text/css">
 
 <?php $__env->stopSection(); ?>
 
@@ -31,9 +30,13 @@
 								 ->where('section_name',getUserWithSlug()->section_name)
 								 ->count()); ?></h4>
 								 <?php else: ?>
-								 	<h4 class="card-title"><?php echo e(App\User::where('inst_id',getUserWithSlug()->inst_id)->where('role_id',5)
-									->where('section_id',$sec)
-									->count()); ?></h4>
+									<?php if($sec->count()>0): ?>
+										<h4 class="card-title"><?php echo e(App\User::where('inst_id',getUserWithSlug()->inst_id)->where('role_id',5)
+										->where('section_id',$sec)
+										->count()); ?></h4>
+									<?php else: ?>
+										<h4 class="card-title">0</h4>
+									<?php endif; ?>
 								 <?php endif; ?>
 								<a href="<?php echo e(URL_USERS); ?>"><?php echo e(getPhrase('Students')); ?></a>
 				 			</div>
@@ -82,7 +85,7 @@
 				 			</div>
 				 			<div class="media-body">
 				 				<h4 class="card-title"><?php echo e($tppforteach); ?></h4>
-								<a><?php echo e(getPhrase('total_pass_percent')); ?></a>
+								<a><?php echo e(getPhrase('total_pass_%')); ?></a>
 				 			</div>
 				 		</div>
 				 	</div>
@@ -223,22 +226,11 @@
 	<?php echo $__env->make('common.chart', array($chart_data,'ids' =>$ids,'scale'=>TRUE), array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>;
 	<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
 
-	<script src="https://cdn.datatables.net/buttons/1.4.2/js/dataTables.buttons.min.js"></script>
-	<script src="//cdn.datatables.net/buttons/1.4.2/js/buttons.flash.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
-	<script src="//cdn.datatables.net/buttons/1.4.2/js/buttons.html5.min.js"></script>
-	<script src="//cdn.datatables.net/buttons/1.4.2/js/buttons.print.min.js"></script>
+
 		<script>
 			$(document).ready( function () {
 				$('#datatable').DataTable({
-					dom: 'Bfrtip',
-					buttons: [
-								'copy', 'csv', 'excel', 'pdf', 'print'
-	
-							],
-					
+					paging:true,
 				});
 			});
 		</script>

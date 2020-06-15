@@ -162,7 +162,7 @@
 					<i class="fa fa-fw fa-language" aria-hidden="true"></i> {{ getPhrase('languages') }} </a> </li>
 					
 					<li {{ isActive($active_class, 'users') }}> <a href="{{URL_USERS}}"><i class="fa fa-fw fa-user-circle"></i> {{ getPhrase('users') }} </a> </li>
-					<li {{ isActive($active_class, 'institutions') }}> <a href="{{URL_INSTITUTIONS}}"><i class="fa fa-fw fa-user-circle"></i> {{ getPhrase('Institutions') }} </a> </li>
+					
  
 					
  
