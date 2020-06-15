@@ -115,7 +115,7 @@ class DashboardController extends Controller
           //  dd($sec_inst);
               $records = Quiz::select(['title', 'category_id', 'start_date'])->get()->sortByDesc('start_date');
               $data['tables']=$records;
-
+              // dd($data['tables']->pluck('category_id'));
             $view_name = getTheme().'::admin.dashboard';
 
             return view($view_name, $data);
@@ -542,26 +542,26 @@ class DashboardController extends Controller
       $quizResultObject = new App\QuizResult();
       $usage = $quizResultObject->getQuizzesUsage($type);
 
-        $summary_dataset = [];
+            $summary_dataset = [];
             $summary_labels = [];
             $summary_dataset_labels = [getPhrase('total')];
             $summary_bgcolor = [];
-            $summary_border_color = [];
+            
 
 
             foreach($usage as $record)
-            {
+            { 
               $summary_dataset[] = $record->total;
               $summary_labels[]  = $record->quiz_title;
-              $summary_border_color[] = 'rbg(255,255,255)';
 
             }
+            $summary_border_color = 'rgb(255,255,255)';
             $test=['rgba(196, 219, 250, 1)','rgba(52, 132, 240, 1)','rgba(41, 75, 147, 1)','rgba(14, 77, 146, 0.3)','rgba(16, 52, 166, 0.8)','rgba(17, 30, 108, 0.5)'];
              for ($i=0; $i < 6; $i++) {
                $summary_bgcolor[] = $test[$i];
              }
 
-
+            
 
 
 

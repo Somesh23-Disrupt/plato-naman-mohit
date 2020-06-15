@@ -127,11 +127,11 @@
 					<tr>
 						<td>{{ $institution->institution_name}}</td>
 
-						<td><a href="{{'institution/'.$institution->institution_name.'/admin'}}">{{ App\User::where('inst_id',$institution->id)->where('role_id',2)->count()}}</a></td>
-						<td><a href="{{'institution/'.$institution->institution_name.'/student'}}">{{ App\User::where('inst_id',$institution->id)->where('role_id',5)->count()}}</a></td>
+						<td><a href="{{'institution/'.$institution->institution_name.'/admin'}}">{{ App\User::where('inst_name',$institution->institution_name)->where('role_id',2)->count()}}</a></td>
+						<td><a href="{{'institution/'.$institution->institution_name.'/student'}}">{{ App\User::where('inst_name',$institution->institution_name)->where('role_id',5)->count()}}</a></td>
 
-						<td><a href="{{'institution/'.$institution->institution_name.'/teacher'}}">{{ App\User::where('inst_id',$institution->id)->where('role_id',7)->count()}}</a></td>
-						<td><a href="{{'institution/'.$institution->institution_name.'/parent'}}">{{ App\User::where('inst_id',$institution->id)->where('role_id',6)->count()}}</a></td>
+						<td><a href="{{'institution/'.$institution->institution_name.'/teacher'}}">{{ App\User::where('inst_name',$institution->institution_name)->where('role_id',3)->count()}}</a></td>
+						<td><a href="{{'institution/'.$institution->institution_name.'/parent'}}">{{ App\User::where('inst_name',$institution->institution_name)->where('role_id',6)->count()}}</a></td>
 
 						
 					</tr>

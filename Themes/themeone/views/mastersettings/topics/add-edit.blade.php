@@ -37,7 +37,7 @@
 
 					 @include('mastersettings.topics.form_elements',
 					 array('button_name'=> $button_name),
-					 array('subjects'=>$subjects, 'parent_topics'=>$parent_topics))
+					 array('subjects'=>$subjects))
 
 					{!! Form::close() !!}
 

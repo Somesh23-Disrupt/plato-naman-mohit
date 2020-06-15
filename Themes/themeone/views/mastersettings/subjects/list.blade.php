@@ -34,8 +34,6 @@
 						<table class="table table-striped table-bordered datatable" cellspacing="0" width="100%">
 							<thead>
 								<tr>
-
-									<th>{{ getPhrase('id')}}</th>
 									<th>{{ getPhrase('subject')}}</th>
 									<th>{{ getPhrase('section')}}</th>
 									<th>{{ getPhrase('teacher')}}</th>

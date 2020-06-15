@@ -12,12 +12,6 @@
 						</div>
 					</fieldset>
 
-					<fieldset class="form-group">
-						{{ Form::label('parent_id', getphrase('select_parent')) }}
-						<span class="text-red">*</span>
-						{{Form::select('parent_id', $parent_topics, null, ['class'=>'form-control', 'id'=>'parent' ])}}
-					</fieldset>
-
 
 					 <fieldset class="form-group">
 						
