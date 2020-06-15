@@ -97,7 +97,17 @@
 					<div class="dropdown-toggle top-profile-menu" data-toggle="dropdown">
 						@if(Auth::check())
 						<div class="username">
-							<h2>{{Auth::user()->name}}</h2>
+							<h2>{{Auth::user()->name}}</h2><br>
+							@if(Auth::user()->section_name!=NULL)
+								<h2>{{getPhrase('Section ').Auth::user()->section_name}}</h2>
+							@else
+								<?php $sec=App\Subject::select(['section_id'])->where('teacher_id',auth()->user()->id)->get()->pluck('section_id')?>
+								@if(count($sec)>0)
+									<h2>{{getPhrase('Section ').App\User::select(['section_name'])->where('section_id',$sec)->first()->section_name}}</h2>
+								@else
+
+								@endif
+							@endif
 					</div>
 						@endif
 
@@ -230,6 +240,21 @@
 								@endforeach
 							</ul>
 						</li>
+					@else
+						<?php $secs=App\Subject::select(['section_id'])->where('teacher_id',auth()->user()->id)->distinct('section_id')->get()->pluck('section_id');?>
+						<li {{ isActive($active_class, 'section') }}>
+
+							<a data-toggle="collapse" data-target="#section"><i class="fa fa-fw fa-tv" ></i>
+							Sections </a>
+								<ul id="section" class="collapse sidemenu-dropdown">
+									@foreach ($secs as $sec)
+									
+								
+										<li><a href="{{URL_SECDETAILS.'/'.$sec }}"> <i class="fa fa-fw fa-random"></i>{{ App\User::select(['section_name'])->where('section_id',$sec)->first()->section_name }}</a></li>
+										
+									@endforeach
+								</ul>
+							</li>
 					@endif
 
 

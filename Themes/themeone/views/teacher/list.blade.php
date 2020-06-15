@@ -35,6 +35,7 @@
 								<tr>
 								 	<th>{{ getPhrase('name')}}</th>
 									<th>{{ getPhrase('email')}}</th>
+									<th>{{ getPhrase('Section')}}</th>
 									<th>{{ getPhrase('department')}}</th>
 									<th>{{ getPhrase('institution Name')}}</th>
 								</tr>
@@ -43,6 +44,7 @@
 							 	<tr>
 							 		<td>{{$record->name}}</td>
 							 		<td>{{$record->email}}</td>
+							 		<td>{{$record->section_name}}</td>
 							 		<td>{{$record->department}}</td>
 							 		<td>{{$record->inst_name}}</td>
 							 	</tr>

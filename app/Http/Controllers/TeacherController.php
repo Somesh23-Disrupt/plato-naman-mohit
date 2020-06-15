@@ -92,6 +92,7 @@ class TeacherController extends Controller
             $users=App\User::where('inst_id',auth()->user()->inst_id)->where('role_id',5)->get();
           }
           $pass=[];
+          // dd($users);
           foreach ($users as $user) {
             $data['chart_data'][]=(object)$this->topper($user);
           }
@@ -101,13 +102,16 @@ class TeacherController extends Controller
                 $pass[]=$d->data->id;
               }
             }   
-          
+          // dd($data['chart_data']);
           $data['records']      = App\User::whereIn('id', $pass)->get();
         
         $data['layout']      = getLayout();
         $data['active_class'] = 'users';
         $data['heading']      = getPhrase('passlist');
         $data['title']        = getPhrase('passlist');
+        $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+        // dd($sections);
+        $data['sectionsforteach']= $sections;
         // return view('users.list-users', $data);
                  $view_name = getTheme().'::teacher.list';
         return view($view_name, $data);

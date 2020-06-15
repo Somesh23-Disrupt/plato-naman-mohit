@@ -37,7 +37,6 @@
 
 
 									<th>{{ getPhrase('subject')}}</th>
-									<th>{{ getPhrase('parent')}}</th>
 									<th>{{ getPhrase('topic (id)')}}</th>
 									<th>{{ getPhrase('section')}}</th>
 									<th>{{ getPhrase('description')}}</th>

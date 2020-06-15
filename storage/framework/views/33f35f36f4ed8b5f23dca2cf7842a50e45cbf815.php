@@ -98,7 +98,17 @@
 					<div class="dropdown-toggle top-profile-menu" data-toggle="dropdown">
 						<?php if(Auth::check()): ?>
 						<div class="username">
-							<h2><?php echo e(Auth::user()->name); ?></h2>
+							<h2><?php echo e(Auth::user()->name); ?></h2><br>
+							<?php if(Auth::user()->section_name!=NULL): ?>
+								<h2><?php echo e(getPhrase('Section ').Auth::user()->section_name); ?></h2>
+							<?php else: ?>
+								<?php $sec=App\Subject::select(['section_id'])->where('teacher_id',auth()->user()->id)->get()->pluck('section_id')?>
+								<?php if(count($sec)>0): ?>
+									<h2><?php echo e(getPhrase('Section ').App\User::select(['section_name'])->where('section_id',$sec)->first()->section_name); ?></h2>
+								<?php else: ?>
+
+								<?php endif; ?>
+							<?php endif; ?>
 					</div>
 						<?php endif; ?>
 
@@ -233,6 +243,21 @@
 								<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 							</ul>
 						</li>
+					<?php else: ?>
+						<?php $secs=App\Subject::select(['section_id'])->where('teacher_id',auth()->user()->id)->distinct('section_id')->get()->pluck('section_id');?>
+						<li <?php echo e(isActive($active_class, 'section')); ?>>
+
+							<a data-toggle="collapse" data-target="#section"><i class="fa fa-fw fa-tv" ></i>
+							Sections </a>
+								<ul id="section" class="collapse sidemenu-dropdown">
+									<?php $__currentLoopData = $secs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sec): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+									
+								
+										<li><a href="<?php echo e(URL_SECDETAILS.'/'.$sec); ?>"> <i class="fa fa-fw fa-random"></i><?php echo e(App\User::select(['section_name'])->where('section_id',$sec)->first()->section_name); ?></a></li>
+										
+									<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+								</ul>
+							</li>
 					<?php endif; ?>
 
 

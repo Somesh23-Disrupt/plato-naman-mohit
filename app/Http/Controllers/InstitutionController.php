@@ -80,7 +80,7 @@ class InstitutionController extends Controller
           prepareBlockUserMessage();
           return back();
         }
-        $institution=User::where('inst_name',$slug)->where('role_id',7)->get();
+        $institution=User::where('inst_name',$slug)->where('role_id',3)->get();
         $data['institutions']=$institution;
         $data['records']      = FALSE;
         $data['layout']      = getLayout();
