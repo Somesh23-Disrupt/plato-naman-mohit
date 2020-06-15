@@ -74,7 +74,7 @@
 
 
                         <span class="result-pf-text">{{getPhrase('result').': '.$result_record->exam_status}} </span>
-                        <span class="result-pf-text">{{getPhrase('marks_scored').': '.getArrayFromJson($result_record->marks_obtained)['total']}} </span>
+                        <span class="result-pf-text">{{getPhrase('marks_scored').': '.getArrayFromJson($result_record->marks_obtained)['total']}} / {{$exam_record->total_marks}}</span>
 
                               <span class="pull-right">
 

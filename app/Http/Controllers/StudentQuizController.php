@@ -528,11 +528,9 @@ class StudentQuizController extends Controller
      */
     public function finishExam(Request $request, $slug)
     {
-    //dd( $request->file);
       // if(checkRole(['student'])){
       //   return redirect('dashboard') ;
       //      }
-      // dd($request->all());
         $quiz = Quiz::getRecordWithSlug($slug);
 
        $user_record = Auth::user();
@@ -603,9 +601,9 @@ class StudentQuizController extends Controller
         $result =   $this->processAnswers($answers, $subject, $time_spent,$record->slug,$request, $quiz->negative_mark);
         $result['not_answered_questions'] = json_encode($not_answered_questions);
         $result['time_spent_not_answered_questions'] = json_encode($time_spent_not_answered);
-
+        $answers = json_encode($result['answers']);
         $result = (object) $result;
-        $answers = json_encode($answers);
+
 
 
 
@@ -780,8 +778,9 @@ class StudentQuizController extends Controller
         $wrong_answer_question              = [];
         $time_spent_correct_answer_question = [];
         $time_spent_wrong_answer_question   = [];
-
+        $im=0;
         foreach ($answers as $key => $value) {
+
           if( is_numeric( $key ))
          {
             $question_record  = $this->getQuestionRecord($key);
@@ -1014,36 +1013,37 @@ class StudentQuizController extends Controller
                     break;
 
                     case 'descriptive':
-                        //$answers[$question_record->id][1]=$question_record->id."-".$slug;
-                        $wrong_answer_question[] = $question_record->id;
-                        $subject[$subject_id]['wrong_answers'] += 1;
-                         $subject[$subject_id]['time_spent_wrong_answers']
-                                                    += $time_spent[$question_record->id];
-                        $obtained_marks['total']                   -= $negative_mark;
-                        $obtained_negative_marks          += $negative_mark;
-                        $time_spent_wrong_answer_question[$question_record->id]['time_to_spend']
-                                                           = $question_record->time_to_spend;
-                        $time_spent_wrong_answer_question[$question_record->id]['time_spent']
-                                                           = $time_spent[$question_record->id];
-                        $obtained_marks[$question_record->id]          = $obtained_marks['total'];
-                        $file_name = $question_record->id."-".$slug;
 
-                        // /$file = $request->file('qwertyuiop');
-                        //$name = rand(11111, 99999) . '.' . $file->getClientOriginalExtension();
-                        //$request->file('qwertyuiop')->move("fotoupload", $file);
-                        //dd($request);
-                        //dd($answers);
+                            $wrong_answer_question[] = $question_record->id;
+                            $subject[$subject_id]['wrong_answers'] += 1;
+                             $subject[$subject_id]['time_spent_wrong_answers']
+                                                        += $time_spent[$question_record->id];
+                            $obtained_marks['total']                   -= $negative_mark;
+                            $obtained_negative_marks          += $negative_mark;
+                            $time_spent_wrong_answer_question[$question_record->id]['time_to_spend']
+                                                               = $question_record->time_to_spend;
+                            $time_spent_wrong_answer_question[$question_record->id]['time_spent']
+                                                               = $time_spent[$question_record->id];
+                            $obtained_marks[$question_record->id]          = $obtained_marks['total'];
+
+                            if ($request->hasFile($question_record->id))
+                           {
+                                $image = $request->file($question_record->id);
+                                $file_name = $question_record->id."-".$slug.'.'.$image[1]->extension();
+                                $destinationPath = public_path('/uploads/exams/submissions');
+                                $image[1]->move($destinationPath, $file_name);
+                                $answers[$question_record->id][1]=$file_name;
+
+                           }
                     break;
-
             }
-
           }
           $obtained_marks['total']=0;
-
         }
         $obtained_marks['total']=array_sum($obtained_marks);
         // dd($time_spent_correct_answer_question);
           return array(
+                        'answers'               => $answers,
                         'total_correct_answers' => $correct_answers,
                         'marks_obtained'        => $obtained_marks,
                         'negative_marks'        => $obtained_negative_marks,

@@ -21,8 +21,7 @@
            <form>
 
                <ul class="filling-blank answersheet">
-                   <li class="blank_correct-answer bg-primary" ><?php echo e($user_answers[1]); ?> </li>
-                   <img class="image img-responsive"  src="http://localhost/plato-naman-mohit/public/uploads/settings/UA9om04LXF1bxJL.png" />
+                   <img class="image img-responsive"  src="<?php echo e(IMAGE_PATH_UPLOAD_SUBMISSION); ?><?php echo e($user_answers[1]); ?>" />
 
                </ul>
            </form>

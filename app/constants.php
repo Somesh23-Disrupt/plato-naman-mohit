@@ -45,6 +45,7 @@ define('IMAGE_PATH_PROFILE_THUMBNAIL_DEFAULT', UPLOADS.'users/thumbnail/default.
 
 define('IMAGE_PATH_SETTINGS', UPLOADS.'settings/');
 
+define('IMAGE_PATH_UPLOAD_SUBMISSION', UPLOADS.'exams/submissions/');
 
 
 define('DOWNLOAD_LINK_USERS_IMPORT_EXCEL', PREFIX1.'downloads/excel-templates/users_template.xlsx');

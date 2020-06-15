@@ -69,7 +69,7 @@
 
 
                         <span class="result-pf-text"><?php echo e(getPhrase('result').': '.$result_record->exam_status); ?> </span>
-                        <span class="result-pf-text"><?php echo e(getPhrase('marks_scored').': '.getArrayFromJson($result_record->marks_obtained)['total']); ?> </span>
+                        <span class="result-pf-text"><?php echo e(getPhrase('marks_scored').': '.getArrayFromJson($result_record->marks_obtained)['total']); ?> / <?php echo e($exam_record->total_marks); ?></span>
 
                               <span class="pull-right">
 
