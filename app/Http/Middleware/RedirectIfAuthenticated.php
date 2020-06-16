@@ -20,9 +20,13 @@ class RedirectIfAuthenticated
         if (Auth::guard($guard)->check()) {
             //return redirect('/home');
 			$user = getUserRecord();
-			if( in_array($user->role_id, array( OWNER_ROLE_ID, ADMIN_ROLE_ID)) )
+			if( in_array($user->role_id, array( OWNER_ROLE_ID)) )
 			{
-				return redirect($this->redirectTo);
+				return redirect(URL_DEV_DASHBOARD);
+			}
+			elseif( $user->role_id == ADMIN_ROLE_ID )
+			{
+				return redirect( URL_USERS_DASHBOARD );
 			}
 			elseif( $user->role_id == USER_ROLE_ID )
 			{

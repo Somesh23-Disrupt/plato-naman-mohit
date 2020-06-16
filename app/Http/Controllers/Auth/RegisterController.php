@@ -60,7 +60,7 @@ class RegisterController extends Controller
             'password' => 'required|min:6|confirmed',
         ]);
     }
-	
+
 	public function getRegister( $role = 'user' )
 	{
         $data['active_class']   = 'register';
@@ -82,27 +82,23 @@ class RegisterController extends Controller
      */
     public function postRegister(Request $request)
      {
-        
+
         $rechaptcha_status    = getSetting('enable_rechaptcha','recaptcha_settings');
 
         if ( $rechaptcha_status  == 'yes') {
 
            $columns = array(
-                        'name'     => 'bail|required|max:20|',
-                        'username' => 'bail|required|unique:users,username',
-                        'inst_name'     => 'bail|required|max:255|min:3|exists:institutions,institution_name',
-                        'department'     => 'bail|required|max:200|',
+                        'name'     => 'bail|required|max:40|',
+                        'countstudent' => 'bail|required',
+                        'inst_name'     => 'bail|required|max:255|min:3',
                         'email'    => 'bail|required|unique:users,email',
-                        'password' => 'bail|required|min:5',
-                        'password_confirmation'=>'bail|required|min:5|same:password',
                         'g-recaptcha-response' => 'required|captcha',
                         );
-       
+
 
                       $messsages = array(
-                            'inst_name'=>'Institution Does Not Exists',
                           'g-recaptcha-response.required'=>'Please Select Captcha',
-                   
+
                      );
 
                $this->validate($request,$columns,$messsages);
@@ -111,29 +107,25 @@ class RegisterController extends Controller
              else {
 
                 $columns = array(
-                            'name'     => 'bail|required|max:20|',
-                            'username' => 'bail|required|unique:users,username',
-                            'inst_name'     => 'bail|required|max:200|min:3|exists:institutions,institution_name',
-                            'department'     => 'bail|required|max:20|',
-                            'email'    => 'bail|required|unique:users,email',
-                            'password' => 'bail|required|min:5',
-                            'password_confirmation'=>'bail|required|min:5|same:password',
+                    'name'     => 'bail|required|max:40|',
+                    'countstudent' => 'bail|required',
+                    'country' => 'bail|required',
+                    'inst_name'     => 'bail|required|max:255|min:3',
+                    'email'    => 'bail|required|unique:users,email',
                             );
                  $messsages = array(
                                 'inst_name.exists'=>'Institution Does Not Exists',
-                       
+
                          );
-           
+
                   $this->validate($request,$columns,$messsages);
 
             }
-        
-        
 
 
-        $role_id = STUDENT_ROLE_ID;
-        if ($request->is_student==1)
-            $role_id = PARENT_ROLE_ID;
+
+
+        $role_id = ADMIN_ROLE_ID;
 
 
         $user           = new User();
@@ -141,57 +133,67 @@ class RegisterController extends Controller
         // Logic For Institution Id
 
         // if ($institution=Institution::where('institution_name',$request->inst_name)->first()) {
-            $institution=Institution::where('institution_name',$request->inst_name)->first();
-            $user->inst_id=$institution->id;
-            $user->inst_name= $institution->institution_name;
+        //    $institution=Institution::where('institution_name',$request->inst_name)->first();
+        //    $user->inst_id=$institution->id;
+        //    $user->inst_name= $institution->institution_name;
         // }else{
         //     $institution= new Institution;
         //     $institution->institution_name=$request->inst_name;
         //     $institution->save();
         //     $user->inst_id=$institution->id;
-            
+
         // }
 
 
         $name           = $request->name;
-        
+
         $user->name     = $name;
-        $user->username = $request->username;
-        
-        $user->department=$request->department;
+        $user->username = $request->email;
+        $settings=[];
+        $settings['website']=$request->website;
+        $settings['countstudent']=$request->countstudent;
+        $settings['description']=$request->description;
+        $user->settings = json_encode($settings);
         $user->email    = $request->email;
-        $password       = $request->password;
+        $user->phone    = $request->phone;
+        $password       = str_random(6);
         $user->password       = bcrypt($password);
         $user->role_id        = $role_id;
         $user->teacher_id        = 0;
-
+        $user->country  =$request->country;
         $slug = $user::makeSlug($name);
         $user->slug           = $slug;
+        $inst_id=User::select('inst_id')
+                ->orderBy('inst_id','asc')
+                ->pluck('inst_id')
+                ->last()+1;
 
+        $user->inst_id   = $inst_id;
+        $user->inst_name = $request->inst_name ;
 
         $user->activation_code = str_random(30);
-        //$link = URL_USERS_CONFIRM.$user->activation_code;
+        $link = URL_USERS_CONFIRM.$user->activation_code;
 
-        $user->login_enabled  = 1;
-           
+        $user->login_enabled  = 0;
+
         $user->save();
 
-       
+
         $user->roles()->attach($user->role_id);
 
-      /*  try 
+        try
         {
             if (!env('DEMO_MODE')) {
 
-             $user->notify(new \App\Notifications\NewUserRegistration($user,$user->email,$password, $link ));
+             $user->notify(new \App\Notifications\NewUserRegistration($user,$user->email,'$password', $link ));
             }
 
         }
         catch(Exception $ex)
         {
-         
-        }*/
-        flash('success','You_have_registered_successfully!', 'overlay');
+
+        }
+        flash('success','your_request_has_been_submitted_successfully!_please_verify_your_email', 'overlay');
         return redirect( URL_USERS_LOGIN );
      }
 
@@ -235,12 +237,12 @@ class RegisterController extends Controller
           }
          catch(Exception $ex)
         {
-            
+
         }
 		flash('Success','You Have Registered Successfully.', 'success');
 		return $user;
     }
-	
+
 	/**
      * Create a new user instance after a valid registration.
      *
@@ -256,7 +258,7 @@ class RegisterController extends Controller
             'department' => $request->department,
 			'email' => $request->email,
 			'password' => $request->password,
-			'role' => $request->role,			
+			'role' => $request->role,
 		);
 		$name = $data['first_name'] . ' ' . $data['last_name'];
 		$user    = new User();
@@ -290,7 +292,7 @@ class RegisterController extends Controller
           }
          catch(Exception $ex)
         {
-            
+
         }
 		flash('success','You Have Registered Successfully.', 'success');
 		return redirect( URL_USERS_LOGIN );

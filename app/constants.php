@@ -544,6 +544,7 @@ define('URL_FCM_NOTIFICATION', PREFIX.'send-notification');
 
 
 define('URL_USERS_DASHBOARD', PREFIX.'dashboard');
+define('URL_DEV_DASHBOARD', PREFIX.'dev_home');
 
 //Institution URL Var
 define('URL_INSTITUTIONS', PREFIX.'institution');

@@ -16,14 +16,79 @@
   <div  style="background-image: url({{IMAGES}}login-bg.png);background-repeat: no-repeat;background-color: #f8fafb">
     <div class="container">
          <div class="row cs-row" style="margin-top: 180px">
-             
+
             <div class="col-md12">
                 <div class="cs-box-resize-sign login-box">
                    <h4 class="text-center login-head">{{getPhrase('create_account')}}</h4>
                     <!-- Form Login/Register -->
                     	{!! Form::open(array('url' => URL_USERS_REGISTER, 'method' => 'POST', 'name'=>'formLanguage ', 'novalidate'=>'', 'class'=>"loginform", 'name'=>"registrationForm")) !!}
 
-                        @include('errors.errors')	
+                        @include('errors.errors')
+
+                        <div class="form-group">
+
+                <label for="inst_name">{{getPhrase('institution_name')}}</label><span style="color: red;">*</span>
+
+                {{ Form::text('inst_name', $value = null , $attributes = array('class'=>'form-control',
+
+                        'placeholder' => getPhrase("Institution"),
+
+                        'ng-model'=>'inst_name',
+
+                        'ng-pattern' => getRegexPattern('name'),
+
+                        'required'=> 'true',
+
+                        'ng-class'=>'{"has-error": registrationForm.inst_name.$touched && registrationForm.inst_name.$invalid}',
+
+                        'ng-minlength' => '2',
+
+                    )) }}
+
+        <div class="validation-error" ng-messages="registrationForm.inst_name.$error" >
+
+            {!! getValidationMessage()!!}
+
+            {!! getValidationMessage('minlength')!!}
+
+            {!! getValidationMessage('pattern')!!}
+
+        </div>
+
+</div>
+
+
+<div class="form-group">
+
+<label for="website">{{getPhrase('website')}}</label>
+
+{{ Form::text('website', $value = null , $attributes = array('class'=>'form-control',
+
+        'placeholder' => getPhrase("Website"),
+
+        'ng-model'=>'website',
+
+        'ng-pattern' => getRegexPattern('name'),
+
+
+        'ng-class'=>'{"has-error": registrationForm.website.$touched && registrationForm.website.$invalid}',
+
+        'ng-minlength' => '4',
+
+    )) }}
+
+        <div class="validation-error" ng-messages="registrationForm.website.$error" >
+
+            {!! getValidationMessage()!!}
+
+            {!! getValidationMessage('minlength')!!}
+
+            {!! getValidationMessage('pattern')!!}
+
+        </div>
+
+</div>
+
 
                         <div class="form-group">
 
@@ -37,7 +102,7 @@
 
 									'ng-pattern' => getRegexPattern('name'),
 
-									'required'=> 'true', 
+									'required'=> 'true',
 
 									'ng-class'=>'{"has-error": registrationForm.name.$touched && registrationForm.name.$invalid}',
 
@@ -57,102 +122,12 @@
 
                         </div>
 
-                        <div class="form-group">
 
-                          <label for="username">{{getPhrase('username')}}</label><span style="color: red;">*</span>
 
-                         {{ Form::text('username', $value = null , $attributes = array('class'=>'form-control',
 
-								'placeholder' => getPhrase("username"),
-
-								'ng-model'=>'username',
-
-								'required'=> 'true', 
-
-								'ng-class'=>'{"has-error": registrationForm.username.$touched && registrationForm.username.$invalid}',
-
-								'ng-minlength' => '4',
-
-							)) }}
-
-						<div class="validation-error" ng-messages="registrationForm.username.$error" >
-
-							{!! getValidationMessage()!!}
-
-							{!! getValidationMessage('minlength')!!}
-
-							{!! getValidationMessage('pattern')!!}
-
-						</div>
-
-						</div>
-						
-						<div class="form-group">
-
-<label for="inst_name">{{getPhrase('institution')}}</label><span style="color: red;">*</span>
-
-{{ Form::text('inst_name', $value = null , $attributes = array('class'=>'form-control',
-
-		'placeholder' => getPhrase("Institution"),
-
-		'ng-model'=>'inst_name',
-
-		'ng-pattern' => getRegexPattern('name'),
-
-		'required'=> 'true', 
-
-		'ng-class'=>'{"has-error": registrationForm.inst_name.$touched && registrationForm.inst_name.$invalid}',
-
-		'ng-minlength' => '2',
-
-	)) }}
-
-		<div class="validation-error" ng-messages="registrationForm.inst_name.$error" >
-
-			{!! getValidationMessage()!!}
-
-			{!! getValidationMessage('minlength')!!}
-
-			{!! getValidationMessage('pattern')!!}
-
-		</div>
-
-</div>
-
-<div class="form-group">
-
-<label for="department">{{getPhrase('department')}}</label><span style="color: red;">*</span>
-
-{{ Form::text('department', $value = null , $attributes = array('class'=>'form-control',
-
-		'placeholder' => getPhrase("Department"),
-
-		'ng-model'=>'department',
-
-		'ng-pattern' => getRegexPattern('name'),
-
-		'required'=> 'true', 
-
-		'ng-class'=>'{"has-error": registrationForm.department.$touched && registrationForm.department.$invalid}',
-
-		'ng-minlength' => '4',
-
-	)) }}
-
-		<div class="validation-error" ng-messages="registrationForm.department.$error" >
-
-			{!! getValidationMessage()!!}
-
-			{!! getValidationMessage('minlength')!!}
-
-			{!! getValidationMessage('pattern')!!}
-
-		</div>
-
-</div>
 
                          <div class="form-group">
-                        	
+
                           <label for="email">{{getPhrase('email')}}</label><span style="color: red;">*</span>
 
                         {{ Form::email('email', $value = null , $attributes = array('class'=>'form-control',
@@ -161,7 +136,7 @@
 
 									'ng-model'=>'email',
 
-									'required'=> 'true', 
+									'required'=> 'true',
 
 									'ng-class'=>'{"has-error": registrationForm.email.$touched && registrationForm.email.$invalid}',
 
@@ -178,115 +153,124 @@
 
                         </div>
 
+                        <div class="form-group">
 
-                          <div class="form-group">
-                        	
-                          <label for="password">{{getPhrase('password')}}</label><span style="color: red;">*</span>
 
-					    {{ Form::password('password', $attributes = array('class'=>'form-control instruction-call',
 
-								'placeholder' => getPhrase("password"),
+    						{{ Form::label('phone', getphrase('phone')) }}
 
-								'ng-model'=>'registration.password',
+    						<span style="color: red;">*</span>
 
-								'required'=> 'true', 
+    						{{ Form::text('phone', $value = null , $attributes = array('class'=>'form-control', 'placeholder' =>
+    						getPhrase('please_enter_10_digit_mobile_number'),
 
-								'ng-class'=>'{"has-error": registrationForm.password.$touched && registrationForm.password.$invalid}',
+    							'ng-model'=>'phone',
 
-								'ng-minlength' => 5
+    							'required'=> 'true',
+
+    							'ng-pattern' => getRegexPattern("phone"),
+
+    							'ng-class'=>'{"has-error": registrationForm.phone.$touched && registrationForm.phone.$invalid}',
+
+
+    						)) }}
+
+
+
+    						<div class="validation-error" ng-messages="registrationForm.phone.$error" >
+
+    	    					{!! getValidationMessage()!!}
+
+    	    					{!! getValidationMessage('phone')!!}
+
+    	    					{!! getValidationMessage('maxlength')!!}
+
+    						</div>
+
+    					</div>
+
+
+                        <div class="form-group">
+
+
+
+    						{{ Form::label('country', getphrase('country')) }}
+
+    						<span style=" color:red;">*</span>
+
+
+    						{{Form::select('country', ['India'=>'India'], 'India' ,['class'=>'form-control',
+
+    							'ng-model'=>'country',
+
+    							'value' => 'India',
+
+    							'required'=> 'true',
+
+    							'ng-class'=>'{"has-error": registrationForm.country.$touched && registrationForm.country.$invalid}'
+
+    						 ])}}
+
+    						  <div class="validation-error" ng-messages="registrationForm.country.$error" >
+
+    	    					{!! getValidationMessage()!!}
+
+
+
+    						</div>
+
+
+
+    					</div>
+
+
+
+                        <div class="form-group">
+
+                          <label for="countstudent">{{getPhrase('Number of students you wish to bring online')}}</label><span style="color: red;">*</span>
+
+                         {{ Form::number('countstudent', $value = null , $attributes = array('class'=>'form-control',
+
+								'placeholder' => getPhrase("Number of Students"),
+
+								'ng-model'=>'countstudent',
+
+								'required'=> 'true',
+
+								'ng-class'=>'{"has-error": registrationForm.countstudent.$touched && registrationForm.countstudent.$invalid}',
+
 
 							)) }}
 
-						<div class="validation-error" ng-messages="registrationForm.password.$error" >
-
-							{!! getValidationMessage()!!}
-
-							{!! getValidationMessage('password')!!}
-
-						</div>
-
-
-
-                        </div>
-
-
-                          <div class="form-group">
-                        	
-                       <label for="password_confirmation">{{getPhrase('password_confirmation')}}</label><span style="color: red;">*</span>
-
-                       {{ Form::password('password_confirmation', $attributes = array('class'=>'form-control instruction-call',
-
-								'placeholder' => getPhrase("password_confirmation"),
-
-								'ng-model'=>'registration.password_confirmation',
-
-								'required'=> 'true', 
-
-								'ng-class'=>'{"has-error": registrationForm.password_confirmation.$touched && registrationForm.password_confirmation.$invalid}',
-
-								'ng-minlength' => 5,
-
-								'compare-to' =>"registration.password"
-
-							)) }}
-
-						<div class="validation-error" ng-messages="registrationForm.password_confirmation.$error" >
+						<div class="validation-error" ng-messages="registrationForm.countstudent.$error" >
 
 							{!! getValidationMessage()!!}
 
 							{!! getValidationMessage('minlength')!!}
 
-							{!! getValidationMessage('confirmPassword')!!}
+							{!! getValidationMessage('pattern')!!}
 
 						</div>
 
+						</div>
 
-                        </div>
-
-                        <?php $parent_module = getSetting('parent', 'module'); ?>
-
-							@if(!$parent_module)
-
-						<input type="hidden" name="is_student" value="0">
-
-							@else
-
-                          <div class="form-group">
+                        <div class="form-group">
 
 
-                           
-                             <div class="col-md-12">
+
+						{{ Form::label('description', getphrase('description')) }}
 
 
-							</div>
 
-							<div class="col-md-12">
+						{{ Form::textarea('description', $value = null , $attributes = array('class'=>'form-control','rows'=>3, 'cols'=>'15', 'placeholder' => getPhrase('please_provide_a_short_description'),
 
-							<ul class="login-links mt-2">
-                              	 <li>
-                              	 	
-							{{ Form::radio('is_student', 0, true, array('id'=>'free')) }}
+							'ng-model'=>'description',
 
-								
+							)) }}
 
-								<label for="free"> <span class="  radio-button"> <i class="mdi mdi-check active"></i> </span> {{getPhrase('i_am_a_student')}}</label> 
-                              	 </li>
-                              	 <li>
-                              	 	{{ Form::radio('is_student', 1, false, array('id'=>'paid' )) }}
+					</div>
 
-								<label for="paid"> 
 
-								<span class="  radio-button"> <i class="mdi mdi-check active"></i> </span> {{getPhrase('i_am_a_parent')}} </label>
-                              	 </li>
-                            </ul>
-
-							
-
-							</div>
-
-                          </div>
-
-                          @endif
 
 
                          <div class="form-group">
@@ -294,15 +278,15 @@
                              @if($rechaptcha_status == 'yes')
 
 
-		               
+
 
 				          <div class="col-md-12 form-group{{ $errors->has('g-recaptcha-response') ? ' has-error' : '' }}" style="margin-top: 15px">
-		                           
 
-		                           
+
+
 		                                {!! app('captcha')->display() !!}
 
-		                          
+
 
                                </div>
 
