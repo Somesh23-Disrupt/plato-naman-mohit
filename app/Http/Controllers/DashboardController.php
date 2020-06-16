@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App;
+use Twilio\Rest\Client;
 use Auth;
 use App\User;
 use App\Institution;
@@ -194,8 +195,7 @@ class DashboardController extends Controller
         }
         else if ($role=='teacher') {
               Artisan::call('view:clear');
-
-
+              
               $data['tppforteach']=0;
               $tnps=0;
               $data['passpercent']=$this->totalpass();
