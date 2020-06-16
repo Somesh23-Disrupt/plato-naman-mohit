@@ -19,7 +19,7 @@
 
             <div class="col-md12">
                 <div class="cs-box-resize-sign login-box">
-                   <h4 class="text-center login-head">{{getPhrase('create_account')}}</h4>
+                   <h4 class="text-center login-head">{{getPhrase('request_access')}}</h4>
                     <!-- Form Login/Register -->
                     	{!! Form::open(array('url' => URL_USERS_REGISTER, 'method' => 'POST', 'name'=>'formLanguage ', 'novalidate'=>'', 'class'=>"loginform", 'name'=>"registrationForm")) !!}
 
