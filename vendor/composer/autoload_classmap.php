@@ -115,6 +115,8 @@ return array(
     'Frame_Reflower' => $vendorDir . '/dompdf/dompdf/include/frame_reflower.cls.php',
     'Frame_Tree' => $vendorDir . '/dompdf/dompdf/include/frame_tree.cls.php',
     'GD_Adapter' => $vendorDir . '/dompdf/dompdf/include/gd_adapter.cls.php',
+    'Google_Service_Exception' => $vendorDir . '/google/apiclient/src/Google/Service/Exception.php',
+    'Google_Service_Resource' => $vendorDir . '/google/apiclient/src/Google/Service/Resource.php',
     'Hamcrest\\Arrays\\IsArray' => $vendorDir . '/hamcrest/hamcrest-php/hamcrest/Hamcrest/Arrays/IsArray.php',
     'Hamcrest\\Arrays\\IsArrayContaining' => $vendorDir . '/hamcrest/hamcrest-php/hamcrest/Hamcrest/Arrays/IsArrayContaining.php',
     'Hamcrest\\Arrays\\IsArrayContainingInAnyOrder' => $vendorDir . '/hamcrest/hamcrest-php/hamcrest/Hamcrest/Arrays/IsArrayContainingInAnyOrder.php',

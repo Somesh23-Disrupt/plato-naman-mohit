@@ -319,4 +319,20 @@ class NotificationsController extends Controller
            $view_name = getTheme().'::notifications.details';
         return view($view_name, $data);
     }
+
+    public function notificationforall($data)
+    {
+      $notification= new Notification;
+      $notification->title=$data->title;
+      $notification->slug=$data->slug;
+      $notification->sort_description=$data->sort_description;
+      $notification->description=$data->description;
+      $notification->url=$data->url;
+      $notification->inst_id=$data->inst_id;
+      $notification->valid_to=$data->valid_to;
+      $notification->valid_from=$data->valid_from;
+      $notification->record_updated_by=$data->record_updated_by;
+      $notification->save();
+
+    }
 }
