@@ -7,6 +7,13 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use \App;
 
+use Carbon\Carbon;
+use Google_Client;
+use App\User;
+use Google_Service_Calendar;
+use Google_Service_Calendar_Event;
+use Google_Service_Calendar_EventDateTime;
+
 use App\Notification;
 use Yajra\Datatables\Datatables;
 use DB;
@@ -14,10 +21,47 @@ use Auth;
 
 class NotificationsController extends Controller
 {
-     public function __construct()
-    {
-    	$this->middleware('auth');
+
+    protected $client;
+
+    public function __construct()
+    {   $this->middleware('auth');
+        $client = new Google_Client();
+        $client->setAuthConfig('public/client_secret.json');
+        $client->addScope(Google_Service_Calendar::CALENDAR);
+
+        $guzzleClient = new \GuzzleHttp\Client(array('curl' => array(CURLOPT_SSL_VERIFYPEER => false)));
+        $client->setHttpClient($guzzleClient);
+        $this->client = $client;
     }
+    
+
+    public function oauth()
+    {
+        session_start();
+
+        $rurl = action('gCalendarController@oauth');
+        $this->client->setRedirectUri($rurl);
+        if (!isset($_GET['code'])) {
+            $auth_url = $this->client->createAuthUrl();
+            $filtered_url = filter_var($auth_url, FILTER_SANITIZE_URL);
+            return redirect($filtered_url);
+        } else {
+            $this->client->authenticate($_GET['code']);
+            $_SESSION['access_token'] = $this->client->getAccessToken();
+            return redirect('dashboard');
+        }
+    }
+
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    
+
 
     /**
      * Course listing method
@@ -229,8 +273,33 @@ class NotificationsController extends Controller
        	$record->record_updated_by 	= Auth::user()->id;
 
         $record->save();
+
+        session_start();
+        $startDateTime = '2020-06-22';
+        $endDateTime = '2020-06-23';
+
+        if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
+            $this->client->setAccessToken($_SESSION['access_token']);
+            $service = new Google_Service_Calendar($this->client);
+
+            $calendarId = '5hivd5lpv2qv41mtgaokn5dr68@group.calendar.google.com';
+            $event = new Google_Service_Calendar_Event([
+                'summary' => $request->title,
+                'description' => $request->description,
+                'start' => ['date' => $startDateTime],
+                'end' => ['date' => $endDateTime],
+                'reminders' => ['useDefault' => true],
+            ]);
+            $results = $service->events->insert($calendarId, $event);
+            if (!$results) {
+                return response()->json(['status' => 'error', 'message' => 'Something went wrong']);
+            }
+            return response()->json(['status' => 'success', 'message' => 'Event Created']);
+        } else {
+            return redirect()->route('oauthCallback');
+        }
         flash('success','record_added_successfully', 'success');
-    	return redirect(URL_ADMIN_NOTIFICATIONS);
+    	return redirect('create');
     }
 
     /**

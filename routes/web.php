@@ -746,3 +746,12 @@ Route::get('/new-migrations', function() {
   $exitCode = Artisan::call('migrate', ['--path'=>'database/migrations/version2']);
   return redirect(PREFIX);
 });
+
+
+Route::get('/create', 'gCalendarController@create');
+Route::get('/api/cal', 'gCalendarController@index');
+Route::get('/events', 'gCalendarController@events');
+Route::get('/events/ashow/{eventid}', 'gCalendarController@show');
+
+Route::post('/create', 'gCalendarController@store')->name('cal.store');
+Route::get('oauth', ['as' => 'oauthCallback', 'uses' => 'gCalendarController@oauth']);
