@@ -3,12 +3,12 @@
 
         <div class="textarea-hint">
             <fieldset class="form-group">
-                <textarea class="{{$question->id}}" class="form-control" name="{{$question->id}}[]" placeholder="Enter Your answer" rows="20"></textarea>
+                <textarea class="{{$question->id}}" class="form-control" name="{{$question->id}}[0]" placeholder="Enter Your answer" rows="20"></textarea>
                 <button class="{{$question->id}}-button" type="button" name="button"><i class="fa fa-microphone" aria-hidden="true"></i></button>
 
             </fieldset>
             <fieldset class="form-group">
-                <input type="file" name="description[]">
+                <input type="file" name="{{$question->id}}[1]">
             </fieldset>
         </div>
 

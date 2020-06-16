@@ -142,7 +142,6 @@ class LoginController extends Controller
      public function getLogin($layout_type = '')
     {
 
-
         try{
 
          session()->put("layout_number",$layout_type);

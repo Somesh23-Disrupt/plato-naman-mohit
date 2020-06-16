@@ -45,6 +45,7 @@ define('IMAGE_PATH_PROFILE_THUMBNAIL_DEFAULT', UPLOADS.'users/thumbnail/default.
 
 define('IMAGE_PATH_SETTINGS', UPLOADS.'settings/');
 
+define('IMAGE_PATH_UPLOAD_SUBMISSION', UPLOADS.'exams/submissions/');
 
 
 define('DOWNLOAD_LINK_USERS_IMPORT_EXCEL', PREFIX1.'downloads/excel-templates/users_template.xlsx');
@@ -310,6 +311,9 @@ define('URL_MEETINGS_ADD', PREFIX.'meetings/add');
 define('URL_MEETINGS_EDIT', PREFIX.'meetings/edit/');
 define('URL_MEETINGS_DELETE', PREFIX.'meetings/delete/');
 define('URL_MEETINGS_GETLIST', PREFIX.'meetings/getList');
+
+define('VIDEO_PATH_UPLOAD_RECORDING', UPLOADS.'recordings/');
+
 
 //Meetings Student
 define('URL_MEETITNGS_LIST', PREFIX.'meetings/list');

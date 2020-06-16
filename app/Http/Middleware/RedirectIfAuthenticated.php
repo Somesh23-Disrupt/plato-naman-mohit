@@ -30,7 +30,7 @@ class RedirectIfAuthenticated
 			}
 			else
 			{
-				return redirect($this->redirectTo);
+				return redirect(URL_USERS_DASHBOARD);
 			}
         }
         return $next($request);

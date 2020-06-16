@@ -52,11 +52,12 @@
     .login-user-details {
         top: 280px;
     }
+}
 </style>
 
 
        <!-- Login Section -->
-       <div  style="background-image: url({{IMAGES}}login-bg.png);background-repeat: no-repeat;background-color: #f8fafb">
+       <div  style="background-image: url({{IMAGES}}login-bg.png);background-repeat: no-repeat;background-color:#f8fafb">
     <div class="container">
         <div class="row cs-row" style="margin-top: 180px">
 
@@ -71,12 +72,12 @@
                     $env_demo = env('DEMO_MODE');
                   ?>
 
-                  @if($env_demo == FALSE) 
+                  @if($env_demo == FALSE)
                     <div class="col-sm-6" style="margin-left:150px;">
                       @else
                     <div class="col-sm-6">
                   @endif
-                  
+
 
 
                  <h4 class="text-center login-head">{{getPhrase('login')}}</h4>
@@ -208,7 +209,7 @@
   <div class="col-sm-1" >
   </div>
 
- @if(env('DEMO_MODE')) 
+ @if(env('DEMO_MODE'))
    <div class="col-sm-5" >
 
   <ul class="login-user-details list-unstyled">
@@ -223,7 +224,7 @@
 </ul>
 
   </div>
-@endif  
+@endif
 
 
 
