@@ -14,7 +14,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Plato</title>
-    <link rel="shortcut icon" type="image/x-icon" href="plato-logo.png">
+    <link rel="shortcut icon" type="image/x-icon" href="{{themes('dist/img/logo.png')}}">
     <link href="https://fonts.googleapis.com/css?family=Lato:400,400i|Roboto:500" rel="stylesheet">
     <link href="{{themes('dist/css/style.css')}}" rel="stylesheet">
 	<script src="https://unpkg.com/scrollreveal@4.0.0/dist/scrollreveal.min.js"></script>

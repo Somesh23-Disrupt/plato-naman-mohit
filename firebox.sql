@@ -2592,11 +2592,7 @@ ALTER TABLE `role_user`
   ADD PRIMARY KEY (`user_id`,`role_id`),
   ADD KEY `role_user_role_id_foreign` (`role_id`);
 
---
--- Indexes for table `sections`
---
-ALTER TABLE `sections`
-  ADD PRIMARY KEY (`id`);
+
 
 --
 -- Indexes for table `settings`
