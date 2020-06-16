@@ -278,7 +278,7 @@
 
                         @if(checkRole(['teacher']))
                             <div  style="align:left" >
-                                <input type="number" class="marks-1"  name="{{$question->id}}" style="width:55px"
+                                <input type="number" class="marks-1" min="{{$exam_record->negative_mark}}" max="{{$question->marks}}" name="{{$question->id}}" style="width:55px"
                                 value="<?php if(array_key_exists($question->id, $result_marks_obtained)) echo $result_marks_obtained[$question->id]; else echo 0; ?>">
                             <label style="font-size:20px" for="">/{{$question->marks}}</label>
                             </div>

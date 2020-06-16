@@ -312,6 +312,9 @@ define('URL_MEETINGS_EDIT', PREFIX.'meetings/edit/');
 define('URL_MEETINGS_DELETE', PREFIX.'meetings/delete/');
 define('URL_MEETINGS_GETLIST', PREFIX.'meetings/getList');
 
+define('VIDEO_PATH_UPLOAD_RECORDING', UPLOADS.'recordings/');
+
+
 //Meetings Student
 define('URL_MEETITNGS_LIST', PREFIX.'meetings/list');
 define('URL_MEETINGS_VIEW', PREFIX.'meetings/show/');

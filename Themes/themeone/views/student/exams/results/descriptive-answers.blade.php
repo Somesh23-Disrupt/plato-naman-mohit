@@ -9,8 +9,6 @@
 
                    <li class="blank_correct-answer bg-primary" >{{$user_answers[0]}} </li>
 
-                   <img href="{{$user_answers[1]}}">
-
                </ul>
            </form>
        </div>
@@ -21,8 +19,9 @@
            <form>
 
                <ul class="filling-blank answersheet">
+                   @if(array_key_exists(1, $user_answers))
                    <img class="image img-responsive"  src="{{IMAGE_PATH_UPLOAD_SUBMISSION}}{{$user_answers[1]}}" />
-
+                   @endif
                </ul>
            </form>
        </div>
