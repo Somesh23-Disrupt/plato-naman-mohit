@@ -230,12 +230,16 @@
 						@foreach($tables as $table)
 
 								<tr>
-									
+
 									<td>{{App\QuizCategory::find($table->category_id)->category}}</td>
 									<td>{{$table->title}}</td>
 									<?php $id=App\QuizCategory::find($table->category_id)->section_id ?>
 									<td>{{App\User::select(['section_name'])->where('section_id',$id)->first()->section_name}}</td>
+									@if(App\User::select(['name'])->where('section_id',$id)->where('role_id',3)->count()>0)
 									<td>{{App\User::select(['name'])->where('section_id',$id)->where('role_id',3)->first()->name}}</td>
+									@else
+									<td></td>
+									@endif
 									<td>{{$table->start_date}}</td>
 								</tr>
 
@@ -306,7 +310,7 @@
     <script>
         $(document).ready( function () {
             $('#datatable').DataTable({
-				
+
 			});
         });
     </script>

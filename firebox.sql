@@ -2054,6 +2054,7 @@ CREATE TABLE `subjects` (
   `status` enum('Active','Inactive') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Active',
   `record_updated_by` int(11) NOT NULL,
   `section_id` bigint(11) UNSIGNED NULL DEFAULT NULL,
+  `teacher_id` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
