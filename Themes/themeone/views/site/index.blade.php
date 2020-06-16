@@ -58,10 +58,12 @@
 
                         </h1>
 					</div>
+                    
+
 					<div class="control">
 						<a class="button button-primary button-block button-shadow" name="login" href="login">Login</a>
-						<a class="button button-primary button-block button-shadow" name="register" href="register">Request Access</a>
 					</div>
+                    <a class="button button-primary button-block button-shadow" name="register" href="register">Request Access</a>
                 </div>
             </div>
         </header>
