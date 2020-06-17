@@ -41,7 +41,7 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
-  
+
 
 
     /**
@@ -51,7 +51,7 @@ class RegisterController extends Controller
      */
      public function postRegisterApp(Request $request)
      {
-         
+
         
 
             $columns = array(
@@ -61,31 +61,31 @@ class RegisterController extends Controller
                             'password' => 'bail|required|min:5',
                             'password_confirmation'=>'bail|required|min:5|same:password',
                             );
-           
+
             $validated =  \Validator::make($request->all(),$columns);
             if(count($validated->errors()))
             {
-                $response['status'] = 0;        
+                $response['status'] = 0;
                 $response['message'] = 'Validation Errors';
                 $response['errors'] = $validated->errors()->messages();
                 return $response;
-            }    
-            
+            }
+
         // $validated = $request->validated();
 
         $role_id = STUDENT_ROLE_ID;
         $response['status'] = 0;
-        
+
         $response['message'] = '';
         // $response['errors'] = $validated->errors()->messages();
         // $response['validations'] = $validated;
 
-        try 
+        try
         {
 
             $user           = new User();
             $name           = $request->name;
-            
+
             $user->name     = $name;
             $user->username = $request->username;
             $user->email    = $request->email;
@@ -104,11 +104,11 @@ class RegisterController extends Controller
 
             $user->save();
 
-           
+
             $user->roles()->attach($user->role_id);
             $response['status'] = 1;
             $response['message'] = 'Registered Successfully';
-            
+
             if (!env('DEMO_MODE')) {
 
              $user->notify(new \App\Notifications\NewUserRegistration($user,$user->email,$password));

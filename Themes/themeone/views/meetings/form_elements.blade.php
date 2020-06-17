@@ -54,117 +54,31 @@
 
 				 </div>
 
-
-
-
-
-
-
  			 <div class="row input-daterange" id="dp">
 
-
-
 		 	<?php
-
-
-
 		 	$date_from = date('Y/m/d');
-
-
-
 		 	$date_to = date('Y/m/d');
-
-
-
 		 	if($record)
-
-
-
 		 	{
-
-
-
 		 		$date_from = $record->valid_from;
-
-
-
 		 		$date_to = $record->valid_to;
-
-
-
 		 	}
-
-
-
 		 	 ?>
 
-
-
   				 <fieldset class="form-group col-md-6">
-
-
-
-
-
-
-
                         {{ Form::label('valid_from', getphrase('valid_from')) }}
-
-
-
-
-
-
-
-                        {{ Form::text('valid_from', $value = $date_from , $attributes = array('class'=>'input-sm form-control', 'placeholder' => '2015/7/17')) }}
-
-
-
-
-
-
-
-
-
-                        </fieldset>
-
-
-
-
-
-
+                        {{ Form::text('valid_from', $value =$date_from , $attributes = array('class'=>'input-sm form-control', 'placeholder' => '2015/7/17')) }}
+                </fieldset>
 
   				 <fieldset class="form-group col-md-6">
-
-
-
-
-
-
-
                         {{ Form::label('valid_to', getphrase('valid_to')) }}
-
-
-
-
-
-
-
-                        {{ Form::text('valid_to', $value = $date_to , $attributes = array('class'=>'input-sm form-control', 'placeholder' => '2015/7/17')) }}
-
-
-
-
-
-
-
-                        </fieldset>
+                        {{ Form::text('valid_to', $value = $date_to , $attributes = array('class'=>'input-sm form-control', 'placeholder' => '2020/7/17')) }}
+                </fieldset>
 
 
 
 				</div>
-
-
 
   				  	<div class="row">
 
@@ -179,6 +93,11 @@
 						{{ Form::textarea('short_description', $value = null , $attributes = array('class'=>'form-control', 'rows'=>'5', 'placeholder' => getPhrase('short_description'))) }}
 
 					</fieldset>
+
+
+
+
+
 
 					<fieldset class="form-group  col-md-6">
 

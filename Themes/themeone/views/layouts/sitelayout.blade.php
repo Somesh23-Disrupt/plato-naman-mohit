@@ -12,7 +12,7 @@
     <title>
     @yield('title') {{ isset($title) ? $title : getSetting('site_title','site_settings') }}
     </title>
-  
+
 
     @yield('header_scripts')
 
@@ -32,22 +32,22 @@
 
 
 @yield('home_css_scripts')
-  
+
 </head>
 
 <body ng-app="academia">
     <!-- Navigation -->
-    
+
      @include('site.header')
 
-  
-    
+
+
 
       @yield('content')
- 
-    
+
+
     @include('site.footer')
-  
+
     <!-- jQuery -->
 
       <script src="{{themes('site/js/jquery-3.1.1.min.js')}}"></script>
@@ -64,27 +64,27 @@
 
       <script>
         function showSubscription(use_first = ''){
-        
+
         if(use_first == 'yes'){
         var user_email  = $("#email").val();
         }
         else{
         var user_email  = $("#email1").val();
-          
+
         }
 
       var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      
+
       if(!re.test(user_email))
       {
           showMessage('Sorry','Please enter a valid email','error');
           return;
       }
      else{
-      
-      
+
+
          $.ajax({
-              
+
                 url      : '{{ URL_SAVE_SUBSCRIPTION_EMAIL }}',
                 type     : 'post',
                 data: {
@@ -101,21 +101,21 @@
                      }
                      else{
 
-                        showMessage('Success','You are subscription was successfull','success'); 
+                        showMessage('Success','You are subscription was successfull','success');
                      }
                  }
 
-               
+
             });
 
-           var mytext  = ''  
+           var mytext  = ''
            $("#email").val(mytext);
            $("#email1").val(mytext);
 
-          
+
     }
-  
-  
+
+
 
   function showMessage(title,msg,type){
 // console.log(u_title);
@@ -128,7 +128,7 @@
                 delay: 2000,
                 shadow: true,
                 width: "300px",
-                
+
                 animate: {
                             animate: true,
                             in_class: 'fadeInLeft',
@@ -142,12 +142,12 @@
       </script>
 
    @yield('footer_scripts')
-    
-    {!!getSetting('google_analytics', 'seo_settings')!!}
-     
 
-   
-    
+    {!!getSetting('google_analytics', 'seo_settings')!!}
+
+
+
+
 </body>
 
 </html>

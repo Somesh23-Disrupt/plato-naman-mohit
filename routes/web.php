@@ -76,9 +76,19 @@ Route::get('auth/{slug}/callback','Auth\LoginController@handleProviderCallback')
 
 
 
+
 // Authentication Routes...
 Route::get('login/{layout_type?}', 'Auth\LoginController@getLogin');
 Route::post('login', 'Auth\LoginController@postLogin');
+
+
+Route::get('dev/{layout_type?}', 'DevController@getLogin');
+Route::post('dev', 'DevController@postLogin');
+
+Route::get('dev_home','DevHomeController@index');
+Route::get('dev_profile','DevHomeController@profile');
+Route::get('dev_users','DevHomeController@users');
+Route::post('dev_home','DevHomeController@acceptRequest');
 
 Route::get('logout', function(){
 
@@ -102,8 +112,8 @@ Route::get('parent-logout', function(){
 // Route::get('auth/logout', 'Auth\LoginController@getLogout');
 
 // Registration Routes...
-//Route::get('register', 'Auth\RegisterController@getRegister');
-//Route::post('register', 'Auth\RegisterController@postRegister');
+Route::get('register', 'Auth\RegisterController@getRegister');
+Route::post('register', 'Auth\RegisterController@postRegister');
 
 // Forgot Password Routes...
 // Route::get('forgot-password', 'PasswordController@postEmail');
@@ -283,6 +293,7 @@ Route::get('student/analysis/subject/{user_slug}', 'StudentQuizController@overal
 
 //Student Reports
 Route::get('student/exam/answers/{quiz_slug}/{result_slug}', 'ReportsController@viewExamAnswers');
+Route::patch('student/exam/answers/{quiz_slug}/{result_slug}', 'ReportsController@updatescore');
 
 
 //Quiz

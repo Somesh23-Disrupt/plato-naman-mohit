@@ -230,7 +230,7 @@
 						@foreach($tables as $table)
 
 								<tr>
-									
+
 									<td>{{App\QuizCategory::find($table->category_id)->category}}</td>
 									<td>{{$table->title}}</td>
 									<?php $id=App\QuizCategory::find($table->category_id)->section_id ?>
@@ -310,7 +310,7 @@
     <script>
         $(document).ready( function () {
             $('#datatable').DataTable({
-				
+
 			});
         });
     </script>
