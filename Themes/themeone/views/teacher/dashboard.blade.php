@@ -72,8 +72,12 @@
 				 				<a href="{{URL_SUBJECTS}}"><div class="state-icn bg-icon-success"><i class="fa fa-book"></i></div></a>
 				 			</div>
 				 			<div class="media-body">
-				 				<h4 class="card-title">{{ App\Subject::where('record_updated_by',auth()->user()->id)->get()->count()}}</h4>
-								<a href="{{URL_SUBJECTS}}">{{ getPhrase('subjects')}}</a>
+								 @if(auth()->user()->section_id!=NULL)
+				 					<h4 class="card-title">{{ App\Subject::where('record_updated_by',auth()->user()->id)->get()->count()}}</h4>
+								 @else
+								 <h4 class="card-title">{{ App\Subject::where('teacher_id',auth()->user()->id)->get()->count()}}</h4>
+								 @endif
+								 <a href="{{URL_SUBJECTS}}">{{ getPhrase('subjects')}}</a>
 				 			</div>
 				 		</div>
 				 	</div>
