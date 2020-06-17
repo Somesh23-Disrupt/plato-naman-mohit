@@ -340,7 +340,7 @@
                             </div>
                                 <input class="button button-primary button-block button-shadow" name="submit" value="Subscribe" type="submit" href="index.php"></input>
 								</form>
-								<?php/*
+								<?php /*
 $DATABASE_HOST = '127.0.0.1';
 $DATABASE_USER = 'root';
 $DATABASE_PASS = '';
