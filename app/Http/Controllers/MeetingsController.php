@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\File;
 use App\Http\Requests;
 use \App;
 
@@ -64,17 +64,18 @@ class MeetingsController extends Controller
         $records = array();
 
 
+
             if(checkRole(['owner'])||checkRole(['admin'])){
               $records = Meeting::select(['title','slug','section_id', 'valid_from', 'valid_to',  'id','slug'  ])
               ->orderBy('updated_at', 'desc')->get();
             }
             else if(checkRole(['student'])){
-                $records = Meeting::where('inst_id',Auth::user()->inst_id)->select(['title','slug', 'valid_from', 'valid_to',  'id','slug' ])
+                $records = Meeting::where('inst_id',Auth::user()->inst_id)->select(['title','slug','recording', 'valid_from', 'valid_to',  'id','slug' ])
                 ->where('section_id',Auth::user()->section_id)
                 ->orderBy('updated_at', 'desc')->get();
             }
             else{
-              $records = Meeting::where('inst_id',Auth::user()->inst_id)->select(['title','slug','section_id', 'valid_from', 'valid_to',  'id','slug' ])
+              $records = Meeting::where('inst_id',Auth::user()->inst_id)->select(['title','slug','recording','section_id', 'valid_from', 'valid_to',  'id','slug' ])
               ->where('record_updated_by',Auth::user()->id)
               ->orderBy('updated_at', 'desc')->get();
             }
@@ -103,6 +104,11 @@ class MeetingsController extends Controller
         ->editColumn('title',function($records)
         {
               return '<a href="'.URL_MEETINGS_VIEW.$records->slug.'">'.$records->title.'</a>';
+        })
+        ->editColumn('recording',function($records)
+        {
+                $records->recording = ($records->recording=='')?'No recordings':'View recording';
+              return '<a href="'.URL_MEETINGS_VIEW.$records->slug.'/recording">'.$records->recording.'</a>';
         })
         ->editColumn('section_id', function($records) {
             return User::select('section_name')->where('section_id',$records->section_id)->pluck('section_name')->first();
@@ -198,6 +204,37 @@ class MeetingsController extends Controller
         * Check if the title of the record is changed,
         * if changed update the slug value based on the new title
         */
+        if($request['file_path']!=''){
+            if(file_exists("public/uploads/recordings/".$record->recording)){
+                File::delete("public/uploads/recordings/".$record->recording);
+            }
+            $record->recording=$request['file_path'];
+            if (strpos($record->recording,'dropbox') !== false) {
+                if (strpos($record->recording,'raw=1') == false)
+                    $record->recording .= '?&raw=1';
+            }
+            $record->content_type='url';
+            $record->save();
+            flash('success','record_updated_successfully', 'success');
+        	return redirect(URL_MEETINGS."/show"."/".$slug);
+
+        }
+        else if($request->hasFile('meetings_file')){
+            if(file_exists("public/uploads/recordings/".$record->recording)){
+                File::delete("public/uploads/recordings/".$record->recording);
+            }
+            $video = $request->file('meetings_file');
+            $file_name = $slug.'.'.$video->extension();
+            $destinationPath = public_path('/uploads/recordings');
+            $video->move($destinationPath, $file_name);
+            $record->recording=$file_name;
+            $record->content_type='file';
+            $record->save();
+            flash('success','record_updated_successfully', 'success');
+        	return redirect(URL_MEETINGS."/show"."/".$slug);
+        }
+
+
        $name = $request->title;
         if($name != $record->title)
             $record->slug = $record->makeSlug($name);

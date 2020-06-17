@@ -145,7 +145,9 @@ class UsersController extends Controller
         })
 
         ->editColumn('last_activity', function($records){
-               if (Carbon::parse($records->last_activity)->diffInSeconds()<=60)
+                if($records->last_activity=="")
+                    return '<span class="text-danger">Offline</span> <i class="fa fa-times text-danger" aria-hidden="true"></i>';
+               else if (Carbon::parse($records->last_activity)->diffInSeconds()<=60)
                    return '<span class="text-success">Online</span> <i class="fa fa-check text-success" aria-hidden="true"></i>';
                else
                    return '<span class="text-danger">Last seen: '. Carbon::parse($records->last_activity)->diffForHumans() .'</span>';
@@ -222,7 +224,7 @@ class UsersController extends Controller
 
         // return view('users.add-edit-user', $data);
         $data['sections']=User::select('section_name')->where('inst_id',Auth::user()->inst_id)->distinct()->pluck('section_name');
-       
+
         $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
         // dd($sections);
         $data['sectionsforteach']= $sections;

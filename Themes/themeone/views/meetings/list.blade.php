@@ -34,11 +34,12 @@
 								<tr>
 									<th>{{ getPhrase('title')}}</th>
 									<th>{{ getPhrase('meeting_id')}}</th>
+									<th>{{ getPhrase('recordings')}}</th>
 									@if(!checkRole(['student']))
 									<th>{{ getPhrase('section')}}</th>
 									@endif
-									<th>{{ getPhrase('start_date')}}</th>
-									<th>{{ getPhrase('end_date')}}</th>
+									<th>{{ getPhrase('start')}}</th>
+									<th>{{ getPhrase('end')}}</th>
 									@if(!checkRole(['student']))
 									<th>{{ getPhrase('action')}}</th>
 									@endif

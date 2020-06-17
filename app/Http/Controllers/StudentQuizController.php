@@ -528,11 +528,9 @@ class StudentQuizController extends Controller
      */
     public function finishExam(Request $request, $slug)
     {
-
       // if(checkRole(['student'])){
       //   return redirect('dashboard') ;
       //      }
-      // dd($request->all());
         $quiz = Quiz::getRecordWithSlug($slug);
 
        $user_record = Auth::user();
@@ -596,19 +594,25 @@ class StudentQuizController extends Controller
             }
         }
 
-        $result =   $this->processAnswers($answers, $subject, $time_spent, $quiz->negative_mark);
-        $result['not_answered_questions'] = json_encode($not_answered_questions);
-        $result['time_spent_not_answered_questions'] = json_encode($time_spent_not_answered);
-
-        $result = (object) $result;
-        $answers = json_encode($answers);
 
         $record = new QuizResult();
+        $record->slug = getHashCode();
+
+        $result =   $this->processAnswers($answers, $subject, $time_spent,$record->slug,$request, $quiz->negative_mark);
+        $result['not_answered_questions'] = json_encode($not_answered_questions);
+        $result['time_spent_not_answered_questions'] = json_encode($time_spent_not_answered);
+        $answers = json_encode($result['answers']);
+        $result = (object) $result;
+
+
+
+
         $record->quiz_id = $quiz->id;
         $record->user_id = Auth::user()->id;
-        $record->marks_obtained = $result->marks_obtained;
+        $record->marks_obtained = json_encode($result->marks_obtained);
         $record->total_marks = $quiz->total_marks;
-        $record->percentage = $this->getPercentage($result->marks_obtained, $quiz->total_marks);
+
+        $record->percentage = $this->getPercentage($result->marks_obtained['total'], $quiz->total_marks);
 
         $exam_status = 'pending';
         if($record->percentage >= $quiz->pass_percentage)
@@ -626,13 +630,12 @@ class StudentQuizController extends Controller
         $record->time_spent_wrong_answer_questions = $result->time_spent_wrong_answer_questions;
         $record->time_spent_not_answered_questions = $result->time_spent_not_answered_questions;
 
-        $record->slug = getHashCode();
+
 
 
         $content = 'You have attempted exam. The score percentage is '.formatPercentage($record->percentage);
 
         $record->save();
-        
 
 
         $template    = new EmailTemplate();
@@ -650,8 +653,8 @@ class StudentQuizController extends Controller
       }
 
       // if($quiz->publish_result_immediately==0){
-          
-       
+
+
       //   return redirect('dashboard');
       //   // return view('student.exams.results', $data);
       // }
@@ -764,19 +767,20 @@ class StudentQuizController extends Controller
      * @param  [type] $answers [description]
      * @return [type]          [description]
      */
-    public function processAnswers($answers, $subject, $time_spent, $negative_mark = 0)
+    public function processAnswers($answers, $subject, $time_spent, $slug ,$request, $negative_mark = 0)
     {
-
-        $obtained_marks     = 0;
+        $obtained_marks     = [];
         $correct_answers    = 0;
         $obtained_negative_marks = 0;
 
+        $obtained_marks['total']        = 0;
         $corrent_answer_question            = [];
         $wrong_answer_question              = [];
         $time_spent_correct_answer_question = [];
         $time_spent_wrong_answer_question   = [];
-
+        $im=0;
         foreach ($answers as $key => $value) {
+
           if( is_numeric( $key ))
          {
             $question_record  = $this->getQuestionRecord($key);
@@ -801,7 +805,7 @@ class StudentQuizController extends Controller
                                 if($value[0] == $actual_answer)
                                 {
                                     $correct_answers++;
-                                    $obtained_marks                 += $question_record->marks;
+                                    $obtained_marks['total']                 += $question_record->marks;
                                     $corrent_answer_question[]       = $question_record->id;
                                     $subject[$subject_id]['correct_answers'] +=1;
                                     $subject[$subject_id]['time_spent_correct_answers'] += $time_spent[$question_record->id];
@@ -816,7 +820,7 @@ class StudentQuizController extends Controller
 
                                     $wrong_answer_question[]          = $question_record->id;
                                     $subject[$subject_id]['wrong_answers'] += 1;
-                                    $obtained_marks                   -= $negative_mark;
+                                    $obtained_marks['total']                   -= $negative_mark;
                                     $obtained_negative_marks          += $negative_mark;
                                     $subject[$subject_id]['time_spent_wrong_answers']
                                                                 += $time_spent[$question_record->id];
@@ -825,7 +829,7 @@ class StudentQuizController extends Controller
                                     $time_spent_wrong_answer_question[$question_record->id]['time_spent']
                                                                      = $time_spent[$question_record->id];
                                 }
-
+                                $obtained_marks[$question_record->id]          = $obtained_marks['total'];
                                 break;
 
                 case 'checkbox':
@@ -851,7 +855,7 @@ class StudentQuizController extends Controller
                                 if($flag)
                                 {
                                     $correct_answers++;
-                                    $obtained_marks += $question_record->marks;
+                                    $obtained_marks['total'] += $question_record->marks;
                                     $corrent_answer_question[] = $question_record->id;
                                     $subject[$subject_id]['correct_answers'] +=1;
                                     $subject[$subject_id]['time_spent_correct_answers']
@@ -867,14 +871,14 @@ class StudentQuizController extends Controller
                                     $subject[$subject_id]['wrong_answers'] += 1;
                                      $subject[$subject_id]['time_spent_wrong_answers']
                                                                 += $time_spent[$question_record->id];
-                                    $obtained_marks                   -= $negative_mark;
+                                    $obtained_marks['total']                   -= $negative_mark;
                                     $obtained_negative_marks          += $negative_mark;
                                     $time_spent_wrong_answer_question[$question_record->id]['time_to_spend']
                                                                        = $question_record->time_to_spend;
                                     $time_spent_wrong_answer_question[$question_record->id]['time_spent']
                                                                        = $time_spent[$question_record->id];
                                 }
-
+                                $obtained_marks[$question_record->id]          = $obtained_marks['total'];
                                 break;
                 case 'blanks':
                                 $actual_answer = json_decode($actual_answer);
@@ -893,7 +897,7 @@ class StudentQuizController extends Controller
                                 if($flag)
                                 {
                                     $correct_answers++;
-                                    $obtained_marks += $question_record->marks;
+                                    $obtained_marks['total'] += $question_record->marks;
                                     $corrent_answer_question[] = $question_record->id;
                                     $subject[$subject_id]['correct_answers'] +=1;
                                      $subject[$subject_id]['time_spent_correct_answers']
@@ -911,14 +915,14 @@ class StudentQuizController extends Controller
                                     $subject[$subject_id]['wrong_answers'] += 1;
                                     $subject[$subject_id]['time_spent_wrong_answers']
                                                                 += $time_spent[$question_record->id];
-                                    $obtained_marks                   -= $negative_mark;
+                                    $obtained_marks['total']                   -= $negative_mark;
                                     $obtained_negative_marks          += $negative_mark;
                                     $time_spent_wrong_answer_question[$question_record->id]['time_to_spend']
                                                                        = $question_record->time_to_spend;
                                     $time_spent_wrong_answer_question[$question_record->id]['time_spent']
                                                                        = $time_spent[$question_record->id];
                                 }
-
+                                $obtained_marks[$question_record->id]          = $obtained_marks['total'];
                                 break;
                     case (  $question_type == 'para'  ||
                             $question_type == 'audio' ||
@@ -933,7 +937,7 @@ class StudentQuizController extends Controller
                                     if($actual_answer[$answer_key]->answer == $answer_value)
                                     {
                                         $flag=1;
-                                        $obtained_marks += $indidual_marks;
+                                        $obtained_marks['total'] += $indidual_marks;
                                     }
                                 }
 
@@ -956,14 +960,14 @@ class StudentQuizController extends Controller
                                     $subject[$subject_id]['wrong_answers'] += 1;
                                      $subject[$subject_id]['time_spent_wrong_answers']
                                                                 += $time_spent[$question_record->id];
-                                    $obtained_marks                   -= $negative_mark;
+                                    $obtained_marks['total']                   -= $negative_mark;
                                     $obtained_negative_marks          += $negative_mark;
                                     $time_spent_wrong_answer_question[$question_record->id]['time_to_spend']
                                                                        = $question_record->time_to_spend;
                                     $time_spent_wrong_answer_question[$question_record->id]['time_spent']
                                                                        = $time_spent[$question_record->id];
                                 }
-
+                                $obtained_marks[$question_record->id]          = $obtained_marks['total'];
                                 break;
                 case 'match':
                                 $actual_answer = json_decode($actual_answer);
@@ -975,7 +979,7 @@ class StudentQuizController extends Controller
                                     if($answer->answer == $value[$i++])
                                     {
                                        $flag=1;
-                                        $obtained_marks += $indidual_marks;
+                                        $obtained_marks['total'] += $indidual_marks;
                                     }
                                 }
 
@@ -998,37 +1002,48 @@ class StudentQuizController extends Controller
                                     $subject[$subject_id]['wrong_answers'] += 1;
                                      $subject[$subject_id]['time_spent_wrong_answers']
                                                                 += $time_spent[$question_record->id];
-                                    $obtained_marks                   -= $negative_mark;
+                                    $obtained_marks['total']                   -= $negative_mark;
                                     $obtained_negative_marks          += $negative_mark;
                                     $time_spent_wrong_answer_question[$question_record->id]['time_to_spend']
                                                                        = $question_record->time_to_spend;
                                     $time_spent_wrong_answer_question[$question_record->id]['time_spent']
                                                                        = $time_spent[$question_record->id];
                                 }
+                                $obtained_marks[$question_record->id]          = $obtained_marks['total'];
                     break;
 
-                    default:
-                        $wrong_answer_question[] = $question_record->id;
-                        $subject[$subject_id]['wrong_answers'] += 1;
-                         $subject[$subject_id]['time_spent_wrong_answers']
-                                                    += $time_spent[$question_record->id];
-                        $obtained_marks                   -= $negative_mark;
-                        $obtained_negative_marks          += $negative_mark;
-                        $time_spent_wrong_answer_question[$question_record->id]['time_to_spend']
-                                                           = $question_record->time_to_spend;
-                        $time_spent_wrong_answer_question[$question_record->id]['time_spent']
-                                                           = $time_spent[$question_record->id];
+                    case 'descriptive':
 
+                            $wrong_answer_question[] = $question_record->id;
+                            $subject[$subject_id]['wrong_answers'] += 1;
+                             $subject[$subject_id]['time_spent_wrong_answers']
+                                                        += $time_spent[$question_record->id];
+                            $obtained_marks['total']                   -= $negative_mark;
+                            $obtained_negative_marks          += $negative_mark;
+                            $time_spent_wrong_answer_question[$question_record->id]['time_to_spend']
+                                                               = $question_record->time_to_spend;
+                            $time_spent_wrong_answer_question[$question_record->id]['time_spent']
+                                                               = $time_spent[$question_record->id];
+                            $obtained_marks[$question_record->id]          = $obtained_marks['total'];
 
+                            if ($request->hasFile($question_record->id))
+                           {
+                                $image = $request->file($question_record->id);
+                                $file_name = $question_record->id."-".$slug.'.'.$image[1]->extension();
+                                $destinationPath = public_path('/uploads/exams/submissions');
+                                $image[1]->move($destinationPath, $file_name);
+                                $answers[$question_record->id][1]=$file_name;
 
+                           }
+                    break;
             }
-
           }
-
-
+          $obtained_marks['total']=0;
         }
+        $obtained_marks['total']=array_sum($obtained_marks);
         // dd($time_spent_correct_answer_question);
           return array(
+                        'answers'               => $answers,
                         'total_correct_answers' => $correct_answers,
                         'marks_obtained'        => $obtained_marks,
                         'negative_marks'        => $obtained_negative_marks,
@@ -1296,7 +1311,7 @@ class StudentQuizController extends Controller
          ->addColumn('action', function($records)
         {
           $user = User::where('id', '=', $records->user_id)->get()->first();
-          
+
           $options = '<div class="dropdown more">
                         <a id="dLabel" type="button" class="more-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="mdi mdi-dots-vertical"></i>
@@ -1304,7 +1319,7 @@ class StudentQuizController extends Controller
 
                         <ul class="dropdown-menu" aria-labelledby="dLabel">
                            <li><a href="'.URL_STUDENT_EXAM_ANALYSIS_BYSUBJECT.$user->slug.'/'.$records->slug.'/'.$records->resultsslug.'">'.getPhrase("SUBJECT WISE ANALYSIS").'</a></li>';
-                           
+
 
                            $certificate_link = '';
                         if(checkRole(getUserGrade(5))){
