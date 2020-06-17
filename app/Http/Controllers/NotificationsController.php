@@ -40,7 +40,7 @@ class NotificationsController extends Controller
     {
         session_start();
 
-        $rurl = action('gCalendarController@oauth');
+        $rurl = action('NotificationsController@oauth');
         $this->client->setRedirectUri($rurl);
         if (!isset($_GET['code'])) {
             $auth_url = $this->client->createAuthUrl();
@@ -49,7 +49,7 @@ class NotificationsController extends Controller
         } else {
             $this->client->authenticate($_GET['code']);
             $_SESSION['access_token'] = $this->client->getAccessToken();
-            return redirect('dashboard');
+            return redirect(URL_NOTIFICATIONS);
         }
     }
 
