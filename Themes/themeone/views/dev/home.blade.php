@@ -105,9 +105,10 @@
 						{{csrf_field()}}
 						<input type="hidden" name='slug' value="{{$user->slug}}" >
 						<input type="submit" value="Accept Request" >
+					</form>
 				</td>
             </tr>
-		<?php  } ?> 
+		<?php  } ?>
         </tbody>
 	</table>
 
