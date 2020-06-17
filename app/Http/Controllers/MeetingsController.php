@@ -64,8 +64,9 @@ class MeetingsController extends Controller
         $records = array();
 
 
-            if(checkRole(['owner'])){
-              $records = Meeting::select(['title','slug','recording','section_id', 'valid_from', 'valid_to',  'id','slug'  ])
+
+            if(checkRole(['owner'])||checkRole(['admin'])){
+              $records = Meeting::select(['title','slug','section_id', 'valid_from', 'valid_to',  'id','slug'  ])
               ->orderBy('updated_at', 'desc')->get();
             }
             else if(checkRole(['student'])){

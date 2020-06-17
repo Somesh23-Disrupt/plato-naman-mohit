@@ -75,11 +75,11 @@
 
 
 
-		 	$date_from = date('Y/m/d');
+		 	$date_from = date('Y-m-d');
 
 
 
-		 	$date_to = date('Y/m/d');
+		 	$date_to = date('Y-m-d');
 
 
 
@@ -123,7 +123,7 @@
 
 
 
-                        {{ Form::text('valid_from', $value = $date_from , $attributes = array('class'=>'input-sm form-control', 'placeholder' => '2015/7/17')) }}
+                        {{ Form::text('valid_from', $value = $date_from , $attributes = array('class'=>'input-sm form-control', 'autocomplete'=>'off','id'=>'search-from-date','placeholder' => '2015-7-17 12:59')) }}
 
 
 
@@ -157,7 +157,7 @@
 
 
 
-                        {{ Form::text('valid_to', $value = $date_to , $attributes = array('class'=>'input-sm form-control', 'placeholder' => '2015/7/17')) }}
+                        {{ Form::text('valid_to', $value = $date_to , $attributes = array('class'=>'input-sm form-control','autocomplete'=>'off', 'id'=>'search-to-date','placeholder' => '2015-7-17 12:59')) }}
 
 
 

@@ -33,6 +33,7 @@
 							<thead>
 								<tr>
 									<th>{{ getPhrase('title')}}</th>
+									<th>{{ getPhrase('status')}}</th>
 									<th>{{ getPhrase('start_date')}}</th>
 									<th>{{ getPhrase('end_date')}}</th>
 									<th>{{ getPhrase('url')}}</th>
@@ -55,5 +56,101 @@
 
  @include('common.datatables', array('route'=>URL_ADMIN_NOTIFICATIONS_GETLIST, 'route_as_url' => TRUE))
  @include('common.deletescript', array('route'=>URL_ADMIN_NOTIFICATIONS_DELETE))
+ <script>
 
+
+
+	function cancelRecord(slug) {
+
+	swal({
+
+		  title: "{{getPhrase('are_you_sure want to cancel')}}?",
+
+		  type: "warning",
+
+		  showCancelButton: true,
+
+		  confirmButtonClass: "btn-danger",
+
+		  confirmButtonText: "{{getPhrase('yes')}}!",
+
+		  cancelButtonText: "{{getPhrase('no')}}!",
+
+		  closeOnConfirm: false,
+
+		  closeOnCancel: false
+
+		},
+
+		function(isConfirm) {
+
+		  if (isConfirm) {
+
+		  	  var token = '{{ csrf_token()}}';
+
+		  	route = '{{URL_ADMIN_NOTIFICATIONS_CANCEL}}'+slug;  
+
+		    $.ajax({
+
+		        url:route,
+
+		        type: 'post',
+
+		        data: {_method: 'delete', _token :token},
+
+		        success:function(msg){
+
+
+
+		        	result = $.parseJSON(msg);
+                    
+		        	if(typeof result == 'object')
+
+		        	{
+
+		        		status_message = '{{getPhrase('canceled')}}';
+
+		        		status_symbox = 'success';
+
+		        		status_prefix_message = '';
+
+		        		if(!result.status) {
+
+		        			status_message = '{{getPhrase('sorry')}}';
+
+		        			status_prefix_message = '{{getPhrase("cannot_delete_this_record_as")}}\n';
+
+		        			status_symbox = 'info';
+
+		        		}
+
+		        		swal(status_message+"!", status_prefix_message+result.message, status_symbox);
+
+		        	}
+
+		        	else {
+
+		        	swal("{{getPhrase('Canceled')}}!", "{{getPhrase('your_record_has_been_deleted')}}", "success");
+
+		        	}
+
+		        	tableObj.ajax.reload();
+
+		        }
+
+		    });
+
+
+
+		  } else {
+
+		    swal("{{getPhrase('cancelled')}}", "{{getPhrase('your_record_is_safe')}} :)", "error");
+
+		  }
+
+	});
+
+	}
+
+</script>
 @stop

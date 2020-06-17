@@ -1,5 +1,5 @@
 @extends($layout)
-<link href="{{CSS}}bootstrap-datepicker.css" rel="stylesheet">
+<link href="{{CSS}}jquery.datetimepicker.css" rel="stylesheet">
 @section('content')
 <div id="page-wrapper">
 			<div class="container-fluid">
@@ -54,13 +54,12 @@
 @include('common.validations');
    {{-- <script src="{{JS}}bootstrap-datepicker.min.js"></script> --}}
 @include('common.editor');
-<script src="{{JS}}datepicker.min.js"></script>
+<script src="{{JS}}jquery.datetimepicker.full.js"></script>
  <script>
- 	  $('.input-daterange').datepicker({
-        autoclose: true,
-        startDate: "0d",
-         format: '{{getDateFormat()}}',
-    });
+ 	 $('#search-from-date, #search-to-date').datetimepicker({
+		format:"Y-m-d H:i:s",
+  
+	  });
  </script>
     
 @stop
