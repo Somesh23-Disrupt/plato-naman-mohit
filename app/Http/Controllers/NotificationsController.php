@@ -300,7 +300,7 @@ class NotificationsController extends Controller
 
         }  
          else {
-            return redirect()->route('oauthCallback');
+            return redirect('oauth');
         }
         $record = new Notification();
       	$name  						=  $request->title;
