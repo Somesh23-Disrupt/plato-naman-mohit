@@ -278,7 +278,11 @@
 
 					</li>
 
+					<li {{ isActive($active_class, 'meetings') }} >
+						<a href="{{URL_MEETINGS}}" ><i class="fa fa-fw fa-window-restore" aria-hidden="true"></i>
+					{{ getPhrase('meetings') }} </a>
 
+					</li>
 					<li {{ isActive($active_class, 'feedback') }} > 
 						<a href="{{URL_FEEDBACKS}}" ><i class="fa fa-fw fa-commenting" ></i> 
 					{{ getPhrase('feedback') }} </a> 
@@ -308,7 +312,18 @@
 					</ul>
 
 					</li>
-
+					<li {{ isActive($active_class, 'integeration') }} > 
+					<a data-toggle="collapse" data-target="#integeration"><i class="fa fa-bars"></i> 
+						{{ getPhrase('integeration') }} </a> 
+						
+						<ul id="integeration" class="collapse sidemenu-dropdown">
+								<li><a href="https://www.twilio.com/whatsapp" target="_blank"> <i class="fa fa-whatsapp"></i>{{ getPhrase('Whatsapp') }}</a></li>
+								<li><a href="https://developers.google.com/calendar" target="_blank"> <i class="fa fa-calendar-check-o"></i>{{ getPhrase('Calendar') }}</a></li>
+							 
+						</ul>
+	
+						</li>
+	
 
 					
 

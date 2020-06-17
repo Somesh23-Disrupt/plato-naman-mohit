@@ -395,6 +395,7 @@ Route::post('admin/notifications/add', 'NotificationsController@store');
 Route::get('admin/notifications/edit/{slug}', 'NotificationsController@edit');
 Route::patch('admin/notifications/edit/{slug}', 'NotificationsController@update');
 Route::delete('admin/notifications/delete/{slug}', 'NotificationsController@delete');
+Route::delete('admin/notifications/cancel/{slug}', 'NotificationsController@cancel');
 Route::get('admin/notifications/getList', 'NotificationsController@getDatatable');
 
 // NOTIFICATIONS FOR STUDENT

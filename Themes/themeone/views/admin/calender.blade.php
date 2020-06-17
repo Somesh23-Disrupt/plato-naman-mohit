@@ -28,7 +28,7 @@
                     <th>{{getPhrase('id')}}</th>
 										<th>{{ getPhrase('Subject')}}</th>
 										<th>{{ getPhrase('decsciption')}}</th>
-								
+									<th>{{getPhrase('decsciption')}}</th>
 										<th>{{ getPhrase('start_time')}}</th>
 										<th>{{ getPhrase('end_time')}}</th>
 									
@@ -37,12 +37,12 @@
 								@foreach($tables as $table)
 									
 										<tr>
-                      <td>{{$table->id}}</td>
-                    <td>{{$table->title}}</td>
+                      <td style="word-break: break-all;">{{$table->id}}</td>
+                    <td style="word-break: break-all;">{{$table->title}}</td>
 											<td style="word-break: break-all;">{{$table->decsciption}}</td>
 											<td>{{$table->start_time}}</td>
 											<td>{{$table->end_time}}</td>
-											
+										<td>{{$table->url}}</td>
 										</tr>
 									
 								@endforeach

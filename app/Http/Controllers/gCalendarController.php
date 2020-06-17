@@ -57,6 +57,7 @@ class gCalendarController extends Controller
                 $data['sectionsforteach']= $sections;
                 $data['tables'][]=$events;
             }
+           
             $data['active_class']   = 'dashboard';
             $data['layout']         = getLayout();
             $data['title']          = getPhrase('dashboard');

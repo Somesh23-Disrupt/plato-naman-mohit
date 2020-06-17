@@ -101,7 +101,7 @@
 					 <div class="col-md-3 col-sm-6">
 						<div class="media state-media box-ws">
 							<div class="media-left">
-								<a href="{{URL_QUIZ_QUESTIONBANK}}"><div class="state-icn bg-icon-orange"><i class="fa fa-question-circle"></i></div></a>
+								<a href="{{URL_QUIZ_QUESTIONBANK}}"><div class="state-icn bg-icon-orange"><i class="fa fa-desktop"></i></div></a>
 							</div>
 							<div class="media-body">
 								<h4 class="card-title">{{App\User::select('section_id')->where('role_id',5)->where('inst_id',Auth::user()->inst_id)->distinct('section_id')->get()->count()
@@ -146,7 +146,7 @@
 				 	<div class="col-md-3 col-sm-6">
 				 		<div class="media state-media box-ws">
 				 			<div class="media-left">
-				 				<a href=""><div class="state-icn bg-icon-orange"><i class="fa fa-question-circle"></i></div></a>
+				 				<a href=""><div class="state-icn bg-icon-orange"><i class="fa fa-desktop"></i></div></a>
 				 			</div>
 				 			<div class="media-body">
 				 				<h4 class="card-title">{{ round($avgscacrquizes, 2)}}</h4>
@@ -157,7 +157,7 @@
 					 <div class="col-md-3 col-sm-6">
 						<div class="media state-media box-ws">
 							<div class="media-left">
-								<div class="state-icn bg-icon-orange"><i class="fa fa-question-circle"></i></div>
+								<div class="state-icn bg-icon-orange"><i class="fa fa-desktop"></i></div>
 							</div>
 							<div class="media-body">
 								<h4 class="card-title">{{ $tppforteach }}</h4>
@@ -235,7 +235,11 @@
 									<td>{{$table->title}}</td>
 									<?php $id=App\QuizCategory::find($table->category_id)->section_id ?>
 									<td>{{App\User::select(['section_name'])->where('section_id',$id)->first()->section_name}}</td>
+									@if(App\User::select(['name'])->where('section_id',$id)->where('role_id',3)->count()>0)
 									<td>{{App\User::select(['name'])->where('section_id',$id)->where('role_id',3)->first()->name}}</td>
+									@else
+									<td></td>
+									@endif
 									<td>{{$table->start_date}}</td>
 								</tr>
 

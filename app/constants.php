@@ -320,6 +320,7 @@ define('URL_ADMIN_NOTIFICATIONS', PREFIX.'admin/notifications');
 define('URL_ADMIN_NOTIFICATIONS_ADD', PREFIX.'admin/notifications/add');
 define('URL_ADMIN_NOTIFICATIONS_EDIT', PREFIX.'admin/notifications/edit/');
 define('URL_ADMIN_NOTIFICATIONS_DELETE', PREFIX.'admin/notifications/delete/');
+define('URL_ADMIN_NOTIFICATIONS_CANCEL', PREFIX.'admin/notifications/cancel/');
 define('URL_ADMIN_NOTIFICATIONS_GETLIST', PREFIX.'admin/notifications/getList');
 
 //Notifications Student
