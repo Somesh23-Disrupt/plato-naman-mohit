@@ -204,7 +204,7 @@ class DevController extends Controller
         if(!$login_status)
         {
             $message = getPhrase("Please Check Your Details");
-            flash('Ooops...!', $message, 'error');
+            flash('Ooops...!', $message, 'overlay');
 			   return redirect()->back();
 
             //    return redirect()->back()

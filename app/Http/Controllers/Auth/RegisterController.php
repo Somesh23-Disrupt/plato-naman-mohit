@@ -185,7 +185,7 @@ class RegisterController extends Controller
         {
             if (!env('DEMO_MODE')) {
 
-             $user->notify(new \App\Notifications\NewUserRegistration($user,$user->email,'$password', $link ));
+             $user->notify(new \App\Notifications\NewUserRequest($user,$link ));
             }
 
         }

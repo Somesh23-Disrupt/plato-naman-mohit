@@ -58,8 +58,8 @@
 
                         </h1>
 					</div>
-                    
 
+                    <br><span></span><br><span></span><br><span></span><br><span></span><br><span></span><br>
 					<div class="control">
 						<a class="button button-primary button-block button-shadow" name="login" href="login">Login</a>
 					</div>

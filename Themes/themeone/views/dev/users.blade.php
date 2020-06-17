@@ -65,16 +65,16 @@ tr:nth-child(even) {
             </tr>
         </thead>
         <tbody>
-		<?php $count=0; ?>
-		@foreach($users as $user){
- 		<?php $count++; ?>
+		<?php $count=0;
+		foreach($users as $user){
+ 		 $count++; ?>
 
             <tr>
 				<td>{{$count}}</td>
 				<td>{{$user->email}}</td>
 				<td>{{$user->created_at}}</td>
             </tr>
-		@endforeach
+		<?php } ?>
         </tbody>
 
 	</table>

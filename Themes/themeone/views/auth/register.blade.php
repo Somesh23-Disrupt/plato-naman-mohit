@@ -297,7 +297,7 @@
                         </div>
 
                       	<div class="text-center mt-2">
-                      		<button type="submit" class="btn button btn-primary btn-lg" ng-disabled='!registrationForm.$valid'>{{getPhrase('register_now')}}</button>
+                      		<button type="submit" class="btn button btn-primary btn-lg" ng-disabled='!registrationForm.$valid'>{{getPhrase('request_now')}}</button>
                       	</div>
 
                     </form>

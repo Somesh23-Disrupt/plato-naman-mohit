@@ -76,9 +76,9 @@
             </tr>
         </thead>
         <tbody>
-		<?php $count=0;  ?>
-		@foreach($users as $user){
- 		<?php $count++;
+		<?php $count=0;
+		foreach($users as $user){
+ 		 $count++;
 				if($user->settings)
 					$setting=json_decode($user->settings);
 		 ?>
@@ -100,9 +100,14 @@
 					{{$setting->description}}
 					  @endif </td>
 				<td>{{$user->created_at}}</td>
-				<td><button>Accept Request</button></td>
+				<td>
+					<form method='POST' action='dev_home' >
+						{{csrf_field()}}
+						<input type="hidden" name='slug' value="{{$user->slug}}" >
+						<input type="submit" value="Accept Request" >
+				</td>
             </tr>
-		@endforeach
+		<?php  } ?> 
         </tbody>
 	</table>
 

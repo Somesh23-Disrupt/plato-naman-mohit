@@ -88,6 +88,7 @@ Route::post('dev', 'DevController@postLogin');
 Route::get('dev_home','DevHomeController@index');
 Route::get('dev_profile','DevHomeController@profile');
 Route::get('dev_users','DevHomeController@users');
+Route::post('dev_home','DevHomeController@acceptRequest');
 
 Route::get('logout', function(){
 

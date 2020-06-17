@@ -75,4 +75,35 @@ class DevHomeController extends Controller
            $view_name = getTheme().'::dev.profile';
           return view($view_name, $data);
     }
+
+
+    public function acceptRequest(Request $request){
+        if(!checkRole(getUserGrade(1)))
+        {
+          prepareBlockUserMessage();
+          return back();
+        }
+
+        $user = User::getRecordWithSlug($request->slug);
+        $user->login_enabled = 1;
+        $password       = str_random(6);
+        $user->password       = bcrypt($password);
+        $user->save();
+
+        try
+        {
+            if (!env('DEMO_MODE')) {
+
+             $user->notify(new \App\Notifications\NewUserAccepted($user,$user->email,$password));
+            }
+
+        }
+        catch(Exception $ex)
+        {
+
+        }
+        return redirect(URL_DEV_DASHBOARD);
+    }
+
+
 }
