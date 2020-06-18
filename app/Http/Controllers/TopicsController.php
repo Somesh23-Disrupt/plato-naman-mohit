@@ -153,7 +153,7 @@ class TopicsController extends Controller
         $data['layout']=getLayout();
 
     	$data['record']       		= $record;
-    	$list 						= App\Subject::all();
+    	$list 						= App\Subject::where('record_updated_by',auth()->user()->id)->all();
     	$data['subjects']			= array_pluck($list, 'subject_title', 'id');
     
     	$data['active_class']       = 'subjects';
