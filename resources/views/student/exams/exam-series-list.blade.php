@@ -65,7 +65,7 @@
 							 	@else 
 							Ooops...! {{getPhrase('No_series_available')}}
 
-						<a href="{{URL_USERS_SETTINGS.$user->slug}}" >{{getPhrase('click_here_to_change_your_preferences')}}</a>
+						
 							@endif
 						</div>
 

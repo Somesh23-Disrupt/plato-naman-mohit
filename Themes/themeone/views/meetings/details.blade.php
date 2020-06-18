@@ -104,7 +104,7 @@
                     parentNode: document.querySelector('#meet')
                 };
                 const api = new JitsiMeetExternalAPI(domain, options);
-                //api.executeCommand('password', 'The Password');
+                api.executeCommand('password', 'The Password');
                 api.executeCommand('toggleVideo');
                 api.executeCommand('startRecording', {
                     //mode: 'stream', //recording mode, either `file` or `stream`.

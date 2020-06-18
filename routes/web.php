@@ -179,8 +179,8 @@ Route::get('users', 'UsersController@index');
 Route::get('users/profile/{slug}', 'UsersController@show');
 Route::get('users/details/{slug}', 'UsersController@details');
 
-Route::get('users/settings/{slug}', 'UsersController@settings');
-Route::patch('users/settings/{slug}', 'UsersController@updateSettings');
+//Route::get('users/settings/{slug}', 'UsersController@settings');
+//Route::patch('users/settings/{slug}', 'UsersController@updateSettings');
 
 Route::get('users/change-password/{slug}', 'UsersController@changePassword');
 Route::patch('users/change-password/{slug}', 'UsersController@updatePassword');

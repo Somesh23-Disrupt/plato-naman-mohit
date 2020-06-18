@@ -38,7 +38,7 @@
 
 					<div class="panel-body packages">
 
-						 
+
 
 						<div class="row library-items">
 
@@ -50,11 +50,11 @@
 
 						@foreach($series as $c)
 
-						
+
 
 						@if($c->total_items)
 
-							
+
 
 							<div class="col-md-3">
 
@@ -72,7 +72,7 @@
 
 									<div class="label-danger  label-band">{{getPhrase('free')}}</div>
 
-									@endif	
+									@endif
 
 
 
@@ -86,21 +86,21 @@
 
 										<img src="{{ IMAGE_PATH_UPLOAD_LMS_SERIES.$image}}" alt="{{$c->title}}">
 
-										
 
-										<div class="hover-content"> 
+
+										<div class="hover-content">
 
 										<div class="buttons">
 
-											<a href="{{URL_STUDENT_LMS_SERIES_VIEW.$c->slug}}" class="btn btn-primary">{{getPhrase('view_more')}}</a> 
+											<a href="{{URL_STUDENT_LMS_SERIES_VIEW.$c->slug}}" class="btn btn-primary">{{getPhrase('view_more')}}</a>
 
-										 
+
 
 											</div>
 
 										</div>
 
-										
+
 
 									</div>
 
@@ -120,7 +120,7 @@
 
 										</ul>
 
-									
+
 
 									</div>
 
@@ -130,11 +130,11 @@
 
 							</div>
 
-							 
 
-							 
 
-							
+
+
+
 
 							@endif
 
@@ -142,13 +142,13 @@
 
 							 @endforeach
 
-							@else 
+							@else
 
 							Ooops...! {{getPhrase('No_series_available')}}
 
 
 
-						<a href="{{URL_USERS_SETTINGS.$user->slug}}" >{{getPhrase('click_here_to_change_your_preferences')}}</a>
+
 
 							@endif
 
@@ -168,7 +168,7 @@
 
 			</div>
 
-			
+
 
 </div>
 

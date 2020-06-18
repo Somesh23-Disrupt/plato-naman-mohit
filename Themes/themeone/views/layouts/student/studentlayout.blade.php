@@ -196,7 +196,7 @@ if(isset($block_navigation))
 						</li>
 
 
-
+						<!--
 						 <li>
 
 							<a href="{{URL_USERS_SETTINGS.Auth::user()->slug}}">
@@ -206,7 +206,7 @@ if(isset($block_navigation))
 								</a>
 
 						</li>
-
+					-->
 
 						<li>
 
@@ -319,7 +319,7 @@ if(isset($block_navigation))
 
 					</li>
 
- 
+
 
 
 					<li {{ isActive($active_class, 'lms') }} >
