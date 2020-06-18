@@ -111,11 +111,13 @@ class DashboardController extends Controller
            $data['ids'] = array('myChart0' );
            $data['chart_data'][]=(object)$this->scorebysub();
            //Code Table in Admin dashboard
-
+           
            $sec_inst=App\User::select(['section_id'])->where('role_id',3)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
           //  dd($sec_inst);
-              $records = Quiz::select(['title', 'category_id', 'start_date'])->get()->sortByDesc('start_date');
+
+              $records = Quiz::select(['title', 'category_id', 'start_date'])->whereIn('section_id',$sec_inst)->get()->sortByDesc('start_date');
               $data['tables']=$records;
+              $data['sec_inst']=$sec_inst;
               // dd($data['tables']->pluck('category_id'));
             $view_name = getTheme().'::admin.dashboard';
 

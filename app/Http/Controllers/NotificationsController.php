@@ -6,6 +6,13 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use \App;
+use Illuminate\Support\Str;
+use Carbon\Carbon;
+use Google_Client;
+use App\User;
+use Google_Service_Calendar;
+use Google_Service_Calendar_Event;
+use Google_Service_Calendar_EventDateTime;
 
 use App\Notification;
 use Yajra\Datatables\Datatables;
@@ -14,10 +21,47 @@ use Auth;
 
 class NotificationsController extends Controller
 {
-     public function __construct()
-    {
-    	$this->middleware('auth');
+
+    protected $client;
+
+    public function __construct()
+    {   $this->middleware('auth');
+        $client = new Google_Client();
+        $client->setAuthConfig('public/client_secret.json');
+        $client->addScope(Google_Service_Calendar::CALENDAR);
+
+        $guzzleClient = new \GuzzleHttp\Client(array('curl' => array(CURLOPT_SSL_VERIFYPEER => false)));
+        $client->setHttpClient($guzzleClient);
+        $this->client = $client;
     }
+    
+
+    public function oauth()
+    {
+        session_start();
+
+        $rurl = action('NotificationsController@oauth');
+        $this->client->setRedirectUri($rurl);
+        if (!isset($_GET['code'])) {
+            $auth_url = $this->client->createAuthUrl();
+            $filtered_url = filter_var($auth_url, FILTER_SANITIZE_URL);
+            return redirect($filtered_url);
+        } else {
+            $this->client->authenticate($_GET['code']);
+            $_SESSION['access_token'] = $this->client->getAccessToken();
+            return redirect(URL_NOTIFICATIONS);
+        }
+    }
+
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    
+
 
     /**
      * Course listing method
@@ -59,11 +103,11 @@ class NotificationsController extends Controller
 
 
             if(checkRole(['owner'])){
-              $records = Notification::select(['title', 'valid_from', 'valid_to', 'url', 'id','slug' ])
+              $records = Notification::select(['title', 'canceled','valid_from', 'valid_to', 'url', 'id','slug' ])
               ->orderBy('updated_at', 'desc');
             }
             else{
-              $records = Notification::where('inst_id',Auth::user()->inst_id)->select(['title', 'valid_from', 'valid_to', 'url', 'id','slug' ])
+              $records = Notification::where('inst_id',Auth::user()->inst_id)->select(['title', 'canceled','valid_from', 'valid_to',  'url', 'id','slug' ])
               ->orderBy('updated_at', 'desc');
             }
 
@@ -80,7 +124,11 @@ class NotificationsController extends Controller
 
                            $temp = '';
                            if(checkRole(getUserGrade(3))) {
-                    $temp .= ' <li><a href="javascript:void(0);" onclick="deleteRecord(\''.$records->slug.'\');"><i class="fa fa-trash"></i>'. getPhrase("delete").'</a></li>';
+                             if($records->canceled==1){
+                           $temp .= ' <li><a href="javascript:void(0);" onclick="deleteRecord(\''.$records->slug.'\');"><i class="fa fa-trash"></i>'. getPhrase("delete").'</a></li>';
+                          }else{
+                            $temp .= ' <li><a href="javascript:void(0);" onclick="deleteRecord(\''.$records->slug.'\');"><i class="fa fa-trash"></i>'. getPhrase("delete").'</a></li> <li><a href="javascript:void(0);" onclick="cancelRecord(\''.$records->slug.'\');"><i class="fa fa-ban"></i>'. getPhrase("cancel").'</a></li>';
+                          }
                       }
 
                     $temp .='</ul></div>';
@@ -88,10 +136,10 @@ class NotificationsController extends Controller
                     $link_data .=$temp;
             return $link_data;
             })
-        //->editColumn('status', function($records)
-        //{
-            //return ($records->status == 'Active') ? '<i class="fa fa-check text-success"></i>' : '<i class="fa fa-times text-danger"></i>';
-        //})
+        ->editColumn('canceled', function($records)
+        {
+            return ($records->canceled == 0) ? '<p class="text-success">'.getPhrase('active').'</p>' : '<p class="text-danger">'.getPhrase('canceled').'</p>';
+        })
         ->removeColumn('id')
         ->removeColumn('slug')
 
@@ -192,6 +240,9 @@ class NotificationsController extends Controller
         $record->description		= $request->description;
        	$record->record_updated_by 	= Auth::user()->id;
         $record->save();
+            
+
+
         flash('success','record_updated_successfully', 'success');
     	return redirect(URL_ADMIN_NOTIFICATIONS);
     }
@@ -216,6 +267,41 @@ class NotificationsController extends Controller
          'valid_to'      	=> 'bail|required' ,
             ];
         $this->validate($request, $rules);
+
+         session_start();
+       $startDateTime = str_replace(' ','T',$request->valid_from);
+        $endDateTime = str_replace(' ','T',$request->valid_to);
+
+
+        if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
+            $this->client->setAccessToken($_SESSION['access_token']);
+            $service = new Google_Service_Calendar($this->client);
+
+            $calendarId = 'primary';
+            $event = new Google_Service_Calendar_Event([
+                'summary' => $request->title,
+                'description' => $request->description,
+                'start' => array(
+                  'dateTime' => $startDateTime,
+                  'timeZone' => 'Asia/Kolkata',
+                ),
+                'end' => array(
+                  'dateTime' =>$endDateTime,
+                  'timeZone' => 'Asia/Kolkata',
+                ),
+                'reminders' => ['useDefault' => true],
+            ]);
+            // dd($event);
+            $results = $service->events->insert($calendarId, $event);
+            if (!$results) {
+                return response()->json(['status' => 'error', 'message' => 'Something went wrong']);
+            }
+           
+
+        }  
+         else {
+            return redirect('oauth');
+        }
         $record = new Notification();
       	$name  						=  $request->title;
 		    $record->title 				= $name;
@@ -227,8 +313,11 @@ class NotificationsController extends Controller
         $record->short_description	= $request->short_description;
         $record->description		= $request->description;
        	$record->record_updated_by 	= Auth::user()->id;
+        
 
         $record->save();
+
+       
         flash('success','record_added_successfully', 'success');
     	return redirect(URL_ADMIN_NOTIFICATIONS);
     }
@@ -255,8 +344,42 @@ class NotificationsController extends Controller
             $record->delete();
         }
 
+        
+
+
         $response['status'] = 1;
         $response['message'] = getPhrase('record_deleted_successfully');
+        return json_encode($response);
+    }
+
+    public function cancel($slug)
+    {
+      $record = Notification::where('slug', $slug)->first();
+      $record->canceled=1;
+
+      $record->save();
+        session_start();
+        if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
+            $this->client->setAccessToken($_SESSION['access_token']);
+            $service = new Google_Service_Calendar($this->client);
+          
+            $calendarId = 'primary';
+
+            $results = $service->events->listEvents($calendarId);
+           
+            foreach ($results as $key ) {
+                
+                if ($key->summary==$record->title) {
+                  $eventId=$key->id;
+                }
+              }
+            $service->events->delete('primary', $eventId);
+
+        } else {
+            return redirect('oauth');
+        }
+        $response['status'] = 1;
+        $response['message'] = getPhrase('Event_canceled');
         return json_encode($response);
     }
 
@@ -318,21 +441,5 @@ class NotificationsController extends Controller
         $data['sectionsforteach']= $sections;
            $view_name = getTheme().'::notifications.details';
         return view($view_name, $data);
-    }
-
-    public function notificationforall($data)
-    {
-      $notification= new Notification;
-      $notification->title=$data->title;
-      $notification->slug=$data->slug;
-      $notification->sort_description=$data->sort_description;
-      $notification->description=$data->description;
-      $notification->url=$data->url;
-      $notification->inst_id=$data->inst_id;
-      $notification->valid_to=$data->valid_to;
-      $notification->valid_from=$data->valid_from;
-      $notification->record_updated_by=$data->record_updated_by;
-      $notification->save();
-
     }
 }

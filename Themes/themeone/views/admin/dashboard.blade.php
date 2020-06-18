@@ -25,7 +25,7 @@
 				 			</div>
 				 			<div class="media-body">
 				 				<h4 class="card-title">{{ App\User::where('inst_id',auth()->user()->inst_id)->where('role_id',5)->count()}}</h4>
-								<a href="{{URL_USERS}}">{{ getPhrase('Students')}}</a>
+								<a href="{{URL_USERS}}">{{ getPhrase('Users')}}</a>
 				 			</div>
 				 		</div>
 				 	</div>
@@ -57,7 +57,7 @@
 				 				<a href="{{URL_QUIZZES}}"><div class="state-icn bg-icon-purple"><i class="fa fa-desktop"></i></div></a>
 				 			</div>
 				 			<div class="media-body">
-				 				<h4 class="card-title">{{ App\Quiz::get()->count()}}</h4>
+				 				<h4 class="card-title">{{ App\Quiz::whereIn('section_id',$sec_inst)->get()->count()}}</h4>
 								<a href="{{URL_QUIZZES}}">{{ getPhrase('quizzes')}}</a>
 				 			</div>
 				 		</div>
@@ -68,7 +68,7 @@
 				 				<a href="{{URL_SUBJECTS}}"><div class="state-icn bg-icon-success"><i class="fa fa-book"></i></div></a>
 				 			</div>
 				 			<div class="media-body">
-				 				<h4 class="card-title">{{ App\Subject::get()->count()}}</h4>
+				 				<h4 class="card-title">{{ App\Subject::whereIn('section_id',$sec_inst)->get()->count()}}</h4>
 								<a href="{{URL_SUBJECTS}}">{{ getPhrase('subjects')}}</a>
 				 			</div>
 				 		</div>
@@ -93,7 +93,8 @@
 				 				<a href="{{URL_QUIZ_QUESTIONBANK}}"><div class="state-icn bg-icon-orange"><i class="fa fa-question-circle"></i></div></a>
 				 			</div>
 				 			<div class="media-body">
-				 				<h4 class="card-title">{{ App\QuestionBank::get()->count() }}</h4>
+								 <?php $sub_ids=App\Subject::select(['id'])->whereIn('section_id',$sec_inst)->pluck('id')?>
+				 				<h4 class="card-title">{{ App\QuestionBank::whereIn('subject_id',$sub_ids)->get()->count() }}</h4>
 								<a href="{{URL_QUIZ_QUESTIONBANK}}">{{ getPhrase('questions')}}</a>
 				 			</div>
 				 		</div>
@@ -101,7 +102,7 @@
 					 <div class="col-md-3 col-sm-6">
 						<div class="media state-media box-ws">
 							<div class="media-left">
-								<a href="{{URL_QUIZ_QUESTIONBANK}}"><div class="state-icn bg-icon-orange"><i class="fa fa-question-circle"></i></div></a>
+								<a href="{{URL_QUIZ_QUESTIONBANK}}"><div class="state-icn bg-icon-orange"><i class="fa fa-desktop"></i></div></a>
 							</div>
 							<div class="media-body">
 								<h4 class="card-title">{{App\User::select('section_id')->where('role_id',5)->where('inst_id',Auth::user()->inst_id)->distinct('section_id')->get()->count()
@@ -146,7 +147,7 @@
 				 	<div class="col-md-3 col-sm-6">
 				 		<div class="media state-media box-ws">
 				 			<div class="media-left">
-				 				<a href=""><div class="state-icn bg-icon-orange"><i class="fa fa-question-circle"></i></div></a>
+				 				<a href=""><div class="state-icn bg-icon-orange"><i class="fa fa-desktop"></i></div></a>
 				 			</div>
 				 			<div class="media-body">
 				 				<h4 class="card-title">{{ round($avgscacrquizes, 2)}}</h4>
@@ -157,7 +158,7 @@
 					 <div class="col-md-3 col-sm-6">
 						<div class="media state-media box-ws">
 							<div class="media-left">
-								<div class="state-icn bg-icon-orange"><i class="fa fa-question-circle"></i></div>
+								<div class="state-icn bg-icon-orange"><i class="fa fa-desktop"></i></div>
 							</div>
 							<div class="media-body">
 								<h4 class="card-title">{{ $tppforteach }}</h4>
