@@ -215,7 +215,7 @@ class TeacherController extends Controller
                     
                     
               $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')->where('exam_status','pass')->whereIn('user_id',$userbyinst)
-                ->select(['quiz_id', 'quizzes.category_id','quizzes.total_marks','quizzes.title','quizresults.exam_status',DB::raw('count(distinct(quizresults.user_id)) as tp'),DB::raw('round(avg(marks_obtained),2) as avgmarks'), 'quizresults.user_id'])
+                ->select(['quiz_id', 'quizzes.category_id','quizzes.total_marks','quizzes.title','quizresults.exam_status',DB::raw('count(distinct(quizresults.user_id)) as tp'),DB::raw('round(avg(total_marks_obtained),2) as avgmarks'), 'quizresults.user_id'])
               ->groupBy('quizresults.quiz_id')
               ->get();
               $data['tables']=$records;
@@ -311,7 +311,7 @@ class TeacherController extends Controller
                     
                     // dd($userbyinst);
                     $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')
-                          ->select(['quiz_id', 'quizzes.title',DB::raw('Avg(marks_obtained) as percentage'), 'quizresults.user_id'])
+                          ->select(['quiz_id', 'quizzes.title',DB::raw('Avg(total_marks_obtained) as percentage'), 'quizresults.user_id'])
                           ->groupBy('quizzes.title')
                           ->whereIn('user_id',$userbyinst)
                           ->get();
@@ -389,7 +389,7 @@ class TeacherController extends Controller
           // $sum=0;
           foreach ($users as $user) {
               $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')
-                ->select(['quizresults.total_marks as total_marks','marks_obtained' ])
+                ->select(['quizresults.total_marks as total_marks','total_marks_obtained' ])
                 ->where('user_id', '=', $user->id)
                 ->groupBy('quizresults.quiz_id')
                 ->get();
@@ -398,7 +398,7 @@ class TeacherController extends Controller
               $tpp=0;
               foreach ($records as $record) {
 
-                $percent=($record->marks_obtained/$record->total_marks)*100;
+                $percent=($record->total_marks_obtained/$record->total_marks)*100;
                 $tpp= $percent+$tpp;
                 // $data['name']=$name;
                 // $data['percent']=$tpp;
@@ -450,9 +450,9 @@ class TeacherController extends Controller
         $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')
         
         ->where('quiz_id',$quizid)->where('section_id',auth()->user()->section_id)
-                ->select(['quiz_id', 'quizzes.category_id', 'quizzes.slug as quiz_slug','quizzes.total_marks','quizzes.title','quizresults.exam_status as  result','quizresults.marks_obtained','quizresults.user_id','quizresults.slug as result_slug']) 
+                ->select(['quiz_id', 'quizzes.category_id', 'quizzes.slug as quiz_slug','quizzes.total_marks','quizzes.title','quizresults.exam_status as  result','quizresults.total_marks_obtained','quizresults.user_id','quizresults.slug as result_slug']) 
               ->get();
-        // // $records =App\QuizResult::select([ 'quiz_id','total_marks','user_id','marks_obtained','exam_status as  result','slug'])
+        // // $records =App\QuizResult::select([ 'quiz_id','total_marks','user_id','total_marks_obtained','exam_status as  result','slug'])
                 
         //         ->get();
                 $data['tables']=$records;
