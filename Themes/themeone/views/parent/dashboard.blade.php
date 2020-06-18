@@ -33,7 +33,7 @@
 	 <div class="col-md-4 col-sm-6">
 		<div class="media state-media box-ws">
 			<div class="media-left">
-				<div class="state-icn bg-icon-pink"><i class="fa fa-desktop"></i></div>
+				<div class="state-icn bg-icon-pink"><i class="fa fa-question"></i></div>
 			</div>
 			<div class="media-body">
 				<h4 class="card-title">{{ $dat['quiz']['quiz'] }}</h4>
@@ -48,7 +48,7 @@
 	 <div class="col-md-4 col-sm-6">
         <div class="media state-media box-ws">
           <div class="media-left">
-            <div class="state-icn bg-icon-pink"><i class="fa fa-desktop"></i></div>
+            <div class="state-icn bg-icon-pink"><i class="fa fa-question"></i></div>
           </div>
           <div class="media-body">
             <h4 class="card-title">{{ $examattend['atemp'] }}</h4>
@@ -63,7 +63,7 @@
 	 <div class="col-md-4 col-sm-6">
         <div class="media state-media box-ws">
           <div class="media-left">
-            <div class="state-icn bg-icon-pink"><i class="fa fa-desktop"></i></div>
+            <div class="state-icn bg-icon-pink"><i class="fa fa-percent"></i></div>
           </div>
           <div class="media-body">
             <h4 class="card-title">{{ $tnp['per'] }}</h4>

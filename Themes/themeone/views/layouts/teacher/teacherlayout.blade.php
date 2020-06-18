@@ -178,7 +178,7 @@
 
 					<li {{ isActive($active_class, 'subjects') }} >
 
-					<a data-toggle="collapse" data-target="#exams"><i class="fa fa-fw fa-database" ></i>
+					<a data-toggle="collapse" data-target="#subjects"><i class="fa fa-fw fa-database" ></i>
 					{{ getPhrase('subjects') }} </a>
 
 					<ul id="subjects" class="collapse sidemenu-dropdown">
@@ -194,7 +194,7 @@
 	
 					<li {{ isActive($active_class, 'exams') }} >
 
-					<a data-toggle="collapse" data-target="#exams"><i class="fa fa-fw fa-desktop" ></i>
+					<a data-toggle="collapse" data-target="#exams"><i class="fa fa-fw fa-question" ></i>
 					{{ getPhrase('exams') }} </a>
 
 					<ul id="exams" class="collapse sidemenu-dropdown">
@@ -217,7 +217,7 @@
 
 					<li {{ isActive($active_class, 'lms') }} >
 
-					<a data-toggle="collapse" data-target="#lms"><i class="fa fa-fw fa-tv" ></i>
+					<a data-toggle="collapse" data-target="#lms"><i class="fa fa-fw fa-folder-open-o" ></i>
 					LMS </a>
 
 					<ul id="lms" class="collapse sidemenu-dropdown">
@@ -229,7 +229,7 @@
 					@if(auth()->user()->section_id!=NULL)
 					<li {{ isActive($active_class, 'section') }}>
 
-						<a data-toggle="collapse" data-target="#section"><i class="fa fa-fw fa-tv" ></i>
+						<a data-toggle="collapse" data-target="#section"><i class="fa fa-fw fa-window-restore" ></i>
 						Sections </a>
 							<ul id="section" class="collapse sidemenu-dropdown">
 								@foreach ($sectionsforteach as $section)
@@ -244,7 +244,7 @@
 						<?php $secs=App\Subject::select(['section_id'])->where('teacher_id',auth()->user()->id)->distinct('section_id')->get()->pluck('section_id');?>
 						<li {{ isActive($active_class, 'section') }}>
 
-							<a data-toggle="collapse" data-target="#section"><i class="fa fa-fw fa-tv" ></i>
+							<a data-toggle="collapse" data-target="#section"><i class="fa fa-fw fa-window-restore"></i>
 							Sections </a>
 								<ul id="section" class="collapse sidemenu-dropdown">
 									@foreach ($secs as $sec)
@@ -260,7 +260,7 @@
 
 
 					<li {{ isActive($active_class, 'meetings') }} >
-						<a href="{{URL_MEETINGS}}" ><i class="fa fa-fw fa-window-restore" aria-hidden="true"></i>
+						<a href="{{URL_MEETINGS}}" ><i class="fa fa-fw fa-video-camera" aria-hidden="true"></i>
 					{{ getPhrase('meetings') }} </a>
 
 					</li>

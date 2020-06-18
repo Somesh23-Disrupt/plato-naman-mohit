@@ -102,7 +102,7 @@
 					 <div class="col-md-3 col-sm-6">
 						<div class="media state-media box-ws">
 							<div class="media-left">
-								<a href="{{URL_QUIZ_QUESTIONBANK}}"><div class="state-icn bg-icon-orange"><i class="fa fa-desktop"></i></div></a>
+								<a href="{{URL_QUIZ_QUESTIONBANK}}"><div class="state-icn bg-icon-orange"><i class="fa fa-fw fa-window-restore"></i></div></a>
 							</div>
 							<div class="media-body">
 								<h4 class="card-title">{{App\User::select('section_id')->where('role_id',5)->where('inst_id',Auth::user()->inst_id)->distinct('section_id')->get()->count()

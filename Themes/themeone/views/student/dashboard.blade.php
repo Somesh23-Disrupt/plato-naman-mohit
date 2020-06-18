@@ -168,7 +168,7 @@
       <div class="col-md-4 col-sm-6">
         <div class="media state-media box-ws">
           <div class="media-left">
-            <a href="{{ URL_STUDENT_EXAM_ALL }}"><div class="state-icn bg-icon-pink"><i class="fa fa-desktop"></i></div></a>
+            <a href="{{ URL_STUDENT_EXAM_ALL }}"><div class="state-icn bg-icon-pink"><i class="fa fa-question"></i></div></a>
           </div>
           <div class="media-body">
             <h4 class="card-title">{{ App\User::getUserSeleted('quizzes') }}</h4>
@@ -179,7 +179,7 @@
       <div class="col-md-4 col-sm-6">
         <div class="media state-media box-ws">
           <div class="media-left">
-            <a href="{{ URL_STUDENT_EXAM_ALL }}"><div class="state-icn bg-icon-pink"><i class="fa fa-desktop"></i></div></a>
+            <a href="{{ URL_STUDENT_EXAM_ALL }}"><div class="state-icn bg-icon-pink"><i class="fa fa-question"></i></div></a>
           </div>
           <div class="media-body">
             <h4 class="card-title">{{ $examattend }}</h4>
@@ -212,7 +212,7 @@
       <div class="col-md-4 col-sm-6">
         <div class="media state-media box-ws">
           <div class="media-left">
-            <div class="state-icn bg-icon-orange"><i class="fa fa-question-circle"></i></div>
+            <div class="state-icn bg-icon-orange"><i class="fa fa-percent "></i></div>
           </div>
           <div class="media-body">
             <h4 class="card-title">{{ $tnps['per'] }}</h4>
