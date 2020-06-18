@@ -194,7 +194,7 @@
 	
 					<li {{ isActive($active_class, 'exams') }} >
 
-					<a data-toggle="collapse" data-target="#exams"><i class="fa fa-fw fa-question" ></i>
+					<a data-toggle="collapse" data-target="#exams"><i class="fa fa-fw fa-desktop" ></i>
 					{{ getPhrase('exams') }} </a>
 
 					<ul id="exams" class="collapse sidemenu-dropdown">

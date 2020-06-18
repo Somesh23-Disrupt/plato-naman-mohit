@@ -272,7 +272,7 @@ if(isset($block_navigation))
 
 
 
-					<a data-toggle="collapse" data-target="#exams"><i class="fa fa-fw fa-question" ></i>
+					<a data-toggle="collapse" data-target="#exams"><i class="fa fa-fw fa-desktop" ></i>
 
 					{{ getPhrase('exams') }} </a>
 
@@ -326,7 +326,7 @@ if(isset($block_navigation))
 
 
 
-					<a data-toggle="collapse" data-target="#lms"><i class="fa fa-fw fa-window-restore" ></i>
+					<a data-toggle="collapse" data-target="#lms"><i class="fa fa-fw fa-folder-open-o" ></i>
 
 					Study Material </a>
 
