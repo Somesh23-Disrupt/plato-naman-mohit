@@ -33,7 +33,7 @@
 				</div>
 
 					@include('errors.errors')
-					
+
 				<?php $settings = ($record) ? $settings : ''; ?>
 
 				<div class="panel panel-custom" ng-init="initAngData({{$settings}});" >
@@ -63,7 +63,7 @@
 
 								<span class="text-red">*</span>
 
-								{{Form::select('subject', $subjects, null, ['class'=>'form-control', 'ng-model' => 'subject_id', 
+								{{Form::select('subject', $subjects, null, ['class'=>'form-control', 'ng-model' => 'subject_id',
 
 								'placeholder' => 'Select', 'ng-change'=>'subjectChanged(subject_id)' ])}}
 
@@ -71,25 +71,25 @@
 
 
 
-							 
+
 
 								<fieldset class="form-group col-md-6">
 
 								{{ Form::label('difficulty', getphrase('difficulty')) }}
 
-								
 
-								
+
+
 
 								<select ng-model="difficulty" class="form-control" >
 
-								<option value="">{{getPhrase('select')}}</option>	
+								<option value="">{{getPhrase('select')}}</option>
 
-								<option value="easy">{{getPhrase('easy')}}</option>	
+								<option value="easy">{{getPhrase('easy')}}</option>
 
-								<option value="medium">{{getPhrase('medium')}}</option>	
+								<option value="medium">{{getPhrase('medium')}}</option>
 
-								<option value="hard">{{getPhrase('hard')}}</option>	
+								<option value="hard">{{getPhrase('hard')}}</option>
 
 								</select>
 
@@ -118,6 +118,8 @@
 
 									<option value="video">{{getPhrase('video')}}</option>
 
+									<option value="descriptive">{{getPhrase('descriptive')}}</option>
+
 								</select>
 
 								</fieldset>
@@ -135,7 +137,7 @@
 									<option value="0">{{getPhrase('no')}}</option>
 
 
-									
+
 
 								</select>
 
@@ -147,7 +149,7 @@
 
 								{{ Form::label('searchTerm', getphrase('search_term')) }}
 
-								{{ Form::text('searchTerm', $value = null , $attributes = array('class'=>'form-control', 
+								{{ Form::text('searchTerm', $value = null , $attributes = array('class'=>'form-control',
 
 						'placeholder' => getPhrase('enter_search_term'),
 
@@ -160,7 +162,7 @@
 
 								{{ Form::label('question_model', 'Enter search term') }}
 
-								{{ Form::text('question_model', $value = null , $attributes = array('class'=>'form-control', 
+								{{ Form::text('question_model', $value = null , $attributes = array('class'=>'form-control',
 
 						'placeholder' => getPhrase('enter_search_term'),
 
@@ -168,20 +170,20 @@
 
 								</fieldset>
 
-							{{-- 
+							{{--
 								CODES USED WITH EXAM TYPE
-								NSNT==> NO SECTION NO TIMER 
-								SNT==> SECTION WITH NO TIMER 
-								ST==> SECTION WITH TIMER 
+								NSNT==> NO SECTION NO TIMER
+								SNT==> SECTION WITH NO TIMER
+								ST==> SECTION WITH TIMER
 							--}}
-						 
+
 							@if($record->exam_type!='NSNT')
-							
+
 								<fieldset class="form-group col-md-6">
 
 								{{ Form::label('section_name', 'Section Name') }}
 
-								{{ Form::text('section_name', $value = null , $attributes = array('class'=>'form-control', 
+								{{ Form::text('section_name', $value = null , $attributes = array('class'=>'form-control',
 
 						       'placeholder' => 'Section name',
 
@@ -192,13 +194,13 @@
 								@endif
 
 
-							  @if($record->exam_type != 'NSNT' && $record->exam_type != 'SNT')	
+							  @if($record->exam_type != 'NSNT' && $record->exam_type != 'SNT')
 
 								<fieldset class="form-group col-md-6">
 
 								{{ Form::label('section_time', 'Section Time In Minutes') }}
 
-								{{ Form::text('section_time', $value = null , $attributes = array('class'=>'form-control', 
+								{{ Form::text('section_time', $value = null , $attributes = array('class'=>'form-control',
 
 									'placeholder' => 'Section Time',
 
@@ -208,9 +210,9 @@
 
 								@endif
 
-							
 
-								
+
+
 
 								{{-- <a ng-click="subjectChanged()"><i class="fa fa-refresh pull-right text-info"></i></a> --}}
 
@@ -218,21 +220,21 @@
 
 
 
-								
+
 
 							<div ng-if="subjectQuestions!=''" class="vertical-scroll" >
 
-						
+
 
 								<h4 class="text-success">Questions @{{ subjectQuestions.length }} </h4>
 
 
 
-								<table  
+								<table
 
 								  class="table table-hover">
 
-  									 
+
 
 									<th >{{getPhrase('subject')}}</th>
 
@@ -242,23 +244,23 @@
 
 									<th>{{getPhrase('type')}}</th>
 
-									<th>{{getPhrase('marks')}}</th>	
+									<th>{{getPhrase('marks')}}</th>
 
-									<th>{{getPhrase('action')}}</th>	
+									<th>{{getPhrase('action')}}</th>
 
-								
+
 									<tr ng-repeat="question in subjectQuestions | filter: { difficulty_level:difficulty, question_type:question_type, show_in_front_end:show_in_front_end , topic_id:topic, sub_topic_id:sub_topic } | filter: question_model track by $index ">
 
-										 
+
 
 										<td>@{{subject.subject_title}}</td>
 
 										<td title="@{{subjectQuestions[$index].question}}" ng-bind-html="trustAsHtml(question.question)">
 
-										
+
 										</td>
 
-										
+
 
 										<td>@{{question.difficulty_level | uppercase}}</td>
 
@@ -266,25 +268,25 @@
 
 										<td>@{{question.marks}}</td>
 
-										<td><a 
+										<td><a
 
-										 
+
 
 										ng-click="addQuestion(question, subject);" class="btn btn-primary" >{{getPhrase('add')}}</a>
 
-									  		
+
 
 										  </td>
 
-										
+
 
 									</tr>
 
 								</table>
 
-								</div>	
+								</div>
 
-							
+
 
 
 
@@ -299,7 +301,7 @@
 					 			 </div>
 					 		</div>
 
-					 
+
 
 					</div>
 
@@ -324,7 +326,7 @@
 
 @stop
 
- 
+
 
 @section('custom_div_end')
 

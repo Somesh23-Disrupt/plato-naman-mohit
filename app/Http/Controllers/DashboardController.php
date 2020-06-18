@@ -111,7 +111,7 @@ class DashboardController extends Controller
            $data['ids'] = array('myChart0' );
            $data['chart_data'][]=(object)$this->scorebysub();
            //Code Table in Admin dashboard
-           
+
            $sec_inst=App\User::select(['section_id'])->where('role_id',3)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
           //  dd($sec_inst);
 
@@ -197,7 +197,7 @@ class DashboardController extends Controller
         }
         else if ($role=='teacher') {
               Artisan::call('view:clear');
-              
+
               $data['tppforteach']=0;
               $tnps=0;
               $data['passpercent']=$this->totalpass();
@@ -218,7 +218,7 @@ class DashboardController extends Controller
               $data['tnps']=$tnps;
               $data['avg']= $this->gettingavgscore()->avg;
               $data['avgsection']=getUserWithSlug()->section_name;
-          
+
               $sub_id=auth()->user()->section_id;
 //Going to work on table in teachers dashboard
                   if ($sub_id!=NULL) {
@@ -232,7 +232,7 @@ class DashboardController extends Controller
                     ->groupBy('quizresults.quiz_id')
                     ->get();
                     $data['tables']=$records;
-                      
+
                 }else{
                   $sec=App\Subject::select(['section_id'])->where('teacher_id',auth()->user()->id)->pluck('section_id')->first();
                   // dd($sec);
@@ -243,7 +243,7 @@ class DashboardController extends Controller
                     ->get();
                     $data['tables']=$records;
                 }
-             
+
 
               // return view('admin.dashboard', $data);
               //dd(App\User::where('teacher_id', '=', $user->id)->get());
@@ -548,11 +548,11 @@ class DashboardController extends Controller
             $summary_labels = [];
             $summary_dataset_labels = [getPhrase('total')];
             $summary_bgcolor = [];
-            
+
 
 
             foreach($usage as $record)
-            { 
+            {
               $summary_dataset[] = $record->total;
               $summary_labels[]  = $record->quiz_title;
 
@@ -563,7 +563,7 @@ class DashboardController extends Controller
                $summary_bgcolor[] = $test[$i];
              }
 
-            
+
 
 
 
@@ -1016,7 +1016,7 @@ class DashboardController extends Controller
           $tpp=0;
           foreach ($records as $record) {
 
-            $percent=($record->marks_obtained/$record->total_marks)*100;
+            $percent=($record->marks_obtained['total']/$record->total_marks)*100;
             $tpp= $percent+$tpp;
             // $data['name']=$name;
             // $data['percent']=$tpp;
@@ -1046,14 +1046,14 @@ class DashboardController extends Controller
         $sub_id=auth()->user()->section_id;
         //Going to work on table in teachers dashboard
          if ($sub_id!=NULL) {
-        
+
                             // dd("dd");
-        
+
           $userbyinst=App\User::where('inst_id',auth()->user()->inst_id)->where('section_id',auth()->user()->section_id)->where('role_id',5)->pluck('id');
 
          }
          else{
-          
+
             $sec=App\Subject::select(['section_id'])->where('teacher_id',auth()->user()->id)->pluck('section_id')->first();
             // dd($sec);-
              $userbyinst=App\User::where('inst_id',auth()->user()->inst_id)->where('section_id',$sec)->where('role_id',5)->pluck('id');
@@ -1109,9 +1109,9 @@ class DashboardController extends Controller
         $sub_id=auth()->user()->section_id;
         //Going to work on table in teachers dashboard
         if ($sub_id!=NULL) {
-        
+
                             // dd("dd");
-        
+
           $userbyinst=App\User::where('inst_id',auth()->user()->inst_id)->where('section_id',auth()->user()->section_id)->where('role_id',5)->pluck('id');
 
          }
@@ -1120,7 +1120,7 @@ class DashboardController extends Controller
              $userbyinst=App\User::where('inst_id',auth()->user()->inst_id)->where('section_id',$sec)->where('role_id',5)->pluck('id');
          }
 
-       
+
       }else{
         $userbyinst=App\User::where('inst_id',auth()->user()->inst_id)->where('role_id',5)->pluck('id');
       }

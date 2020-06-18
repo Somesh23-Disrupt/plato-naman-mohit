@@ -123,6 +123,7 @@
 @section('footer_scripts')
 
  @include('common.validations')
+ <script>
  	  $('.input-daterange').datepicker({
         autoclose: true,
         startDate: "0d",

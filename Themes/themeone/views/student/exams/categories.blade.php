@@ -18,7 +18,7 @@
 						<h1>{{$title}}</h1>
 					</div>
 					<div class="panel-body packages">
-						 
+
 						<div class="row library-items">
 					<?php $settings = getExamSettings(); ?>
 					@if(count($categories))
@@ -39,7 +39,7 @@
 											<li><i class="icon-bookmark"></i> {{ count($c->quizzes()).' '.getPhrase('quizzes')}}</li>
 											<li><i class="icon-eye"></i> {{getPhrase('view')}}</li>
 										</ul>
-									
+
 									</div>
 								</a>
 								</div>
@@ -48,8 +48,7 @@
 							@else
 						Ooops...! {{getPhrase('No_Categories_available')}}
 						
-						<a href="{{URL_USERS_SETTINGS.Auth::user()->slug}}" >{{getPhrase('click_here_to_change_your_preferences')}}</a>
-						@endif 
+						@endif
 						</div>
 						@if(count($categories))
 						{!! $categories->links() !!}
@@ -57,7 +56,7 @@
 					</div>
 				</div>
 			</div>
-			
+
 </div>
 		<!-- /#page-wrapper -->
 

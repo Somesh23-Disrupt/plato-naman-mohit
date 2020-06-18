@@ -1721,6 +1721,7 @@ CREATE TABLE `quizresults` (
   `quiz_id` bigint(20) UNSIGNED NOT NULL,
   `user_id` bigint(20) UNSIGNED NOT NULL,
   `marks_obtained` text COLLATE utf8_unicode_ci DEFAULT NULL,
+  `total_marks_obtained` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `negative_marks` decimal(10,2) NOT NULL DEFAULT 0.00,
   `total_marks` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `percentage` decimal(10,2) NOT NULL,
@@ -2154,7 +2155,7 @@ INSERT INTO `themes` (`id`, `title`, `slug`, `theme_title_key`, `settings_data`,
 CREATE TABLE `topics` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `subject_id` bigint(20) UNSIGNED NOT NULL,
-  `parent_id` bigint(20) NOT NULL DEFAULT 0,
+  `record_updated_by` bigint(20) UNSIGNED NOT NULL,
   `topic_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `slug` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `description` text COLLATE utf8_unicode_ci NOT NULL,
@@ -2162,7 +2163,6 @@ CREATE TABLE `topics` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
 --
 -- Dumping data for table `topics`
 --

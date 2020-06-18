@@ -609,6 +609,7 @@ class StudentQuizController extends Controller
 
         $record->quiz_id = $quiz->id;
         $record->user_id = Auth::user()->id;
+        $record->total_marks_obtained = $result->total_marks_obtained;
         $record->marks_obtained = json_encode($result->marks_obtained);
         $record->total_marks = $quiz->total_marks;
 
@@ -1041,11 +1042,13 @@ class StudentQuizController extends Controller
           $obtained_marks['total']=0;
         }
         $obtained_marks['total']=array_sum($obtained_marks);
+        $total_marks_obtained = (int)$obtained_marks['total'];
         // dd($time_spent_correct_answer_question);
           return array(
                         'answers'               => $answers,
                         'total_correct_answers' => $correct_answers,
                         'marks_obtained'        => $obtained_marks,
+                        'total_marks_obtained'  => $total_marks_obtained,
                         'negative_marks'        => $obtained_negative_marks,
                         'subject_analysis'      => json_encode($subject),
                         'correct_answer_questions' => json_encode($corrent_answer_question),
@@ -1090,7 +1093,7 @@ class StudentQuizController extends Controller
              $cats  = User::getUserSeleted('categories');
             $records = Quiz::join('quizcategories', 'quizzes.category_id', '=', 'quizcategories.id')
             ->select(['title', 'dueration', 'category',  'total_marks','total_questions','tags','quizzes.slug','quizzes.validity','quizzes.cost' ])
-            //->where('total_marks', '!=', 0)
+            ->where('total_marks', '!=', 0)
             ->where('quizzes.section_id',Auth::user()->section_id)
             //->where('start_date','<=',date('Y-m-d'))
             //->where('end_date','>=',date('Y-m-d'))
@@ -1106,7 +1109,7 @@ class StudentQuizController extends Controller
             ->select(['title', 'dueration', 'category', 'total_marks','total_questions','quizzes.slug', 'quizzes.validity','quizzes.cost' ])
             ->where('quizzes.category_id', '=', $category->id)
             ->where('quizzes.section_id',Auth::user()->section_id)
-            //->where('total_marks', '!=', 0)
+            ->where('total_marks', '!=', 0)
             //->where('start_date','<=',date('Y-m-d'))
             //->where('end_date','>=',date('Y-m-d'))
             ->get();
