@@ -115,7 +115,7 @@ class TopicsController extends Controller
         return back();
       }
     	$data['record']         	= FALSE;
-    	$data['active_class']       = 'exams';
+    	$data['active_class']       = 'subjects';
     	
     	$list 						= App\Subject::all();
     	$subjects			= array_pluck($list, 'subject_title', 'id');
@@ -156,7 +156,7 @@ class TopicsController extends Controller
     	$list 						= App\Subject::all();
     	$data['subjects']			= array_pluck($list, 'subject_title', 'id');
     
-    	$data['active_class']       = 'exams';
+    	$data['active_class']       = 'subjects';
         $data['title']              = getPhrase('edit_topic');
     	// return view('mastersettings.topics.add-edit', $data);
       $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');

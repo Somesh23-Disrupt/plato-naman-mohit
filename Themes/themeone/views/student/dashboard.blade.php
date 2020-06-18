@@ -212,7 +212,7 @@
       <div class="col-md-4 col-sm-6">
         <div class="media state-media box-ws">
           <div class="media-left">
-            <div class="state-icn bg-icon-orange"><i class="fa fa-question-circle"></i></div>
+            <div class="state-icn bg-icon-orange"><i class="fa fa-percent "></i></div>
           </div>
           <div class="media-body">
             <h4 class="card-title">{{ $tnps['per'] }}</h4>
@@ -251,8 +251,8 @@
             <td>{{App\QuizCategory::find($table->category_id)->category}}</td>
             <td>{{$table->title}}</td>
             <td>{{$table->total_marks}}</td>		
-            <td>{{$table->marks_obtained}}</td>
-            <td>{{round(($table->marks_obtained/$table->total_marks)*100,2)}}</td>
+            <td>{{$table->total_marks_obtained}}</td>
+            <td>{{round(($table->total_marks_obtained/$table->total_marks)*100,2)}}</td>
 					</tr>
 				
 				@endforeach
