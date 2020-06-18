@@ -85,9 +85,9 @@ class ReportsController extends Controller
         if($isValid = $this->isValidRecord($record))
         	return redirect($isValid);
         $record->marks_obtained = $request->updated_marks;
-        //dd(json_encode($record->marks_obtained));
-        $record->percentage = $this->getPercentage($request->marks_obtained['total'], $exam_record->total_marks);
-
+        $total_marks_obtained=(array)json_decode($request->updated_marks);
+        $record->percentage = $this->getPercentage($total_marks_obtained['total'], $exam_record->total_marks);
+        $record->total_marks_obtained=$total_marks_obtained['total'];
         $exam_status = 'pending';
         if($record->percentage >= $exam_record->pass_percentage)
             $exam_status = 'pass';
