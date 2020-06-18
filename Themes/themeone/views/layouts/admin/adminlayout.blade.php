@@ -279,7 +279,7 @@
 					</li>
 
 					<li {{ isActive($active_class, 'meetings') }} >
-						<a href="{{URL_MEETINGS}}" ><i class="fa fa-fw fa-window-restore" aria-hidden="true"></i>
+						<a href="{{URL_MEETINGS}}" ><i class="fa fa-video-camera" aria-hidden="true"></i>
 					{{ getPhrase('meetings') }} </a>
 
 					</li>

@@ -326,7 +326,7 @@ if(isset($block_navigation))
 
 
 
-					<a data-toggle="collapse" data-target="#lms"><i class="fa fa-fw fa-tv" ></i>
+					<a data-toggle="collapse" data-target="#lms"><i class="fa fa-fw fa-folder-open-o" ></i>
 
 					Study Material </a>
 
@@ -392,7 +392,7 @@ if(isset($block_navigation))
 					</li> -->
 
 					<li {{ isActive($active_class, 'meetings') }} >
-						<a href="{{URL_MEETINGS}}" ><i class="fa fa-fw fa-window-restore" aria-hidden="true"></i>
+						<a href="{{URL_MEETINGS}}" ><i class="fa fa-fw fa-video-camera" aria-hidden="true"></i>
 					{{ getPhrase('meetings') }} </a>
 
 					</li>
