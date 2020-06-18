@@ -944,6 +944,8 @@ CREATE TABLE `meetings` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+-- --------------------------------------------------------
+
 --
 -- Table structure for table `notifications`
 --
@@ -956,9 +958,10 @@ CREATE TABLE `notifications` (
   `description` text COLLATE utf8_unicode_ci NOT NULL,
   `url` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `inst_id` bigint(20) UNSIGNED NOT NULL,
-  `valid_from` date NOT NULL,
-  `valid_to` date NOT NULL,
+  `valid_from` datetime NOT NULL,
+  `valid_to` datetime NOT NULL,
   `record_updated_by` int(11) NOT NULL,
+  `canceled` tinyint(4) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -967,16 +970,13 @@ CREATE TABLE `notifications` (
 -- Dumping data for table `notifications`
 --
 
-INSERT INTO `notifications` (`id`, `title`, `slug`, `short_description`, `description`, `url`, `inst_id`, `valid_from`, `valid_to`, `record_updated_by`, `created_at`, `updated_at`) VALUES
-(1, 'Gate 2018 Notification Edited', 'gate-2018-notification-edited-4', 'What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the printing and typesetting industry. ', '<p>Lorem Ipsum has been the industry&#39;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book</p>\r\n', 'http://gate.iitg.ac.in/', 1, '2018-04-03', '2018-12-31', 12, '2018-04-03 10:47:00', '2020-06-03 00:00:10'),
-(2, 'CBSE NET Notification', 'cbse-net-notification-1', 'What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the printing and typesetting industry.', '<p>&nbsp;Lorem Ipsum has been the industry&#39;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book</p>\r\n', 'https://cbsenet.nic.in/cms/public/home.aspx', 2, '2018-04-03', '2018-12-31', 1, '2018-04-03 10:48:52', '2018-04-03 10:48:52'),
-(3, 'Web Dovelopent ', 'web-dovelopent-2', 'trcvhbkjnlk;ml,', '<p>trdytfuyklkm;l.</p>\r\n', 'www.ygibkj.com', 5, '2020-06-03', '2020-06-03', 12, '2020-06-02 23:00:44', '2020-06-02 23:00:44'),
-(4, 'tchvjhbkj', 'tchvjhbkj-3', 'drytcvjhk,c cbklnkd bklnk/v kbj .,dc cdbl .,v', '<p>strdytfuyulnk;ml,</p>\r\n', 'ydtcuvhkbjl.tyvhbj', 1, '2020-06-03', '2020-06-03', 12, '2020-06-02 23:59:40', '2020-06-02 23:59:40'),
-(5, 'hye added form', 'hye-added-form-4', 'hcgvm n,mvvjhb,m', '<p>hye</p>\r\n', 'wnkm.cikn.ujc', 1, '2020-06-03', '2020-06-03', 12, '2020-06-03 02:02:18', '2020-06-03 02:02:18'),
-(6, 'xhcvjh', 'xhcvjh-5', 'trycvjhkbjnk', '<p>tryctvjhkbjn</p>\r\n', 'www.chgjvh.cgubj', 1, '2020-06-03', '2020-06-03', 80, '2020-06-03 02:06:00', '2020-06-03 02:06:00'),
-(7, 'cfhgvjhbm neww', 'cfhgvjhbm-neww-6', 'hye', '<p>uge</p>\r\n', 'ww.new.vomc', 1, '2020-06-03', '2020-06-03', 80, '2020-06-03 05:55:10', '2020-06-03 05:55:10');
-
--- --------------------------------------------------------
+INSERT INTO `notifications` (`id`, `title`, `slug`, `short_description`, `description`, `url`, `inst_id`, `valid_from`, `valid_to`, `record_updated_by`, `canceled`, `created_at`, `updated_at`) VALUES
+(1, 'Gate 2018 Notification Edited', 'gate-2018-notification-edited-4', 'What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the printing and typesetting industry. ', '<p>Lorem Ipsum has been the industry&#39;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book</p>\r\n', 'http://gate.iitg.ac.in/', 1, '2018-04-03 00:00:00', '2018-12-31 00:00:00', 12, 0, '2018-04-03 10:47:00', '2020-06-03 00:00:10'),
+(2, 'CBSE NET Notification', 'cbse-net-notification-1', 'What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the printing and typesetting industry.', '<p>&nbsp;Lorem Ipsum has been the industry&#39;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book</p>\r\n', 'https://cbsenet.nic.in/cms/public/home.aspx', 2, '2018-04-03 00:00:00', '2018-12-31 00:00:00', 1, 0, '2018-04-03 10:48:52', '2018-04-03 10:48:52'),
+(126, 'testing again Updated', 'testing-again-updated-2', 'ffghjk', '', '', 89781, '2020-06-20 01:00:00', '2020-06-20 02:00:00', 12, 1, '2020-06-17 06:11:22', '2020-06-17 06:11:38'),
+(127, 'esrdtfghj', 'esrdtfghj-3', '', '', '', 89781, '2020-06-26 19:00:00', '2020-06-27 20:00:00', 12, 1, '2020-06-17 06:16:22', '2020-06-17 06:16:29'),
+(128, 'sedrtgy drftgyhj', 'sedrtgy-drftgyhj-4', '', '', '', 89781, '2020-06-19 03:00:00', '2020-06-19 04:00:00', 12, 1, '2020-06-17 06:56:26', '2020-06-17 06:56:40');
+- --------------------------------------------------------
 
 --
 -- Table structure for table `pages`

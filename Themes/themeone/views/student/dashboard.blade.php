@@ -251,8 +251,8 @@
             <td>{{App\QuizCategory::find($table->category_id)->category}}</td>
             <td>{{$table->title}}</td>
             <td>{{$table->total_marks}}</td>		
-            <td>{{$table->marks_obtained}}</td>
-            <td>{{round(($table->marks_obtained/$table->total_marks)*100,2)}}</td>
+            <td>{{$table->total_marks_obtained}}</td>
+            <td>{{round(($table->total_marks_obtained/$table->total_marks)*100,2)}}</td>
 					</tr>
 				
 				@endforeach
