@@ -110,7 +110,7 @@ class SubjectsController extends Controller
         return back();
       }
     	$data['record']         	= FALSE;
-    	$data['active_class']       = 'exams';
+    	$data['active_class']       = 'subjects';
     	$data['title']              = getPhrase('add_subject');
         $data['layout']             = getLayout();
         $data['sections']           = array_pluck(User::where('section_id',auth()->user()->section_id)->where('inst_id',Auth::user()->inst_id)->whereNotNull('section_id')->distinct()->get(),'section_name','section_id');
@@ -119,7 +119,7 @@ class SubjectsController extends Controller
       $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
         // dd($sections);
         
-        $data['teachers']  = array_pluck(User::where('section_id',NULL)->where('inst_id',Auth::user()->inst_id)->where('role_id',3)->get(),'name','id');
+        $data['teachers']  = array_pluck(User::where('inst_id',Auth::user()->inst_id)->where('role_id',3)->get(),'name','id');
         // dd($data['teachers']);
         $data['sectionsforteach']= $sections;
          $view_name = getTheme().'::mastersettings.subjects.add-edit';
@@ -141,13 +141,13 @@ class SubjectsController extends Controller
     	$record = Subject::where('slug', $slug)->first();
       $data['record']       		= $record;
         $data['layout']             = getLayout();
-        $data['active_class']       = 'exams';
+        $data['active_class']       = 'subjects';
       $data['title']              = getPhrase('edit_subject');
-    	// return view('mastersettings.subjects.add-edit', $data);
+      // return view('mastersettings.subjects.add-edit', $data);
       $data['sections']           = array_pluck(User::where('inst_id',Auth::user()->inst_id)->whereNotNull('section_id')->distinct()->get(),'section_name','section_id');
       $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
       // dd($sections);
-      $data['teachers']  = array_pluck(User::where('inst_id',Auth::user()->inst_id)->where('role_id',3)->whereNotIn('id',[auth()->user()->id])->get(),'name','id');
+      $data['teachers']  = array_pluck(User::where('inst_id',Auth::user()->inst_id)->where('role_id',3)->get(),'name','id');
         // dd($data['teachers']);
       $data['sectionsforteach']= $sections;
          $view_name = getTheme().'::mastersettings.subjects.add-edit';
@@ -348,7 +348,7 @@ class SubjectsController extends Controller
         $data['layout']=getLayout();
 
         $data['records']      = FALSE;
-        $data['active_class'] = 'exams';
+        $data['active_class'] = 'subjects';
         $data['heading']      = getPhrase('subjects');
         $data['title']        = getPhrase('import_subjects');
         $data['layout']        = getLayout();
@@ -462,7 +462,7 @@ class SubjectsController extends Controller
        $data['success_list']  =    $success_list;
        $data['records']      = FALSE;
        $data['layout']       = getLayout();
-       $data['active_class'] = 'exams';
+       $data['active_class'] = 'subjects';
        $data['heading']      = getPhrase('users');
        $data['title']        = getPhrase('report');
       // flash('success','record_added_successfully', 'success');
