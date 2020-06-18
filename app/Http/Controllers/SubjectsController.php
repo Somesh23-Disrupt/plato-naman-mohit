@@ -119,7 +119,7 @@ class SubjectsController extends Controller
       $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
         // dd($sections);
         
-        $data['teachers']  = array_pluck(User::where('inst_id',Auth::user()->inst_id)->where('role_id',3)->whereNotIn('id',[auth()->user()->id])->get(),'name','id');
+        $data['teachers']  = array_pluck(User::where('section_id',NULL)->where('inst_id',Auth::user()->inst_id)->where('role_id',3)->get(),'name','id');
         // dd($data['teachers']);
         $data['sectionsforteach']= $sections;
          $view_name = getTheme().'::mastersettings.subjects.add-edit';
