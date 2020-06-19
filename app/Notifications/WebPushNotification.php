@@ -16,12 +16,14 @@ class WebPushNotification extends Notification
     protected $title = null;
     protected $body = null;
     protected $action = null;
+    protected $action_button = null;
 
-    public function __construct($title, $body, $action)
+    public function __construct($title, $body,$action_button, $action)
     {
         $this->title = $title;
         $this->body  = $body;
         $this->action= $action;
+        $this->action_button= $action_button;
     }
 
     public function via($notifiable)
@@ -35,7 +37,7 @@ class WebPushNotification extends Notification
             ->title($this->title)
             ->icon('/notification-icon.png')
             ->body($this->body)
-            ->action('View', $this->action);
+            ->action($this->action_button, $this->action);
     }
 
 }

@@ -53,7 +53,7 @@ class DevHomeController extends Controller
           $data['active_class'] = 'Dev';
           $data['layout']       = getLayout();
           $data['title']        = getPhrase('Dev');
-          $data['users']        = UserSubscription::all();
+          $data['users']        = User::where('login_enabled',1)->where('role_id',2)->where('is_verified',1)->get();
           // return view('feedbacks.list', $data);
            $view_name = getTheme().'::dev.users';
           return view($view_name, $data);

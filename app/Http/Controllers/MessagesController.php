@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
- 
+
 
 class MessagesController extends Controller
 {
@@ -22,7 +22,7 @@ class MessagesController extends Controller
      public function __construct()
     {
         $this->middleware('auth');
-     
+
 
     }
 
@@ -33,7 +33,7 @@ class MessagesController extends Controller
      */
     public function index()
     {
-        
+
 
         if(!getSetting('messaging', 'module'))
         {
@@ -43,7 +43,7 @@ class MessagesController extends Controller
         $currentUserId = Auth::user()->id;
         // All threads, ignore deleted/archived participants
         // $threads = Thread::getAllLatest()->get();
-        
+
         // All threads that user is participating in
         $threads = Thread::forUser($currentUserId)->latest('updated_at')->paginate(getRecordsPerPage());
         // All threads that user is participating in, with new messages
@@ -96,13 +96,13 @@ class MessagesController extends Controller
             }
         }
 
-         
+
         if(!$is_member)
         {
             pageNotFound();
-            return back();   
+            return back();
         }
-        
+
         $participants = $thread->participantsUserIds($userId);
 
         $users = User::whereNotIn('id', $participants)->get();
@@ -145,8 +145,8 @@ class MessagesController extends Controller
         }{
             $query = User::where('id', '!=', Auth::id())->where('inst_id',auth()->user()->inst_id);
         }
-        
-       
+
+
        if(getSetting('messaging_system_for','messaging_system')=='admin')
        {
             // If the loggedin user is admin
@@ -160,11 +160,11 @@ class MessagesController extends Controller
                 $query->where('role_id', '=', $admin_role)
                   ->orWhere('role_id', '=', $owner_role);
             }
-        
+
        }
 
         $users = $query->get();
-       
+
           $data['title']        = getPhrase('send_message');
         $data['active_class']        = 'messages';
         // $data['currentUserId'] 	= $currentUserId;
@@ -188,11 +188,22 @@ class MessagesController extends Controller
         }
 
         $input = Input::all();
-        if (Input::has('recipients')) {
-            
-            $selectors = 'hai';
-        }
+        $participant=[];
+        if (Input::has('recipients') || Input::has('sectionrecipients') ) {
+            $participants=$input['recipients'];
+            $sectionrecipients =$input['sectionrecipients'];
 
+            foreach ($sectionrecipients as $key => $value) {
+                if($value!=""){
+                    $participants[$key]=User::where('section_id',$value)
+                                    ->where('id','!=',Auth::user()->id)
+                                    ->orWhere('inst_id',$value)
+                                    ->where('id','!=',Auth::user()->id)->pluck('id');
+                }
+
+            }
+            dd($participants);
+        }
         else{
              flash('Oops...!','please select the recipients', 'overlay');
              return redirect(URL_MESSAGES_CREATE);
@@ -219,12 +230,13 @@ class MessagesController extends Controller
             ]
         );
         // Recipients
+        dd($input['sectionrecipients']);
         if (Input::has('recipients')) {
             $thread->addParticipant($input['recipients']);
         }
         return redirect(URL_MESSAGES);
     }
-    
+
     /**
      * Adds a new message to a current thread.
      *

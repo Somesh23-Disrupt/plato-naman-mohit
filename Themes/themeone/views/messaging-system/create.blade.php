@@ -30,7 +30,6 @@
                     <div class="panel-body packages">
 
                         <div class="row library-items">
-<a href="push" class="btn btn-outline-primary btn-block">Make a Push Notification!</a>
 {!! Form::open(['route' => 'messages.store']) !!}
 <div class="col-md-6 col-md-offset-3">
 <?php $tosentUsers = array(); ?>
@@ -38,16 +37,24 @@
 
         <?php foreach($users as $user) {
                 $tosentUsers[$user->id] = $user->name;
+                $tosentSections[$user->section_id] = $user->section_name;
+                $tosentSections[$user->inst_id] = $user->inst_name;
             }
         ?>
-     {!! Form::label('Select User', 'Select User', ['class' => 'control-label']) !!}
-    {{Form::select('recipients[]', $tosentUsers, null, ['class'=>'form-control select2', 'name'=>'recipients[]', 'multiple'=>'true'])}}
+    <div class="form-group">
+         {!! Form::label('Select User', 'Select User', ['class' => 'control-label']) !!}
+        {{Form::select('recipients[]', $tosentUsers, null, ['class'=>'form-control select2', 'name'=>'recipients[]', 'multiple'=>'true'])}}
+    </div>
+    <div class="form-group">
+        {!! Form::label('Select User', 'Select Section', ['class' => 'control-label']) !!}
+        {{Form::select('sectionrecipients[]', $tosentSections, null, ['class'=>'form-control select2', 'name'=>'sectionrecipients[]', 'multiple'=>'true'])}}
+    </div>
     @endif
 
 
     <!-- Subject Form Input -->
     <div class="form-group">
-        {!! Form::label('subject', 'Subject', ['class' => 'control-label']) !!}
+        {!! Form::label('Chat Title', 'Subject', ['class' => 'control-label']) !!}
         {!! Form::text('subject', null, ['class' => 'form-control']) !!}
     </div>
 
