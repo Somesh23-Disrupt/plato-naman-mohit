@@ -450,7 +450,7 @@ class TeacherController extends Controller
         $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')
         
         ->where('quiz_id',$quizid)->where('section_id',auth()->user()->section_id)
-                ->select(['quiz_id', 'quizzes.category_id', 'quizzes.slug as quiz_slug','quizzes.total_marks','quizzes.title','quizresults.exam_status as  result','quizresults.total_marks_obtained','quizresults.user_id','quizresults.slug as result_slug']) 
+                ->select(['quiz_id','quizresults.id' ,'quizzes.category_id', 'quizzes.slug as quiz_slug','quizzes.total_marks','quizresults.publish_result','quizzes.title','quizresults.exam_status as  result','quizresults.total_marks_obtained','quizresults.user_id','quizresults.slug as result_slug']) 
               ->get();
         // // $records =App\QuizResult::select([ 'quiz_id','total_marks','user_id','total_marks_obtained','exam_status as  result','slug'])
                 
@@ -462,5 +462,30 @@ class TeacherController extends Controller
         $view_name = getTheme().'::teacher.submission-slug';
         return view($view_name, $data);
 
+     }
+
+     public function test(Request $request)
+     {
+     
+       if($request->suball!=null){
+        foreach($request->puball as $ids){
+          
+          $record=App\QuizResult::find($ids); 
+          $record->publish_result=1;
+          $record->save();
+          flash('success','Result Published successfully', 'success');
+        
+        }
+
+        
+      }else{
+        $record=App\QuizResult::find($request->publish); 
+        $record->publish_result=1;
+        $record->save();
+        flash('success','Result Published successfully', 'success');
+      }
+      $route=URL_SUBMISSION_QUIZE;
+     
+      return redirect($route);
      }
 }

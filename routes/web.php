@@ -759,7 +759,7 @@ Route::get('/new-migrations', function() {
   return redirect(PREFIX);
 });
 
-
+Route::post('test','TeacherController@test');
 
 
 Route::get('oauth', ['as' => 'oauthCallback', 'uses' => 'NotificationsController@oauth']);
