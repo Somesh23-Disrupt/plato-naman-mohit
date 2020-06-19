@@ -116,8 +116,8 @@ class TopicsController extends Controller
       }
     	$data['record']         	= FALSE;
     	$data['active_class']       = 'subjects';
-    	
-    	$list 						= App\Subject::all();
+      $inst_sub=App\User::select('id')->where('inst_id',auth()->user()->inst_id)->get()->pluck('id');
+    	$list 						= App\Subject::whereIn('record_updated_by',	$inst_sub)->get();
     	$subjects			= array_pluck($list, 'subject_title', 'id');
       $data['subjects'] = array(''=>getPhrase('select')) + $subjects;
 
@@ -153,7 +153,8 @@ class TopicsController extends Controller
         $data['layout']=getLayout();
 
     	$data['record']       		= $record;
-    	$list 						= App\Subject::all();
+      $inst_sub=App\User::select('id')->where('inst_id',auth()->user()->inst_id)->get()->pluck('id');
+    	$list 						= App\Subject::whereIn('record_updated_by',	$inst_sub)->get();
     	$data['subjects']			= array_pluck($list, 'subject_title', 'id');
     
     	$data['active_class']       = 'subjects';

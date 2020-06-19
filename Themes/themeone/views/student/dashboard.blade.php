@@ -171,7 +171,8 @@
             <a href="{{ URL_STUDENT_EXAM_ALL }}"><div class="state-icn bg-icon-pink"><i class="fa fa-desktop"></i></div></a>
           </div>
           <div class="media-body">
-            <h4 class="card-title">{{ App\User::getUserSeleted('quizzes') }}</h4>
+            <?php $inst_sub=App\User::select('id')->where('inst_id',auth()->user()->inst_id)->get()->pluck('id'); ?>
+            <h4 class="card-title">{{ App\Quiz::whereIn('record_updated_by',$inst_sub)->count() }}</h4>
             <a href="{{ URL_STUDENT_EXAM_ALL }}">{{ getPhrase('quizzes')}}</a>
           </div>
         </div>
@@ -204,7 +205,8 @@
             <a href="{{URL_SUBJECTS}}"><div class="state-icn bg-icon-success"><i class="fa fa-book"></i></div></a>
           </div>
           <div class="media-body">
-            <h4 class="card-title">{{ App\Subject::get()->count()}}</h4>
+            <?php $inst_sub=App\User::select('id')->where('inst_id',auth()->user()->inst_id)->get()->pluck('id'); ?>
+            <h4 class="card-title">{{ App\Subject::whereIn('record_updated_by',$inst_sub)->get()->count()}}</h4>
             <a href="{{URL_SUBJECTS}}">{{ getPhrase('subjects')}}</a>
           </div>
         </div>
