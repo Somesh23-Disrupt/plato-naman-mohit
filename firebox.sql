@@ -1725,6 +1725,7 @@ CREATE TABLE `quizresults` (
   `negative_marks` decimal(10,2) NOT NULL DEFAULT 0.00,
   `total_marks` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `percentage` decimal(10,2) NOT NULL,
+  `publish_result` tinyint(4) NOT NULL DEFAULT 0,
   `exam_status` enum('pass','fail','pending') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'pending',
   `answers` text COLLATE utf8_unicode_ci NOT NULL,
   `subject_analysis` text COLLATE utf8_unicode_ci DEFAULT NULL,

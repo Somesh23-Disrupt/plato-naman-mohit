@@ -14,3 +14,11 @@ self.addEventListener('push', function (e) {
         }));
     }
 });
+
+self.addEventListener('notificationclick', function(event){
+    if (event.action === 'some_action') {
+        // Do something...
+      } else {
+        self.clients.openWindow(event.action)
+      }
+});
