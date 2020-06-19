@@ -255,4 +255,9 @@ class User extends Authenticatable
     {
         $this->attributes['department'] = strtoupper($value);
     }
+
+    public function SendMsg($message)
+    {
+        // code...
+    }
 }

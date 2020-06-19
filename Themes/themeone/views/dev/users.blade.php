@@ -53,37 +53,60 @@ tr:nth-child(even) {
 				<a href="logout"><i class="fas fa-sign-out-alt"></i>Logout</a>
 			</div>
 		</nav>
-		<div class="content">
+		
 			<h2>Subscribed Users</h2>
-			<div>
+
 			    <table id="example" class="display" style="width:100%">
-        <thead>
-            <tr>
-                <th>S.No</th>
-                <th>Email</th>
-                <th>Subscribed Date</th>
-            </tr>
-        </thead>
-        <tbody>
-		<?php $count=0;
-		foreach($users as $user){
- 		 $count++; ?>
+					<thead>
+			            <tr>
+			                <th>S.No</th>
+			                <th>Institute</th>
+			                <th>Website</th>
+			                <th>Name</th>
+			                <th>Email</th>
+			                <th>Phone</th>
+			                <th>Country</th>
+			                <th>Students</th>
+			                <th>Description</th>
+			                <th>Date</th>
+			            </tr>
+			        </thead>
+			        <tbody>
+					<?php $count=0;
+					foreach($users as $user){
+			 		 $count++;
+							if($user->settings)
+								$setting=json_decode($user->settings);
+					 ?>
 
-            <tr>
-				<td>{{$count}}</td>
-				<td>{{$user->email}}</td>
-				<td>{{$user->created_at}}</td>
-            </tr>
-		<?php } ?>
-        </tbody>
+			            <tr>
+							<td>{{$count}}</td>
+							<td>{{$user->inst_name}}</td>
+							<td>@if(isset($setting))
+									{{$setting->website}}
+								@endif </td>
+							<td>{{$user->name}}</td>
+							<td>{{$user->email}}</td>
+							<td>{{$user->phone}}</td>
+							<td>{{$user->country}}</td>
+							<td>@if(isset($setting))
+									{{$setting->countstudent}}
+								  @endif </td>
+							<td>@if(isset($setting))
+								{{$setting->description}}
+								  @endif </td>
+							<td>{{$user->created_at}}</td>
 
+			            </tr>
+					<?php  } ?>
+			        </tbody>
 	</table>
 
 <script>$(document).ready(function() {
     $('#example').DataTable();
 } );
 </script>
-			</div>
-		</div>
+
+
 	</body>
 </html>

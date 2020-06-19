@@ -20,7 +20,7 @@
                         <h1>{{$title}} </h1>
                     </div>
                     <div id="historybox" class="panel-body packages inbox-messages-replay">
-                         
+
                         <div class="row library-items">
 
     <div class="col-md-12">
@@ -49,8 +49,8 @@
             </div>
         @endforeach
 
-       
- 
+
+
     </div>
     </div>
                 </div>
@@ -61,13 +61,13 @@
                 {!! Form::textarea('message', null, ['class' => 'form-control']) !!}
             </div>
             <div class="col-sm-2">
-                {!! Form::submit('Reply', ['class' => 'btn btn-primary btn-lg btn-width']) !!}
+                {!! Form::submit('Send', ['class' => 'btn btn-primary btn-lg btn-width']) !!}
             </div>
             {!! Form::close() !!}
         </div>
             </div>
-        
-            
+
+
 </div></div>
 </div>
 </div>
