@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
-namespace App\Http\Controllers;
+use Illuminate\Routing\Controller;
 use \App;
+use DB;
 use App\User;
 use Carbon\Carbon;
 use Cmgmyr\Messenger\Models\Message;
@@ -14,6 +15,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
+use App\Notifications\WebPushNotification;
+use Notification;
 
 
 class MessagesController extends Controller
@@ -190,19 +193,20 @@ class MessagesController extends Controller
         $input = Input::all();
         $participant=[];
         if (Input::has('recipients') || Input::has('sectionrecipients') ) {
+            if(Input::has('recipients'))
             $participants=$input['recipients'];
             $sectionrecipients =$input['sectionrecipients'];
 
             foreach ($sectionrecipients as $key => $value) {
                 if($value!=""){
-                    $participants[$key]=User::where('section_id',$value)
+                    $participants[]=User::where('section_id',$value)
                                     ->where('id','!=',Auth::user()->id)
                                     ->orWhere('inst_id',$value)
                                     ->where('id','!=',Auth::user()->id)->pluck('id');
                 }
 
             }
-            dd($participants);
+            $participants=array_flatten($participants);
         }
         else{
              flash('Oops...!','please select the recipients', 'overlay');
@@ -230,9 +234,8 @@ class MessagesController extends Controller
             ]
         );
         // Recipients
-        dd($input['sectionrecipients']);
-        if (Input::has('recipients')) {
-            $thread->addParticipant($input['recipients']);
+        if ($participants) {
+            $thread->addParticipant($participants);
         }
         return redirect(URL_MESSAGES);
     }
@@ -243,8 +246,9 @@ class MessagesController extends Controller
      * @param $id
      * @return mixed
      */
-    public function update($id)
+    public function update(Request $request,$id)
     {
+
         if(!getSetting('messaging', 'module'))
         {
             pageNotFound();
@@ -263,7 +267,7 @@ class MessagesController extends Controller
             [
                 'thread_id' => $thread->id,
                 'user_id'   => Auth::id(),
-                'body'      => Input::get('message'),
+                'body'      => $request->message,
             ]
         );
         // Add replier as a participant
@@ -275,10 +279,43 @@ class MessagesController extends Controller
         );
         $participant->last_read = new Carbon;
         $participant->save();
+        $users=$users=User::whereIn('id',DB::table('messenger_participants')->where('thread_id',$id)->pluck('user_id'))
+                ->where('id','!=',Auth::user()->id)
+                ->get();
+        $body=Auth::user()->name .': '.$request->message;
+        $title=$thread->subject;
+        $action= '/messages'.'/'.$id;//"/messages"."/".$id;
+        Notification::send($users,new WebPushNotification($title, $body,'Reply', $action));
+
         // Recipients
         if (Input::has('recipients')) {
             $thread->addParticipants(Input::get('recipients'));
         }
-        return redirect('messages/' . $id);
+        //return redirect('messages/' . $id);
+        $msg='sent';
+        return response()->json(array('msg'=> $msg), 200);
     }
+
+    public function getmsg($id){
+        $count = Auth::user()->newThreadsCount();
+        $msg="";
+        if($count > 0 ){
+            $msg = '<div class="message-sender">
+                <div class="media">
+                    <a class="pull-left" href="#">
+                        <img src="'.getProfilePath(Auth::user()->image).'" alt="image" class="img-circle">
+                    </a>
+                    <div class="media-body">
+                        <h5 class="media-heading"><b>name-ajax</b></h5>
+                        <p>'.$id.'</p>
+                        <div class="text-muted"><small>ajax-created_at</small></div>
+                    </div>
+                </div>
+            </div>';
+        }
+
+        return response()->json(array('msg'=> $msg), 200);
+    }
+
+
 }
