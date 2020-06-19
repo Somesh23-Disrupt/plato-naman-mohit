@@ -117,6 +117,9 @@ class MeetingsController extends Controller
         {
             return ($records->status == 'Active') ? '<i class="fa fa-check text-success"></i>' : '<i class="fa fa-times text-danger"></i>';
         })
+        ->editcolumn('slug',function($records){
+          return '<p style=" word-break: break-all;">'.$records->slug.'</p>';
+        })
         ->removeColumn('id')
 
         ->make();

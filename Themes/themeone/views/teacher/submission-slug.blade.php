@@ -26,6 +26,7 @@
 								<h1>{{ $table_title }}</h1>
 							</div>
 						  <div class="panel-body" >
+							{!! Form::open(array('url' =>'test', 'method' => 'POST', 'name'=>'formSubmission', 'novalidate'=>'')) !!}
 							<table class="table table-striped table-bordered datatable" id="datatable" id="example" cellspacing="0" width="100%">
 								<thead>
 									<tr>
@@ -34,20 +35,41 @@
 										<th>{{ getPhrase('Obtained Marks')}}</th>
 										<th>{{ getPhrase('Total Marks')}}</th>
 										<th>{{ getPhrase('Result')}}</th>
+										<th>{{ getPhrase('Status')}}</th>
 									</tr>
 								</thead>
+								
 								@foreach($tables as $table)
-									
+								
 										<tr>
+										
                                         <td><a href="{{URL_RESULTS_VIEW_ANSWERS.$table->quiz_slug.'/'.$table->result_slug}}">{{ucfirst(App\User::findOrFail($table->user_id)->name)}}</a></td>
 											<td>{{App\User::findOrFail($table->user_id)->section_name}}</td>
 										    <td>{{$table->marks_obtained}}</td>
 										    <td>{{$table->total_marks}}</td>
-										    <td>{{$table->result}}</td>
+											<td>{{$table->result}}</td>
+											<td>
+												
+												
+												
+												
+												{{ Form::hidden('publish', $value =$table->id, $attributes = array('class'=>'input-sm form-control')) }}
+												@if($table->publish_result==0)
+												<button class="btn btn-sm btn-success button"> Publish </button>
+												{{ Form::checkbox('puball[]', $value =$table->id, $attributes = array('class'=>'input-sm form-control')) }}
+												@else
+												<p>Already Published</p>
+												@endif
+											
+											</td>
 										</tr>
-									
+										
 								@endforeach
+							
+								
 								</table>
+								<input type="submit" value="Submit All" style="margin:10px;float:right;" name="suball" class="btn btn-lg btn-success button"> 
+								{!! Form::close() !!}
 							</div>
 						</div>
 					</div>

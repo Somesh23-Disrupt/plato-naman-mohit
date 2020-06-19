@@ -1220,11 +1220,11 @@ class StudentQuizController extends Controller
 
        if(!$exam_slug)
         {
-          $marks = App\QuizResult::where('user_id', '=', $user->id)
+          $marks = App\QuizResult::where('user_id', '=', $user->id)->where('publish_result', '=', 1)
            ->orderBy('updated_at','desc')->get();
       }
        else {
-        $marks = App\QuizResult::where('user_id', '=', $user->id)
+        $marks = App\QuizResult::where('user_id', '=', $user->id)->where('publish_result', '=', 1)
         ->where('quiz_id', '=', $exam_record->id)
            ->orderBy('updated_at','desc')->get();
        }
@@ -1300,12 +1300,14 @@ class StudentQuizController extends Controller
              $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')
             ->select(['title','record_updated_by' , 'marks_obtained', 'exam_status','quizresults.created_at', 'quizzes.total_marks','quizzes.slug', 'quizresults.slug as resultsslug','user_id' ])
             ->where('user_id', '=', $user->id)
+            ->where('publish_result', '=', 1)
             ->orderBy('quizresults.updated_at', 'desc')
             ->get();
           else
             $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')
             ->select(['title','record_updated_by' , 'marks_obtained', 'exam_status','quizresults.created_at', 'quizzes.total_marks','quizzes.slug', 'quizresults.slug as resultsslug','user_id' ])
             ->where('user_id', '=', $user->id)
+            ->where('publish_result', '=', 1)
             ->where('quiz_id', '=', $exam_record->id )
             ->orderBy('quizresults.updated_at', 'desc')
             ->get();
@@ -1396,6 +1398,7 @@ class StudentQuizController extends Controller
        $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')
             ->select(['title','is_paid' ,'dueration', 'quizzes.total_marks',  \DB::raw('count(quizresults.user_id) as attempts, quizzes.slug, user_id') ])
             ->where('user_id', '=', $user->id)
+            ->where('quizresults.publish_result', 1)
             ->groupBy('quizresults.quiz_id')
             ->get();
 
@@ -1454,6 +1457,7 @@ class StudentQuizController extends Controller
             $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')
             ->select(['title','record_updated_by' ,'dueration', 'quizzes.total_marks',  \DB::raw('count(quizresults.user_id) as attempts, quizzes.slug, user_id') ])
             ->where('user_id', '=', $user->id)
+            ->where('quizresults.publish_result', 1)
             ->groupBy('quizresults.quiz_id')
             ->get();
 
@@ -1511,6 +1515,7 @@ class StudentQuizController extends Controller
         $result = array();
 
         $result = App\QuizResult::where('user_id', '=', $user->id)
+        ->where('quizresults.publish_result', 1)
         ->where('quiz_id', '=', $exam_record->id)
         ->where('slug', '=', $result_slug)
            ->get()->first();

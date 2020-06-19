@@ -71,6 +71,8 @@ class QuizResult extends Model
             $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')
             ->select(['subject_analysis','quizresults.user_id'])
             ->where('quizresults.user_id', '=', $user->id)
+            ->where('quizresults.publish_result', '=', 1)
+            
             ->get();
 
         // dd($records);
