@@ -7,6 +7,7 @@ use Zizaco\Entrust\Traits\EntrustUserTrait;
 use Laravel\Cashier\Billable;
 use Cmgmyr\Messenger\Traits\Messagable;
 use Illuminate\Notifications\Notifiable;
+use NotificationChannels\WebPush\HasPushSubscriptions;
 use Auth;
 use Cache;
 
@@ -16,6 +17,8 @@ class User extends Authenticatable
     use Billable;
     use Messagable;
     use Notifiable;
+    use HasPushSubscriptions;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -135,24 +138,24 @@ class User extends Authenticatable
 
 
     public static function getUserSeleted($type='')
-    {   
+    {
         $data1=[];
         if(checkRole(['parent'])){
             $users=User::where('parent_id',auth()->user()->id)->get();
-            
+
             // dd($users);
         }else{
             $users        = User::where('id',auth()->user()->id)->get();
         }
         foreach ($users as $user) {
-            
-       
+
+
             $preferences  = (array)json_decode($user->settings);
             // dd($preferences);
             $cats  = array();
             $lmscats  = array();
             $t=[];
-            
+
             if(isset($preferences['user_preferences'])){
                 $cats         = $preferences['user_preferences']->quiz_categories;
                 $lmscats      = $preferences['user_preferences']->lms_categories;
@@ -179,8 +182,8 @@ class User extends Authenticatable
                 if($type == 'quizzes' && $cats)
                     return Quiz::whereIn('category_id',$cats)->where('total_questions','>',0)->get()->count();
             }
-            
-        
+
+
        return 0;
 
      }

@@ -141,6 +141,7 @@
 }
       </script>
 
+
    @yield('footer_scripts')
 
     {!!getSetting('google_analytics', 'seo_settings')!!}

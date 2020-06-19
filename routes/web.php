@@ -29,6 +29,9 @@ Route::get('/', function () {
 });
 
 
+Route::get('/push','PushController@push');
+
+Route::post('/push','PushController@store');
 
 
 if(env('DEMO_MODE')) {
@@ -66,6 +69,9 @@ if(env('DB_DATABASE')==''){
 //     }
 // 	return redirect(URL_USERS_LOGIN);
 // });
+
+
+
 
 Route::get('dashboard','DashboardController@index');
 Route::get('dashboard/testlang','DashboardController@testLanguage');

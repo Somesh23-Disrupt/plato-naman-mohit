@@ -976,7 +976,7 @@ INSERT INTO `notifications` (`id`, `title`, `slug`, `short_description`, `descri
 (126, 'testing again Updated', 'testing-again-updated-2', 'ffghjk', '', '', 89781, '2020-06-20 01:00:00', '2020-06-20 02:00:00', 12, 1, '2020-06-17 06:11:22', '2020-06-17 06:11:38'),
 (127, 'esrdtfghj', 'esrdtfghj-3', '', '', '', 89781, '2020-06-26 19:00:00', '2020-06-27 20:00:00', 12, 1, '2020-06-17 06:16:22', '2020-06-17 06:16:29'),
 (128, 'sedrtgy drftgyhj', 'sedrtgy-drftgyhj-4', '', '', '', 89781, '2020-06-19 03:00:00', '2020-06-19 04:00:00', 12, 1, '2020-06-17 06:56:26', '2020-06-17 06:56:40');
-- --------------------------------------------------------
+---------------------------------------------------------
 
 --
 -- Table structure for table `pages`
@@ -1771,33 +1771,39 @@ INSERT INTO `quizresults` (`id`, `slug`, `quiz_id`, `user_id`, `marks_obtained`,
 -- Table structure for table `quizzes`
 --
 
-CREATE TABLE quizresults (
-  id bigint(20) UNSIGNED NOT NULL,
-  slug varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  quiz_id bigint(20) UNSIGNED NOT NULL,
-  user_id bigint(20) UNSIGNED NOT NULL,
-  marks_obtained text COLLATE utf8_unicode_ci DEFAULT NULL,
-  total_marks_obtained int(10) UNSIGNED NOT NULL DEFAULT 0,
-  negative_marks decimal(10,2) NOT NULL DEFAULT 0.00,
-  total_marks int(10) UNSIGNED NOT NULL DEFAULT 0,
-  percentage decimal(10,2) NOT NULL,
-  exam_status enum('pass','fail','pending') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'pending',
-  answers text COLLATE utf8_unicode_ci NOT NULL,
-  subject_analysis text COLLATE utf8_unicode_ci DEFAULT NULL,
-  correct_answer_questions text COLLATE utf8_unicode_ci DEFAULT NULL,
-  wrong_answer_questions text COLLATE utf8_unicode_ci DEFAULT NULL,
-  not_answered_questions text COLLATE utf8_unicode_ci DEFAULT NULL,
-  time_spent_correct_answer_questions text COLLATE utf8_unicode_ci NOT NULL,
-  time_spent_wrong_answer_questions text COLLATE utf8_unicode_ci NOT NULL,
-  time_spent_not_answered_questions text COLLATE utf8_unicode_ci NOT NULL,
-  percentage_title varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  grade_title varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  grade_points varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  rank int(11) DEFAULT NULL,
-  total_users_for_this_quiz int(11) DEFAULT NULL,
-  created_at timestamp NULL DEFAULT NULL,
-  updated_at timestamp NULL DEFAULT NULL
+CREATE TABLE `quizzes` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `slug` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `dueration` int(11) NOT NULL,
+  `category_id` bigint(20) UNSIGNED NOT NULL,
+  `is_paid` tinyint(4) NOT NULL DEFAULT 0,
+  `cost` decimal(10,2) DEFAULT NULL,
+  `validity` int(11) NOT NULL,
+  `total_marks` decimal(10,2) UNSIGNED NOT NULL DEFAULT 0.00,
+  `having_negative_mark` tinyint(1) NOT NULL DEFAULT 0,
+  `negative_mark` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `pass_percentage` decimal(10,2) UNSIGNED NOT NULL DEFAULT 0.00,
+  `tags` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `publish_results_immediately` tinyint(4) NOT NULL DEFAULT 1,
+  `description` text COLLATE utf8_unicode_ci NOT NULL,
+  `total_questions` int(50) NOT NULL,
+  `instructions_page_id` bigint(20) UNSIGNED NOT NULL,
+  `start_date` date DEFAULT NULL,
+  `end_date` date DEFAULT NULL,
+  `record_updated_by` int(11) NOT NULL,
+  `section_id` bigint(11) UNSIGNED NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `show_in_front` tinyint(2) NOT NULL DEFAULT 0,
+  `exam_type` varchar(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'NSNT',
+  `section_data` text COLLATE utf8_unicode_ci DEFAULT NULL,
+  `has_language` tinyint(2) NOT NULL DEFAULT 0,
+  `image` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `language_name` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `is_popular` tinyint(2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 
 --
 -- Dumping data for table `quizzes`
@@ -2281,12 +2287,40 @@ CREATE TABLE `workexperience` (
 INSERT INTO `workexperience` (`id`, `user_id`, `work_experience`, `from_date`, `to_date`, `created_at`, `updated_at`) VALUES
 (11, 7, 'IT Professional with Ten Years of Experience in Software Support\n\n    Skilled at operating in a wide range of platforms.\n    Experience training interns and new hires in various software.\n    Capable of explaining complex software issues in easy-to-understand terms.', '2017-03-29', 'Present', '2019-06-10 05:51:41', '2019-06-10 05:51:41');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `workexperience`
+--
+
+
+CREATE TABLE `push_subscriptions` (
+    `id` int unsigned not null auto_increment primary key,
+    `subscribable_id` int unsigned not null,
+    `subscribable_type` varchar(255) not null,
+    `endpoint` varchar(500) not null,
+    `public_key` varchar(255) null,
+    `auth_token` varchar(255) null,
+    `content_encoding` varchar(255) null,
+    `created_at` timestamp null,
+    `updated_at` timestamp null
+) default character set utf8 collate utf8_unicode_ci;
+
+
+
 --
 -- Indexes for dumped tables
 --
 
 --
 -- Indexes for table `academicprofiles`
+
+
+
+alter table `push_subscriptions`
+    ADD INDEX `push_subscriptions_subscribable_id_subscribable_type_index`(`subscribable_id`, `subscribable_type`);
+
+alter table `push_subscriptions` add unique `push_subscriptions_endpoint_unique`(`endpoint`);
 --
 ALTER TABLE `academicprofiles`
   ADD PRIMARY KEY (`id`);

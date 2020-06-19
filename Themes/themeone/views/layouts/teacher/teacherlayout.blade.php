@@ -191,7 +191,7 @@
 					<li  {{ isActive($active_class, 'submissions') }}>
 					<a href="{{URL_SUBMISSION_QUIZE}}" ><i class="fa fa-fw fa-bar-chart" aria-hidden="true"></i>
 						{{ getPhrase('Submissions') }} </a>
-	
+
 					<li {{ isActive($active_class, 'exams') }} >
 
 					<a data-toggle="collapse" data-target="#exams"><i class="fa fa-fw fa-desktop" ></i>
@@ -233,10 +233,10 @@
 						Sections </a>
 							<ul id="section" class="collapse sidemenu-dropdown">
 								@foreach ($sectionsforteach as $section)
-								
-							
+
+
 									<li><a href="{{URL_SECDETAILS.'/'.$section }}"> <i class="fa fa-fw fa-random"></i>{{ App\User::select(['section_name'])->where('section_id',$section)->first()->section_name }}</a></li>
-									
+
 								@endforeach
 							</ul>
 						</li>
@@ -248,10 +248,10 @@
 							Sections </a>
 								<ul id="section" class="collapse sidemenu-dropdown">
 									@foreach ($secs as $sec)
-									
-								
+
+
 										<li><a href="{{URL_SECDETAILS.'/'.$sec }}"> <i class="fa fa-fw fa-random"></i>{{ App\User::select(['section_name'])->where('section_id',$sec)->first()->section_name }}</a></li>
-										
+
 									@endforeach
 								</ul>
 							</li>
@@ -329,7 +329,13 @@
 	</div>
 	<!-- /#wrapper -->
 	<!-- jQuery -->
-
+	@auth
+		<script>
+			localStorage.setItem("csrf",'{{csrf_token()}}');
+			localStorage.setItem("sw-path",'{{themes('push/sw.js')}}');
+		</script>
+	  <script src="{{themes('push/enable-push.js')}}" defer></script>
+	@endauth
 	{{-- <script>
             var csrfToken = $('[name="csrf_token"]').attr('content');
 

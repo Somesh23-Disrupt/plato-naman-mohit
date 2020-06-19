@@ -4,6 +4,7 @@
 @stop
 @section('content')
 
+
 <div  id="page-wrapper">
             <div class="container-fluid">
                 <!-- Page Heading -->
@@ -104,7 +105,7 @@
                     parentNode: document.querySelector('#meet')
                 };
                 const api = new JitsiMeetExternalAPI(domain, options);
-                api.executeCommand('password', 'The Password');
+                api.executeCommand('password', '123');
                 api.executeCommand('toggleVideo');
                 api.executeCommand('startRecording', {
                     //mode: 'stream', //recording mode, either `file` or `stream`.
