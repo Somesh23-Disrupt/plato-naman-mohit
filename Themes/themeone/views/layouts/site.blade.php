@@ -16,11 +16,11 @@
 
 	<meta name="keywords" content="{{getSetting('meta_keywords', 'seo_settings')}}">
 
-	 
+
 
 	<link rel="icon" href="{{IMAGE_PATH_SETTINGS.getSetting('site_favicon', 'site_settings')}}" type="image/x-icon" />
 
-	
+
 
 	<title>{{ isset($title) ? $title : getSetting('site_title','site_settings') }}</title>
 
@@ -37,14 +37,14 @@
     <link href="{{themes('css/materialdesignicons.css')}}" rel="stylesheet">
     <link href="{{themes('css/sweetalert.css')}}" rel="stylesheet">
 
-    
+
     <!-- Morris Charts CSS -->
     <link href="{{themes('css/plugins/morris.css')}}" rel="stylesheet">
     <link href="{{themes('font-awesome/font-awesome.min.css')}}" rel="stylesheet">
 
 
 
-	
+
 <style>
 .active {
     color: red;
@@ -76,82 +76,82 @@
             <div class="navbar-offcanvas navbar-offcanvas-touch" id="js-bootstrap-offcanvas">
                 <ul class="nav navbar-nav navbar-right">
 
-                    <li> 
+                    <li>
                         <a
 
                         @if($active_class=='home')
-                            class="page-scroll active" 
+                            class="page-scroll active"
                         @else
-                            class="page-scroll" 
+                            class="page-scroll"
                         @endif
 
-                        href="{{PREFIX}}">Home</a> 
+                        href="{{PREFIX}}">Home</a>
                     </li>
 
 
-                     <li> 
+                     <li>
                         <a
 
                         @if($active_class=='exams')
-                            class="page-scroll active" 
+                            class="page-scroll active"
                         @else
-                            class="page-scroll" 
+                            class="page-scroll"
                         @endif
 
-                        href="{{URL_FRONTEND_EXAMS_LIST}}">{{getPhrase('practice_exams')}}</a> 
+                        href="{{URL_FRONTEND_EXAMS_LIST}}">{{getPhrase('practice_exams')}}</a>
                     </li>
 
-                    <li> 
-                        <a 
+                    <li>
+                        <a
                         @if($active_class=='terms-conditions')
-                            class="page-scroll active" 
+                            class="page-scroll active"
                         @else
-                            class="page-scroll" 
+                            class="page-scroll"
                         @endif
 
                         href="{{SITE_PAGES_TERMS}}">Terms and Conditions
-                        </a> 
+                        </a>
                     </li>
-                    <li> 
-                        <a 
+                    <li>
+                        <a
                         @if($active_class=='privacy-policy')
-                            class="page-scroll active" 
+                            class="page-scroll active"
                         @else
-                            class="page-scroll" 
+                            class="page-scroll"
                         @endif
                         href="{{SITE_PAGES_PRIVACY}}"
                         >Privacy and Policy
                     </a> </li>
-                    <li> 
+                    <li>
 
                     	<a  @if($active_class =='login')
-                              class="page-scroll active" 
+                              class="page-scroll active"
                           @else
-                            class="page-scroll" 
+                            class="page-scroll"
                             @endif
                              href="{{URL_USERS_LOGIN}}">Login</a>
                               </li>
-                    <li> <a 
+                    <li> <a
                          @if($active_class=='register')
-                            class="page-scroll active" 
+                            class="page-scroll active"
                         @else
-                            class="page-scroll" 
+                            class="page-scroll"
                         @endif
-                         href="{{URL_USERS_REGISTER}}">Register</a> 
+                         href="{{URL_USERS_REGISTER}}">Register</a>
                      </li>
                 </ul>
             </div>
         </div>
     </nav>
 </div>
-    <!-- /NAVIGATION --> 
+    <!-- /NAVIGATION -->
 
 
 	@yield('content')
 
+
+
 	
-
-
 
 		<!-- /#wrapper -->
 
@@ -172,7 +172,7 @@
 		@include('errors.formMessages')
 
 		@yield('footer_scripts')
-		
+
 		{!!getSetting('google_analytics', 'seo_settings')!!}
 </body>
 

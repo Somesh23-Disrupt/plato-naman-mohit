@@ -164,7 +164,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
          Milon\Barcode\BarcodeServiceProvider::class,
          SimpleSoftwareIO\SMS\SMSServiceProvider::class,
-
+         NotificationChannels\WebPush\WebPushServiceProvider::class,
          Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
          Shipu\Themevel\Providers\ThemevelServiceProvider::class,
        Fideloper\Proxy\TrustedProxyServiceProvider::class,
@@ -182,7 +182,7 @@ return [
         Yajra\Datatables\DatatablesServiceProvider::class,
          Collective\Html\HtmlServiceProvider::class,
          Intervention\Image\ImageServiceProvider::class,
-       
+
         ConsoleTVs\Charts\ChartsServiceProvider::class,
         //
 
@@ -193,15 +193,15 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-		
-		
+
+
 		Maatwebsite\Excel\ExcelServiceProvider::class,
 		Softon\Indipay\IndipayServiceProvider::class,
 
         LaravelFCM\FCMServiceProvider::class,
 
 
-		
+
     ],
 
     /*
@@ -257,7 +257,7 @@ return [
         'DNS2D' => Milon\Barcode\Facades\DNS2DFacade::class,
 		'Input' => Illuminate\Support\Facades\Input::class,
         'SMS' => SimpleSoftwareIO\SMS\Facades\SMS::class,
-		
+
 		'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 		'Zipper' => 'Chumper\Zipper\Zipper',
 		 'Indipay' => Softon\Indipay\Facades\Indipay::class,

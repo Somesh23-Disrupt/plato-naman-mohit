@@ -15,27 +15,28 @@
                    <div class="panel-heading">
                        <div class="pull-right messages-buttons">
                            <a class="btn btn-lg btn-primary button" href="{{URL_MESSAGES}}"> {{getPhrase('inbox').'('.$count = Auth::user()->newThreadsCount().')'}} </a>
-                           <a class="btn btn-lg btn-danger button" href="{{URL_MESSAGES_CREATE}}"> 
+                           <a class="btn btn-lg btn-danger button" href="{{URL_MESSAGES_CREATE}}">
                            {{getPhrase('compose')}}</a>
 
-                
+
                        </div>
                        <h1>{{getPhrase('inbox')}}</h1>
                    </div>
                    <?php $currentUserId = Auth::user()->id;?>
                    <div class="panel-body packages">
                        <div class="row">
-                           
+
                            <div class="col-md-12">
-                             
+
                                <ul class="inbox-message-list inbox-message-nocheckbox">
 
-                             
+
+                                   <a href="push" class="btn btn-outline-primary btn-block">Make a Push Notification!</a>
 
 
 
                                      @if(count($threads)>0)
-                                     
+
                                        @foreach($threads as $thread)
                                        {{-- {{dd($currentUserId)}} --}}
                                        <?php $class = $thread->isUnread($currentUserId) ? 'alert-info' : ''; ?>
@@ -59,15 +60,15 @@
                                    @else
                                        <p>Sorry, no messages.</p>
                                    @endif
-                           
+
 
 
 
                                </ul>
-                             
+
                                  <div class="custom-pagination pull-right">
                                   {!! $threads->links() !!}
-                               </div>  
+                               </div>
                            </div>
                        </div>
 
@@ -80,5 +81,5 @@
            </div>
            <!-- /.container-fluid -->
        </div>
-       
+
 @stop

@@ -27,7 +27,7 @@ class UserContactUs extends Notification
     protected $message  = null;
 
     public function __construct(User $user,$data)
-    { 
+    {
        $this->user     = $user;
        $this->name     = $data['name'];
        $this->email    = $data['email'];
@@ -35,7 +35,7 @@ class UserContactUs extends Notification
        $this->number   = $data['number'];
        $this->message  = $data['message'];
        // dd($this->message);
-     
+
     }
 
     /**
@@ -57,10 +57,10 @@ class UserContactUs extends Notification
      */
     public function toMail($notifiable)
     {
-        
+
         return (new MailMessage)
         ->subject('User Contact')
-        ->view('system-emails.users.contact-us', 
+        ->view('system-emails.users.contact-us',
         [
 
          'user_name' => $this->user->getUserTitle(),

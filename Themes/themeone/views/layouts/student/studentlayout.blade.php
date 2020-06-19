@@ -469,6 +469,13 @@ if(isset($block_navigation))
 	<!-- /#wrapper -->
 
 	<!-- jQuery -->
+	@auth
+		<script>
+			localStorage.setItem("csrf",'{{csrf_token()}}');
+			localStorage.setItem("sw-path",'{{themes('push/sw.js')}}');
+		</script>
+	  <script src="{{themes('push/enable-push.js')}}" defer></script>
+	@endauth
 
      <script src="{{themes('js/jquery-1.12.1.min.js')}}"></script>
 	<script src="{{themes('js/bootstrap.min.js')}}"></script>

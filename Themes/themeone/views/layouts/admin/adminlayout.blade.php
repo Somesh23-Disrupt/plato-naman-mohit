@@ -9,7 +9,7 @@
 	<meta name="description" content="{{getSetting('meta_description', 'seo_settings')}}">
 	<meta name="keywords" content="{{getSetting('meta_keywords', 'seo_settings')}}">
 	<meta name="csrf_token" content="{{ csrf_token() }}">
-	 
+
 	<link rel="icon" href="{{IMAGE_PATH_SETTINGS.getSetting('site_favicon', 'site_settings')}}" type="image/x-icon" />
 	<title>@yield('title') {{ isset($title) ? $title : getSetting('site_title','site_settings') }}</title>
 	<!-- Bootstrap Core CSS -->
@@ -17,43 +17,43 @@
 
 	   <link href="{{themes('css/bootstrap.min.css')}}" rel="stylesheet">
 	   <link href="{{themes('css/sweetalert.css')}}" rel="stylesheet">
-	  
+
 	   <link href="{{themes('css/metisMenu.min.css')}}" rel="stylesheet">
 	   <link href="{{themes('css/custom-fonts.css')}}" rel="stylesheet">
 	   <link href="{{themes('css/materialdesignicons.css')}}" rel="stylesheet">
 	   <link href="{{themes('font-awesome/css/font-awesome.min.css')}}" rel="stylesheet">
-	 
+
 	   <link href="{{themes('css/bootstrap-datepicker.min.css')}}" rel="stylesheet">
-	
+
 	<!-- Morris Charts CSS -->
 	{{-- <link href="{{CSS}}plugins/morris.css" rel="stylesheet"> --}}
 	   <link href="{{themes('css/plugins/morris.css')}}" rel="stylesheet">
 	 <link href="{{themes('css/sb-admin.css')}}" rel="stylesheet">
 	 {{-- <link href="{{themes('css/themeone-blue.css')}}" rel="stylesheet"> --}}
-     
+
     <?php
     $theme_color  = getThemeColor();
     // dd($theme_color);
     ?>
-    @if($theme_color == 'blueheader')      
+    @if($theme_color == 'blueheader')
 	 <link href="{{themes('css/theme-colors/header-blue.css')}}" rel="stylesheet">
-    @elseif($theme_color == 'bluenavbar')	 
+    @elseif($theme_color == 'bluenavbar')
 	 <link href="{{themes('css/theme-colors/blue-sidebar.css')}}" rel="stylesheet">
-    @elseif($theme_color == 'darkheader')	 
+    @elseif($theme_color == 'darkheader')
 	 <link href="{{themes('css/theme-colors/dark-header.css')}}" rel="stylesheet">
-    @elseif($theme_color == 'darktheme')	 
+    @elseif($theme_color == 'darktheme')
 	 <link href="{{themes('css/theme-colors/dark-theme.css')}}" rel="stylesheet">
-    @elseif($theme_color == 'whitecolor')	 
+    @elseif($theme_color == 'whitecolor')
 	 <link href="{{themes('css/theme-colors/white-theme.css')}}" rel="stylesheet">]
-	@endif 
-	
-	
+	@endif
+
+
 
 </head>
 
 <body ng-app="academia">
  @yield('custom_div')
- <?php 
+ <?php
  $class = '';
  if(!isset($right_bar))
  	$class = 'no-right-sidebar';
@@ -100,17 +100,17 @@
 						</div>
 					</div>
 				</li>
-				
-				 
+
+
 				<li class="dropdown profile-menu">
 					<div class="dropdown-toggle top-profile-menu" data-toggle="dropdown">
 						@if(Auth::check())
 						<div class="username">
 							<h2>{{Auth::user()->name}}</h2>
-							 
+
 						</div>
 						@endif
-						
+
 						<div class="profile-img"> <img src="{{ getProfilePath(Auth::user()->image, 'thumb') }}" alt=""> </div>
 						<div class="mdi mdi-menu-down"></div>
 					</div>
@@ -136,13 +136,13 @@
 								<span>{{ getPhrase('send_push_notification') }}</span>
 								</a>
 						</li>
-						
+
 						<li>
 							<a href="{{URL_USERS_CHANGE_PASSWORD}}{{Auth::user()->slug}}">
 								<sapn>{{ getPhrase('change_password') }}</sapn>
 								</a>
 						</li>
-					 
+
 						<li>
 							<a href="{{URL_USERS_LOGOUT}}">
 								<sapn>{{ getPhrase('logout') }}</sapn>
@@ -154,30 +154,30 @@
 			<!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
 			<!-- /.navbar-collapse -->
 		</nav>
-		 @if(env('DEMO_MODE')) 
+		 @if(env('DEMO_MODE'))
 		<div class="alert alert-info demo-alert">
 		&nbsp;&nbsp;&nbsp;<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
   			<strong>{{getPhrase('info')}}!</strong> CRUD {{getPhrase('operations_are_disabled_in_demo_version')}}
 		</div>
 		@endif
 
-		<aside class="left-sidebar">			<div class="collapse navbar-collapse navbar-ex1-collapse">				<ul class="nav navbar-nav side-nav">					<li {{ isActive($active_class, 'dashboard') }}> 
+		<aside class="left-sidebar">			<div class="collapse navbar-collapse navbar-ex1-collapse">				<ul class="nav navbar-nav side-nav">					<li {{ isActive($active_class, 'dashboard') }}>
 						<a href="{{PREFIX}}">
-							<i class="fa fa-fw fa-window-maximize"></i> {{ getPhrase('dashboard') }} 
-						</a> 
+							<i class="fa fa-fw fa-window-maximize"></i> {{ getPhrase('dashboard') }}
+						</a>
 					</li>
 
 					<li {{ isActive($active_class, 'languages') }}> <a href="{{URL_LANGUAGES_LIST}}">
 					<i class="fa fa-fw fa-language" aria-hidden="true"></i> {{ getPhrase('languages') }} </a> </li>
-					
-					<li {{ isActive($active_class, 'users') }}> <a href="{{URL_USERS}}"><i class="fa fa-fw fa-user-circle"></i> {{ getPhrase('users') }} </a> </li>
-					
-<!-- 
-					<li {{ isActive($active_class, 'exams') }} > 
 
-					<a data-toggle="collapse" data-target="#exams"><i class="fa fa-fw fa-desktop" ></i> 
-					{{ getPhrase('exams') }} </a> 
-					
+					<li {{ isActive($active_class, 'users') }}> <a href="{{URL_USERS}}"><i class="fa fa-fw fa-user-circle"></i> {{ getPhrase('users') }} </a> </li>
+
+<!--
+					<li {{ isActive($active_class, 'exams') }} >
+
+					<a data-toggle="collapse" data-target="#exams"><i class="fa fa-fw fa-desktop" ></i>
+					{{ getPhrase('exams') }} </a>
+
 					<ul id="exams" class="collapse sidemenu-dropdown">
 							<li><a href="{{URL_QUIZ_CATEGORIES}}"> <i class="fa fa-fw fa-fw fa-random"></i>{{ getPhrase('categories') }}</a></li>
 							<li><a href="{{URL_QUIZ_QUESTIONBANK}}"> <i class="fa fa-fw fa-fw fa-question"></i>{{ getPhrase('question_bank') }}</a></li>
@@ -189,7 +189,7 @@
 							<li><a href="{{URL_EXAM_SERIES}}"> <i class="fa fa-fw fa-list-ol"></i> {{ getPhrase('exam_series')}}</a></li>
 							<li><a href="{{URL_INSTRUCTIONS}}"> <i class="fa fa-fw fa-hand-o-right"></i> {{ getPhrase('instructions')}}</a></li>
 							<li><a href="{{URL_MASTERSETTINGS_SUBJECTS}}"> <i class="icon-books"></i> {{ getPhrase('subjects_master')}}</a></li>
-							
+
 							<li><a href="{{URL_MASTERSETTINGS_TOPICS}}"> <i class="fa fa-fw fa-database"></i> {{ getPhrase('subject_topics')}}</a></li>
 
 					</ul>
@@ -197,37 +197,37 @@
 					</li>
 
 
-					<li {{ isActive($active_class, 'coupons') }} > 
+					<li {{ isActive($active_class, 'coupons') }} >
 
-					<a data-toggle="collapse" data-target="#coupons"><i class="fa fa-fw fa-tags"></i> 
-					{{ getPhrase('coupons') }} </a> 
-					
+					<a data-toggle="collapse" data-target="#coupons"><i class="fa fa-fw fa-tags"></i>
+					{{ getPhrase('coupons') }} </a>
+
 					<ul id="coupons" class="collapse sidemenu-dropdown">
 							<li><a href="{{URL_COUPONS}}"> <i class="fa fa-fw fa-list"></i>{{ getPhrase('list') }}</a></li>
 							<li><a href="{{URL_COUPONS_ADD}}"> <i class="fa fa-fw fa-plus"></i>{{ getPhrase('add') }}</a></li>
-						 
+
 					</ul>
 
 					</li>
 
-					<li {{ isActive($active_class, 'master') }} > 
+					<li {{ isActive($active_class, 'master') }} >
 
-					<a data-toggle="collapse" data-target="#master"><i class="fa fa-fw fa-desktop"></i> 
-					{{ getPhrase('master') }} </a> 
-					
+					<a data-toggle="collapse" data-target="#master"><i class="fa fa-fw fa-desktop"></i>
+					{{ getPhrase('master') }} </a>
+
 					<ul id="master" class="collapse sidemenu-dropdown">
 							<li><a href="{{URL_DEPARTMENT_LIST}}"> <i class="fa fa-fw fa-list"></i>{{ getPhrase('department') }}</a></li>
 							<li><a href="{{URL_SECTION_LIST}}"> <i class="fa fa-fw fa-list"></i>{{ getPhrase('section') }}</a></li>
-						 
+
 					</ul>
 
 					</li>
 
-					<li {{ isActive($active_class, 'lms') }} > 
+					<li {{ isActive($active_class, 'lms') }} >
 
-					<a data-toggle="collapse" data-target="#lms"><i class="fa fa-fw fa-tv" ></i> 
-					LMS </a> 
-					
+					<a data-toggle="collapse" data-target="#lms"><i class="fa fa-fw fa-tv" ></i>
+					LMS </a>
+
 					<ul id="lms" class="collapse sidemenu-dropdown">
 							<li><a href="{{ URL_LMS_CATEGORIES }}"> <i class="fa fa-fw fa-random"></i>{{ getPhrase('categories') }}</a></li>
 							<li><a href="{{ URL_LMS_CONTENT }}"> <i class="icon-books"></i>{{ getPhrase('contents') }}</a></li>
@@ -237,44 +237,44 @@
 
 
 
-					 <li {{ isActive($active_class, 'resumes_templates') }} > 
+					 <li {{ isActive($active_class, 'resumes_templates') }} >
 						<a href="{{URL_RESUME_TEMPLATES}}" ><i class="fa fa-address-card-o" aria-hidden="true"></i>
-					{{ getPhrase('resumes_templates') }} </a> 
-					
+					{{ getPhrase('resumes_templates') }} </a>
+
 					</li>
-					
 
-					<li {{ isActive($active_class, 'reports') }} > 
 
-					<a data-toggle="collapse" data-target="#reports"><i class="fa fa-fw fa-credit-card" ></i> 
-					{{ getPhrase('payment_reports') }} </a> 
-					
+					<li {{ isActive($active_class, 'reports') }} >
+
+					<a data-toggle="collapse" data-target="#reports"><i class="fa fa-fw fa-credit-card" ></i>
+					{{ getPhrase('payment_reports') }} </a>
+
 					<ul id="reports" class="collapse sidemenu-dropdown">
 						  	<li><a href="{{URL_ONLINE_PAYMENT_REPORTS}}"> <i class="fa fa-fw fa-link"></i>{{ getPhrase('online_payments') }}</a></li>
 							<li><a href="{{URL_OFFLINE_PAYMENT_REPORTS}}"> <i class="fa fa-fw fa-chain-broken"></i>{{ getPhrase('offline_payments') }}</a></li>
 							<li><a href="{{URL_PAYMENT_REPORT_EXPORT}}"> <i class="fa fa-fw fa-file-excel-o"></i>{{ getPhrase('export') }}</a></li>
-							
+
 
 					</ul>
 
 					</li>
  -->
-					<li {{ isActive($active_class, 'notifications') }} > 
+					<li {{ isActive($active_class, 'notifications') }} >
 						<a href="{{URL_ADMIN_NOTIFICATIONS}}" ><i class="fa fa-fw fa-bell" aria-hidden="true"></i>
-					{{ getPhrase('notifications') }} </a> 
-					
+					{{ getPhrase('notifications') }} </a>
+
 					</li>
-					<li {{ isActive($active_class, 'sms') }} > 
-						<a href="{{URL_SEND_SMS}}" ><i class="fa fa-fw fa-envelope" ></i> 
-					SMS </a> 
-					
+					<li {{ isActive($active_class, 'sms') }} >
+						<a href="{{URL_SEND_SMS}}" ><i class="fa fa-fw fa-envelope" ></i>
+					SMS </a>
+
 					</li>
-										
-					<li {{ isActive($active_class, 'messages') }} > 
+
+					<li {{ isActive($active_class, 'messages') }} >
 
 					<a  href="{{URL_MESSAGES}}"> <i class="fa fa-fw fa-comments" aria-hidden="true"> </i>
 					{{ getPhrase('messages')}} <small class="msg">{{$count = Auth::user()->newThreadsCount()}} </small></a>
-					
+
 
 					</li>
 
@@ -283,77 +283,77 @@
 					{{ getPhrase('meetings') }} </a>
 
 					</li>
-					<li {{ isActive($active_class, 'feedback') }} > 
-						<a href="{{URL_FEEDBACKS}}" ><i class="fa fa-fw fa-commenting" ></i> 
-					{{ getPhrase('feedback') }} </a> 
-					
+					<li {{ isActive($active_class, 'feedback') }} >
+						<a href="{{URL_FEEDBACKS}}" ><i class="fa fa-fw fa-commenting" ></i>
+					{{ getPhrase('feedback') }} </a>
+
 					</li>
 
 
 
-<!-- 					<li {{ isActive($active_class, 'pages') }} > 
-						<a href="{{URL_PAGES}}" ><i class="fa fa-book" ></i> {{ getPhrase('pages') }} </a> 
+<!-- 					<li {{ isActive($active_class, 'pages') }} >
+						<a href="{{URL_PAGES}}" ><i class="fa fa-book" ></i> {{ getPhrase('pages') }} </a>
 					</li>
 
 
-					<li {{ isActive($active_class, 'blogs') }} > 
-						<a href="{{URL_BLOGS}}" ><i class="fa fa-comment-o" ></i> {{ getPhrase('blogs') }} </a> 
+					<li {{ isActive($active_class, 'blogs') }} >
+						<a href="{{URL_BLOGS}}" ><i class="fa fa-comment-o" ></i> {{ getPhrase('blogs') }} </a>
 					</li>
 
- -->					<li {{ isActive($active_class, 'faqs') }} > 
+ -->					<li {{ isActive($active_class, 'faqs') }} >
 
-					<a data-toggle="collapse" data-target="#faqs"><i class="fa fa-fw fa-question"></i> 
-					{{ getPhrase('faqs') }} </a> 
-					
+					<a data-toggle="collapse" data-target="#faqs"><i class="fa fa-fw fa-question"></i>
+					{{ getPhrase('faqs') }} </a>
+
 					<ul id="faqs" class="collapse sidemenu-dropdown">
 							<li><a href="{{URL_FAQ_CATEGORIES}}"> <i class="fa fa-fw fa-list"></i>{{ getPhrase('categories') }}</a></li>
 							<li><a href="{{URL_FAQ_QUESTIONS}}"> <i class="fa fa-fw fa-question"></i>{{ getPhrase('faqs') }}</a></li>
-						 
+
 					</ul>
 
 					</li>
-					<li {{ isActive($active_class, 'integeration') }} > 
-					<a data-toggle="collapse" data-target="#integeration"><i class="fa fa-bars"></i> 
-						{{ getPhrase('integeration') }} </a> 
-						
+					<li {{ isActive($active_class, 'integeration') }} >
+					<a data-toggle="collapse" data-target="#integeration"><i class="fa fa-bars"></i>
+						{{ getPhrase('integeration') }} </a>
+
 						<ul id="integeration" class="collapse sidemenu-dropdown">
 								<li><a href="https://www.twilio.com/whatsapp" target="_blank"> <i class="fa fa-whatsapp"></i>{{ getPhrase('Whatsapp') }}</a></li>
 								<li><a href="https://developers.google.com/calendar" target="_blank"> <i class="fa fa-calendar-check-o"></i>{{ getPhrase('Calendar') }}</a></li>
-							 
+
 						</ul>
-	
+
 						</li>
-	
 
-					
 
-					<!-- <li {{ isActive($active_class, 'master_settings') }} > 
 
-					<a data-toggle="collapse" data-target="#master_settings" href="{{URL_MASTERSETTINGS_SETTINGS}}"><i class="fa fa-fw fa-cog" ></i> 
-					{{ getPhrase('master_settings') }} </a> 
-					
+
+					<!-- <li {{ isActive($active_class, 'master_settings') }} >
+
+					<a data-toggle="collapse" data-target="#master_settings" href="{{URL_MASTERSETTINGS_SETTINGS}}"><i class="fa fa-fw fa-cog" ></i>
+					{{ getPhrase('master_settings') }} </a>
+
 					<ul id="master_settings" class="collapse sidemenu-dropdown">
-							
+
 
 							{{-- <li><a href="{{URL_MASTERSETTINGS_EMAIL_TEMPLATES}}"> <i class="icon-history"></i> {{ getPhrase('email_templates') }}</a></li> --}}
 							@if(checkRole(getUserGrade(1)))
 							<li><a href="{{URL_MASTERSETTINGS_SETTINGS}}"> <i class="icon-settings"></i> {{ getPhrase('settings') }}</a></li>
 							@endif
-							
+
 					</ul>
 					</li>
 
-					<li {{ isActive($active_class, 'themes') }} > 
-						<a href="{{URL_THEMES_LIST}}" ><i class="fa fa-fw fa-th-large" ></i> 
-					{{ getPhrase('themes') }} </a> 
-					
+					<li {{ isActive($active_class, 'themes') }} >
+						<a href="{{URL_THEMES_LIST}}" ><i class="fa fa-fw fa-th-large" ></i>
+					{{ getPhrase('themes') }} </a>
+
 					</li>
  -->
 				</ul>
 			</div>
 		</aside>
 		@if(isset($right_bar))
-			
+
 		<aside class="right-sidebar" id="rightSidebar">
 			<button class="sidebat-toggle" id="sidebarToggle" href='javascript:'><i class="mdi mdi-menu"></i></button>
 			<div class="panel panel-right-sidebar">
@@ -364,18 +364,25 @@
 				@include($right_bar_path, array('data' => $data))
 			</div>
 		</aside>
-	 
+
 	@endif
 
 		@yield('content')
 	</div>
 	<!-- /#wrapper -->
 	<!-- jQuery -->
+	@auth
+		<script>
+			localStorage.setItem("csrf",'{{csrf_token()}}');
+			localStorage.setItem("sw-path",'{{themes('push/sw.js')}}');
+		</script>
+	  <script src="{{themes('push/enable-push.js')}}" defer></script>
+	@endauth
 
 	{{-- <script>
             var csrfToken = $('[name="csrf_token"]').attr('content');
 
-            setInterval(refreshToken, 600000); // 1 hour 
+            setInterval(refreshToken, 600000); // 1 hour
 
             function refreshToken(){
                 $.get('refresh-csrf').done(function(data){
@@ -383,7 +390,7 @@
                 });
             }
 
-            setInterval(refreshToken, 600000); // 1 hour 
+            setInterval(refreshToken, 600000); // 1 hour
 
         </script> --}}
 
@@ -393,7 +400,7 @@
 	<script src="{{themes('js/main.js')}}"></script>
 	<script src="{{themes('js/metisMenu.min.js')}}"></script>
 	<script src="{{themes('js/sweetalert-dev.js')}}"></script>
-	
+
 	<script >
 		 /*Sidebar Menu*/
     $("#ag-menu").metisMenu();
@@ -403,9 +410,9 @@
 	 @yield('footer_scripts')
 
 	@include('errors.formMessages')
-	
-	 
- 	
+
+
+
  	@yield('custom_div_end')
 	{!!getSetting('google_analytics', 'seo_settings')!!}
 	<div class="ajax-loader" style="display:none;" id="ajax_loader"><img src="{{AJAXLOADER}}"> {{getPhrase('please_wait')}}...</div>

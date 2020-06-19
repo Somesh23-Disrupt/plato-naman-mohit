@@ -13,10 +13,11 @@ class ComposerStaticInitf33343e5047e95fea9a2e5be8603bee4
         'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
+        '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
         'decc78cc4436b1292c6c0d151b19445c' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
         '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
+        '3109cb1a231dcd04bee1f9f620d46975' => __DIR__ . '/..' . '/paragonie/sodium_compat/autoload.php',
         'bd9634f2d41831496de0d3dfe4c94881' => __DIR__ . '/..' . '/symfony/polyfill-php56/bootstrap.php',
-        '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
         'f18cc91337d49233e5754e93f3ed9ec3' => __DIR__ . '/..' . '/laravelcollective/html/src/helpers.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         'e7223560d890eab89cda23685e711e2c' => __DIR__ . '/..' . '/psy/psysh/src/Psy/functions.php',
@@ -104,11 +105,13 @@ class ComposerStaticInitf33343e5047e95fea9a2e5be8603bee4
         ),
         'N' => 
         array (
+            'NotificationChannels\\WebPush\\' => 29,
             'Noodlehaus\\' => 11,
         ),
         'M' => 
         array (
             'Monolog\\' => 8,
+            'Minishlink\\WebPush\\' => 19,
         ),
         'L' => 
         array (
@@ -123,6 +126,11 @@ class ComposerStaticInitf33343e5047e95fea9a2e5be8603bee4
         ),
         'J' => 
         array (
+            'Jose\\Component\\Signature\\Algorithm\\' => 35,
+            'Jose\\Component\\Signature\\' => 25,
+            'Jose\\Component\\KeyManagement\\' => 29,
+            'Jose\\Component\\Core\\Util\\Ecc\\' => 29,
+            'Jose\\Component\\Core\\' => 20,
             'Jenssegers\\Date\\' => 16,
         ),
         'I' => 
@@ -142,6 +150,7 @@ class ComposerStaticInitf33343e5047e95fea9a2e5be8603bee4
             'Firebase\\JWT\\' => 13,
             'Fideloper\\Proxy\\' => 16,
             'Faker\\' => 6,
+            'FG\\' => 3,
         ),
         'E' => 
         array (
@@ -161,6 +170,10 @@ class ComposerStaticInitf33343e5047e95fea9a2e5be8603bee4
             'Collective\\Html\\' => 16,
             'Cmgmyr\\Messenger\\' => 17,
             'Carbon\\' => 7,
+        ),
+        'B' => 
+        array (
+            'Base64Url\\' => 10,
         ),
         'A' => 
         array (
@@ -332,6 +345,10 @@ class ComposerStaticInitf33343e5047e95fea9a2e5be8603bee4
         array (
             0 => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser',
         ),
+        'NotificationChannels\\WebPush\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/laravel-notification-channels/webpush/src',
+        ),
         'Noodlehaus\\' => 
         array (
             0 => __DIR__ . '/..' . '/hassankhan/config/src',
@@ -339,6 +356,10 @@ class ComposerStaticInitf33343e5047e95fea9a2e5be8603bee4
         'Monolog\\' => 
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
+        ),
+        'Minishlink\\WebPush\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/minishlink/web-push/src',
         ),
         'League\\OAuth1\\' => 
         array (
@@ -371,6 +392,30 @@ class ComposerStaticInitf33343e5047e95fea9a2e5be8603bee4
         'LaravelFCM\\' => 
         array (
             0 => __DIR__ . '/..' . '/brozot/laravel-fcm/src',
+        ),
+        'Jose\\Component\\Signature\\Algorithm\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/web-token/jwt-signature-algorithm-ecdsa',
+            1 => __DIR__ . '/..' . '/web-token/jwt-signature-algorithm-eddsa',
+            2 => __DIR__ . '/..' . '/web-token/jwt-signature-algorithm-hmac',
+            3 => __DIR__ . '/..' . '/web-token/jwt-signature-algorithm-none',
+            4 => __DIR__ . '/..' . '/web-token/jwt-signature-algorithm-rsa',
+        ),
+        'Jose\\Component\\Signature\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/web-token/jwt-signature',
+        ),
+        'Jose\\Component\\KeyManagement\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/web-token/jwt-key-mgmt',
+        ),
+        'Jose\\Component\\Core\\Util\\Ecc\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/web-token/jwt-util-ecc',
+        ),
+        'Jose\\Component\\Core\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/web-token/jwt-core',
         ),
         'Jenssegers\\Date\\' => 
         array (
@@ -412,6 +457,10 @@ class ComposerStaticInitf33343e5047e95fea9a2e5be8603bee4
         array (
             0 => __DIR__ . '/..' . '/fzaninotto/faker/src/Faker',
         ),
+        'FG\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/fgrosse/phpasn1/lib',
+        ),
         'Egulias\\EmailValidator\\' => 
         array (
             0 => __DIR__ . '/..' . '/egulias/email-validator/EmailValidator',
@@ -451,6 +500,10 @@ class ComposerStaticInitf33343e5047e95fea9a2e5be8603bee4
         'Carbon\\' => 
         array (
             0 => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon',
+        ),
+        'Base64Url\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/spomky-labs/base64url/src',
         ),
         'App\\' => 
         array (
