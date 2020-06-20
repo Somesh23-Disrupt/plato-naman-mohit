@@ -466,15 +466,16 @@ class TeacherController extends Controller
 
      public function test(Request $request)
      {
+       
      
        if($request->suball!=null){
-         if($request->pullall!=null){
+         if($request->puball!=null){
         foreach($request->puball as $ids){
           
           $record=App\QuizResult::find($ids); 
           $record->publish_result=1;
           $record->save();
-          
+          flash('success','Result Published successfully', 'success');
         }
         }else{
           flash('Record already Published!',' Try Again');
