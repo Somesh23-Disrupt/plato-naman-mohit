@@ -491,7 +491,9 @@ class LmsSeriesController extends Controller
     	// $data['categories']       	= array_pluck(QuizCategory::all(), 'category', 'id');
     	$data['title']              = getPhrase('update_series_for').' '.$record->title;
     	// return view('lms.lmsseries.update-list', $data);
-
+      $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+      // dd($sections);
+      $data['sectionsforteach']= $sections;
          $view_name = getTheme().'::lms.lmsseries.update-list';
         return view($view_name, $data);
 
@@ -542,7 +544,9 @@ class LmsSeriesController extends Controller
         $data['series']         = LmsSeries::paginate((new App\GeneralSettings())->getPageLength());
         $data['layout']              = getLayout();
        // return view('student.exams.exam-series-list', $data);
-
+       $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+       // dd($sections);
+       $data['sectionsforteach']= $sections;
          $view_name = getTheme().'::student.exams.exam-series-list';
         return view($view_name, $data);
 
@@ -573,7 +577,9 @@ class LmsSeriesController extends Controller
                                             );
         $data['layout']              = getLayout();
        // return view('student.exams.exam-series-view-item', $data);
-
+       $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+       // dd($sections);
+       $data['sectionsforteach']= $sections;
         $view_name = getTheme().'::student.exams.exam-series-view-item';
         return view($view_name, $data);
 
