@@ -449,9 +449,9 @@ class TeacherController extends Controller
         $data['sectionsforteach']= $sections;
         $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')
         
-        ->where('quiz_id',$quizid)->where('section_id',auth()->user()->section_id)
+        ->where('quiz_id',$quizid)->where('record_updated_by',auth()->user()->id)
                 ->select(['quiz_id','quizresults.id' ,'quizzes.category_id', 'quizzes.slug as quiz_slug','quizzes.total_marks','quizresults.publish_result','quizzes.title','quizresults.exam_status as  result','quizresults.total_marks_obtained','quizresults.user_id','quizresults.slug as result_slug']) 
-              ->get();
+                ->get();
         // // $records =App\QuizResult::select([ 'quiz_id','total_marks','user_id','total_marks_obtained','exam_status as  result','slug'])
                 
         //         ->get();
@@ -466,15 +466,16 @@ class TeacherController extends Controller
 
      public function test(Request $request)
      {
+       
      
        if($request->suball!=null){
-         if($request->pullall!=null){
+         if($request->puball!=null){
         foreach($request->puball as $ids){
           
           $record=App\QuizResult::find($ids); 
           $record->publish_result=1;
           $record->save();
-          
+          flash('success','Result Published successfully', 'success');
         }
         }else{
           flash('Record already Published!',' Try Again');

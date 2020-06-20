@@ -51,7 +51,7 @@
 
 </head>
 
-<body>
+<body ng-app="academia">
  @yield('custom_div')
  <?php
  $class = '';
