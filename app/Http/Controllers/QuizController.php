@@ -558,7 +558,7 @@ class QuizController extends Controller
         }
 
 
-      $data['subjects']     = array_pluck(App\Subject::where('record_updated_by',Auth::user()->id)->get(), 'subject_title', 'id');
+      $data['subjects']     = array_pluck(App\Subject::where('record_updated_by',Auth::user()->id)->Orwhere('teacher_id',auth()->user()->id)->get(), 'subject_title', 'id');
       $data['title']        = getPhrase('update_questions_for').' '.$record->title;
       // dd($data);
 

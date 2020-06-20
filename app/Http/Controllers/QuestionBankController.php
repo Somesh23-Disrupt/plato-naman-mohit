@@ -64,6 +64,7 @@ class QuestionBankController extends Controller
          $records = Subject::select([
          	'subject_title','section_id', 'subject_code', 'id','slug', 'is_lab', 'updated_at'])
             ->where('record_updated_by',Auth::user()->id)
+            ->orWhere('teacher_id',Auth::user()->id)
          	  ->orderBy('updated_at', 'desc');
 
         $table = Datatables::of($records)

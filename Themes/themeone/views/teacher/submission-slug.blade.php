@@ -69,7 +69,7 @@
 								
 								</table>
 							
-								<input type="submit" value="Submit All" style="margin:10px;float:right;" name="suball" class="btn btn-lg btn-success button"> 
+								<input type="submit" value="Publish All" style="margin:10px;float:right;" name="suball" class="btn btn-lg btn-success button"> 
 							
 								{!! Form::close() !!}
 							</div>
