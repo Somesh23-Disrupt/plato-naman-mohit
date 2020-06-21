@@ -54,7 +54,7 @@
 
     <!-- Subject Form Input -->
     <div class="form-group">
-        {!! Form::label('Chat Title', 'Subject', ['class' => 'control-label']) !!}
+        {!! Form::label('Chat Title', 'Chat Name', ['class' => 'control-label']) !!}
         {!! Form::text('subject', null, ['class' => 'form-control']) !!}
     </div>
 

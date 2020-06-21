@@ -356,7 +356,7 @@ if(isset($block_navigation))
 
 
 
-<!--
+
 					@if(getSetting('messaging', 'module'))
 
 					<li {{ isActive($active_class, 'messages') }} >
@@ -364,14 +364,12 @@ if(isset($block_navigation))
 					<a  href="{{URL_MESSAGES}}"> <i class="fa fa-fw fa-comments" aria-hidden="true"> </i>
 					{{ getPhrase('messages')}} <small class="msg">{{$count = Auth::user()->newThreadsCount()}} </small></a>
 
-                             <a  href="{{URL_MESSAGES}}"><span><i class="fa fa-comments-o fa-2x" aria-hidden="true"><h5 class="badge badge-success">{{$count = Auth::user()->newThreadsCount()}}</h5></i></span>
-					{{ getPhrase('messages')}} </a>
 
 
 
 					</li>
 
-					@endif -->
+					@endif
 
 
 

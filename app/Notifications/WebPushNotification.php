@@ -8,7 +8,7 @@ use NotificationChannels\WebPush\WebPushChannel;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class WebPushNotification extends Notification
+class WebPushNotification extends Notification implements ShouldQueue
 {
 
     use Queueable;

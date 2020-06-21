@@ -119,11 +119,18 @@ class MessagesController extends Controller
         $data['layout'] 	= getLayout();
 
         // return view('messaging-system.show', $data);
-        $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
+        $sections=App\User::select(['section_id'])
+                        ->where('role_id',5)
+                        ->where('inst_id',auth()->user()->inst_id)
+                        ->distinct()
+                        ->pluck('section_id');
         // dd($sections);
+        $_SESSION['current-time']=date("Y-m-d H:i:s");
         $data['sectionsforteach']= $sections;
           $view_name = getTheme().'::messaging-system.show';
-        return view($view_name, $data);
+
+
+         return view($view_name, $data);
         // return view('messenger.show', compact('thread', 'users'));
     }
     /**
@@ -182,6 +189,9 @@ class MessagesController extends Controller
         return view($view_name, $data);
         // return view('messenger.create', compact('users'));
     }
+
+
+
      public function store()
     {
         if(!getSetting('messaging', 'module'))
@@ -237,6 +247,15 @@ class MessagesController extends Controller
         if ($participants) {
             $thread->addParticipant($participants);
         }
+
+        $users=User::whereIn('id',$participants)
+                ->where('id','!=',Auth::user()->id)
+                ->get();
+        $body=Auth::user()->name .': '.$input['message'];
+        $title=$input['subject'];
+        $action= '/messages'.'/'.$thread->id;//"/messages"."/".$id;
+        Notification::send($users,new WebPushNotification($title, $body,'Reply', $action));
+
         return redirect(URL_MESSAGES);
     }
 
@@ -279,7 +298,7 @@ class MessagesController extends Controller
         );
         $participant->last_read = new Carbon;
         $participant->save();
-        $users=$users=User::whereIn('id',DB::table('messenger_participants')->where('thread_id',$id)->pluck('user_id'))
+        $users=User::whereIn('id',DB::table('messenger_participants')->where('thread_id',$id)->pluck('user_id'))
                 ->where('id','!=',Auth::user()->id)
                 ->get();
         $body=Auth::user()->name .': '.$request->message;
@@ -297,23 +316,67 @@ class MessagesController extends Controller
     }
 
     public function getmsg($id){
-        $count = Auth::user()->newThreadsCount();
-        $msg="";
-        if($count > 0 ){
-            $msg = '<div class="message-sender">
-                <div class="media">
-                    <a class="pull-left" href="#">
-                        <img src="'.getProfilePath(Auth::user()->image).'" alt="image" class="img-circle">
-                    </a>
-                    <div class="media-body">
-                        <h5 class="media-heading"><b>name-ajax</b></h5>
-                        <p>'.$id.'</p>
-                        <div class="text-muted"><small>ajax-created_at</small></div>
-                    </div>
-                </div>
-            </div>';
+
+        try {
+            $thread = Thread::findOrFail($id);
+
+        } catch (ModelNotFoundException $e) {
+            Session::flash('error_message', 'The thread with ID: ' . $id . ' was not found.');
+            return redirect('messages');
+        }
+        // show current user in list if not a current participant
+        // $users = User::whereNotIn('id', $thread->participantsUserIds())->get();
+        // don't show the current user in list
+        $userId = Auth::user()->id;
+        $thread_participants = $thread->participants()->get();
+        $is_member = 0;
+        foreach($thread_participants as $tp)
+        {
+            if($tp->user_id == $userId) {
+                $is_member = 1;
+                break;
+            }
         }
 
+
+        if(!$is_member)
+        {
+            pageNotFound();
+            return back();
+        }
+
+        $participants = $thread->participantsUserIds($userId);
+
+        $users = User::whereNotIn('id', $participants)->get();
+
+        $thread->markAsRead($userId);
+        //$messages=$thread->messages->where('created_at','>=',$_SESSION['current-time']);
+        //$messages=$thread->messages->where('created_at','<',date("Y-m-d H:i:s"));
+        $msg="";
+        if($thread->messages->count() > session('currentcount')){
+            foreach($thread->messages as $message){
+                $class='message-sender';
+                if($message->user_id == Auth::user()->id)
+                {
+                    $class = 'message-receiver';
+                }
+                    $msg.='<div class="'.$class.'">
+                        <div class="media">
+                            <a class="pull-left" href="#">
+                                <img style="width:45px" src="'.getProfilePath($message->user->image).'" alt="'.$message->user->name.'" class="img-circle">
+                            </a>
+                            <div class="img-rounded  media-body" style="padding-top: 12px;padding-bottom:  0px;">
+                                <h5 class="media-heading"><b>'.$message->user->name.'</b>
+                                        <small class="  text-muted" ><i>'.$message->created_at->diffForHumans().'</i></small>
+                                </h5>
+                                <p>'.$message->body.'</p>
+                            </div>
+                        </div>
+                    </div>';
+            }
+        }
+        //$msg=session('currentcount');
+        session()->put('currentcount', $thread->messages->count());
         return response()->json(array('msg'=> $msg), 200);
     }
 
