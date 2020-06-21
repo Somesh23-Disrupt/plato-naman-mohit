@@ -28,6 +28,7 @@
 						  <div class="panel-body" >
 							{!! Form::open(array('url' =>'test', 'method' => 'POST', 'name'=>'formSubmission', 'novalidate'=>'')) !!}
 							<table class="table table-striped table-bordered datatable" id="datatable" id="example" cellspacing="0" width="100%">
+							
 								<thead>
 									<tr>
 										<th>{{ getPhrase('Student Name')}}</th>
@@ -53,20 +54,23 @@
 												
 												
 												
-												{{ Form::hidden('publish', $value =$table->id, $attributes = array('class'=>'input-sm form-control')) }}
+												
 												@if($table->publish_result==0)
+												{!! Form::open(array('url' =>'test', 'method' => 'POST', 'name'=>'formSubmissionsingle', 'novalidate'=>'')) !!}
+												{{ Form::hidden('publish', $table->id, $attributes = array('class'=>'input-sm form-control')) }}
 												<button class="btn btn-sm btn-success button"> Publish </button>
-												{{ Form::checkbox('puball[]', $value =$table->id, $attributes = array('class'=>'input-sm form-control')) }}
+												{!! Form::close() !!}
+												
 												@else
 												<p>Already Published</p>
 												@endif
 											
 											</td>
 										</tr>
-										
+										{{ Form::checkbox('puball[]', $value =$table->id, $attributes = array('class'=>'input-sm form-control')) }}
 								@endforeach
 							
-								
+							
 								</table>
 							
 								<input type="submit" value="Publish All" style="margin:10px;float:right;" name="suball" class="btn btn-lg btn-success button"> 

@@ -454,11 +454,11 @@ class TeacherController extends Controller
      public function test(Request $request)
      {
        
-     
+      
+
        if($request->suball!=null){
          if($request->puball!=null){
         foreach($request->puball as $ids){
-          
           $record=App\QuizResult::find($ids);
           $quizid=$record->quiz_id; 
           $record->publish_result=1;
@@ -472,6 +472,7 @@ class TeacherController extends Controller
 
         
       }else{
+       
         $record=App\QuizResult::find($request->publish); 
         $quizid=$record->quiz_id;
         $record->publish_result=1;
