@@ -74,7 +74,7 @@
 
 
                         <span class="result-pf-text">{{getPhrase('result').': '.$result_record->exam_status}} </span>
-                        <span class="result-pf-text">{{getPhrase('marks_scored').': '.getArrayFromJson($result_record->marks_obtained)['total']}} / {{$exam_record->total_marks}}</span>
+                        <span class="result-pf-text">{{getPhrase('marks_scored').': '.$result_record->total_marks_obtained}} / {{$exam_record->total_marks}}</span>
 
                               <span class="pull-right">
 
@@ -296,6 +296,7 @@
 
                                 <div class="col-md-12">
 <div class="d_but">
+    @if(count($questions)>1)
                                     <button class="btn btn-lg btn-success button prev" type="button">
 
                                         <i class="mdi mdi-chevron-left ">
@@ -317,6 +318,7 @@
                                         </i>
 
                                     </button>
+                                    @endif
                                     @if(checkRole(['teacher']))
                                     <form id="form-updatescore" method="POST" action="{{URL_RESULTS_VIEW_ANSWERS}}{{$exam_record->slug}}/{{$result_record->slug}}">
                                         {{csrf_field()}}
