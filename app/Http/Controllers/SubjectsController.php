@@ -34,11 +34,7 @@ class SubjectsController extends Controller
         prepareBlockUserMessage();
         return back();
       }
-      if(auth()->user()->section_id==NULL)
-      {
-        prepareBlockUserMessage();
-        return back();
-      }
+     
         $data['active_class']       = 'subjects';
         $data['title']              = getPhrase('subjects_list');
     	// return view('mastersettings.subjects.list', $data);
@@ -62,13 +58,18 @@ class SubjectsController extends Controller
         return back();
       }
 
-
+      if(auth()->user()->section_id==null){
+        $records = Subject::select([
+          'id','subject_title','section_id', 'teacher_id','subject_code','maximum_marks', 'pass_marks', 'is_lab', 'is_elective_type', 'slug', 'updated_at'])
+           ->where('teacher_id',Auth::user()->id)
+        ->orderBy('updated_at','desc');
+      }else{
 
          $records = Subject::select([
          	'id','subject_title','section_id', 'teacher_id','subject_code','maximum_marks', 'pass_marks', 'is_lab', 'is_elective_type', 'slug', 'updated_at'])
             ->where('record_updated_by',Auth::user()->id)
          ->orderBy('updated_at','desc');
-
+        }
         return Datatables::of($records)
         ->addColumn('action', function ($records) {
 
@@ -105,6 +106,11 @@ class SubjectsController extends Controller
     public function create()
     {
       if(!checkRole(getUserGrade(3)))
+      {
+        prepareBlockUserMessage();
+        return back();
+      }
+      if(auth()->user()->section_id==NULL)
       {
         prepareBlockUserMessage();
         return back();

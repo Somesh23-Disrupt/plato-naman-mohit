@@ -168,12 +168,12 @@
       <div class="col-md-4 col-sm-6">
         <div class="media state-media box-ws">
           <div class="media-left">
-            <a href="{{ URL_STUDENT_EXAM_ALL }}"><div class="state-icn bg-icon-pink"><i class="fa fa-desktop"></i></div></a>
+            <a href="{{URL_QUIZZES  }}"><div class="state-icn bg-icon-pink"><i class="fa fa-desktop"></i></div></a>
           </div>
           <div class="media-body">
             <?php $inst_sub=App\User::select('id')->where('inst_id',auth()->user()->inst_id)->get()->pluck('id'); ?>
             <h4 class="card-title">{{ App\Quiz::whereIn('record_updated_by',$inst_sub)->count() }}</h4>
-            <a href="{{ URL_STUDENT_EXAM_ALL }}">{{ getPhrase('quizzes')}}</a>
+            <a href="{{ URL_QUIZZES }}">{{ getPhrase('quizzes')}}</a>
           </div>
         </div>
       </div>

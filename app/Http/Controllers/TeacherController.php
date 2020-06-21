@@ -176,7 +176,6 @@ class TeacherController extends Controller
       {
 
               
-        // dd($slug);
             if(!checkRole(getUserGrade(6)))
             {
               prepareBlockUserMessage();
@@ -193,19 +192,7 @@ class TeacherController extends Controller
             
             // dd(Str::limit($slugstr,2));
             // dd(!(Str::limit($slugstr,2)==$teachgrade));
-            if ($len==3) {
-              $teachgrade=Str::limit($teachsec,2);
-              if (!(Str::limit($slugstr,2)==$teachgrade)) {
-                prepareBlockUserMessage();
-                return redirect("dashboard");
-              }
-            }elseif($len==2){
-              $teachgrade=Str::limit($teachsec,1);
-              if (!(Str::limit($slugstr,1)==$teachgrade)) {
-                prepareBlockUserMessage();
-                return redirect("dashboard");
-              }
-            }
+           
 
 
 
@@ -472,7 +459,8 @@ class TeacherController extends Controller
          if($request->puball!=null){
         foreach($request->puball as $ids){
           
-          $record=App\QuizResult::find($ids); 
+          $record=App\QuizResult::find($ids);
+          $quizid=$record->quiz_id; 
           $record->publish_result=1;
           $record->save();
           flash('success','Result Published successfully', 'success');
@@ -485,11 +473,13 @@ class TeacherController extends Controller
         
       }else{
         $record=App\QuizResult::find($request->publish); 
+        $quizid=$record->quiz_id;
         $record->publish_result=1;
         $record->save();
         flash('success','Result Published successfully', 'success');
       }
-      $route=URL_SUBMISSION_QUIZE;
+      $quiz_slug=App\Quiz::find($quizid)->slug;
+      $route=URL_SUBMISSION_QUIZE.'/'.$quiz_slug;
      
       return redirect($route);
      }

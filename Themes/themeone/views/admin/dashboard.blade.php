@@ -221,10 +221,10 @@
 					<table class="table table-striped table-bordered datatable" id="datatable" cellspacing="0" width="100%">
 						<thead>
 							<tr>
-								<th>{{ getPhrase('Test Name')}}</th>
-								<th>{{ getPhrase('Subject')}}</th>
+								<th>{{ getPhrase('Quiz Category')}}</th>
+								<th>{{ getPhrase('Quiz Name')}}</th>
 								<th>{{ getPhrase('Section')}}</th>
-								<th>{{ getPhrase('Test Teacher')}}</th>
+								<th>{{ getPhrase('Teacher')}}</th>
 								<th>{{ getPhrase('Test Conducted')}}</th>
 							</tr>
 						</thead>

@@ -24,7 +24,9 @@
 						<div class="pull-right messages-buttons">
 
 							<a href="{{URL_SUBJECTS_IMPORT}}" class="btn  btn-primary button" >{{ getPhrase('import')}}</a>
+							@if(auth()->user()->section_id!=null)
 							<a href="{{URL_SUBJECTS_ADD}}" class="btn  btn-primary button" >{{ getPhrase('create')}}</a>
+							@endif
 
 						</div>
 						<h1>{{ $title }}</h1>

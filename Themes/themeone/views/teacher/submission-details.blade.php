@@ -25,8 +25,8 @@
 							<table class="table table-striped table-bordered datatable" id="datatable" id="example" cellspacing="0" width="100%">
 								<thead>
 									<tr>
-										<th>{{ getPhrase('Subject')}}</th>
-										<th>{{ getPhrase('Test Name')}}</th>
+										<th>{{ getPhrase('Quiz Name')}}</th>
+										<th>{{ getPhrase('Category Name')}}</th>
 										<th>{{ getPhrase('Section')}}</th>
 										<th>{{ getPhrase('Total Marks')}}</th>
 										<th>{{ getPhrase('Total_questions')}}</th>
