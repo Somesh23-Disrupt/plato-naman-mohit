@@ -1298,14 +1298,14 @@ class StudentQuizController extends Controller
          $records = array();
           if(!$exam_slug)
              $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')
-            ->select(['title','record_updated_by' , 'marks_obtained', 'exam_status','quizresults.created_at', 'quizzes.total_marks','quizzes.slug', 'quizresults.slug as resultsslug','user_id' ])
+            ->select(['title','record_updated_by' , 'quizresults.total_marks_obtained as marks_obtained', 'exam_status','quizresults.created_at', 'quizzes.total_marks','quizzes.slug', 'quizresults.slug as resultsslug','user_id' ])
             ->where('user_id', '=', $user->id)
             ->where('publish_result', '=', 1)
             ->orderBy('quizresults.updated_at', 'desc')
             ->get();
           else
             $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')
-            ->select(['title','record_updated_by' , 'marks_obtained', 'exam_status','quizresults.created_at', 'quizzes.total_marks','quizzes.slug', 'quizresults.slug as resultsslug','user_id' ])
+            ->select(['title','record_updated_by' , 'quizresults.total_marks_obtained as marks_obtained', 'exam_status','quizresults.created_at', 'quizzes.total_marks','quizzes.slug', 'quizresults.slug as resultsslug','user_id' ])
             ->where('user_id', '=', $user->id)
             ->where('publish_result', '=', 1)
             ->where('quiz_id', '=', $exam_record->id )
