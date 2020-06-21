@@ -171,8 +171,8 @@
             <a href="{{URL_STUDENT_EXAM_CATEGORIES  }}"><div class="state-icn bg-icon-pink"><i class="fa fa-desktop"></i></div></a>
           </div>
           <div class="media-body">
-            <?php $inst_sub=App\User::select('id')->where('inst_id',auth()->user()->inst_id)->get()->pluck('id'); ?>
-            <h4 class="card-title">{{ App\Quiz::whereIn('record_updated_by',$inst_sub)->count() }}</h4>
+            <?php #$inst_sub=App\User::select('id')->where('inst_id',auth()->user()->inst_id)->get()->pluck('id'); ?>
+            <h4 class="card-title">{{ App\Quiz::where('section_id',auth()->user()->section_id)->count() }}</h4>
             <a href="{{ URL_STUDENT_EXAM_CATEGORIES }}">{{ getPhrase('quizzes')}}</a>
           </div>
         </div>
