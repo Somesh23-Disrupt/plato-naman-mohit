@@ -168,12 +168,12 @@
       <div class="col-md-4 col-sm-6">
         <div class="media state-media box-ws">
           <div class="media-left">
-            <a href="{{URL_QUIZZES  }}"><div class="state-icn bg-icon-pink"><i class="fa fa-desktop"></i></div></a>
+            <a href="{{URL_STUDENT_EXAM_CATEGORIES  }}"><div class="state-icn bg-icon-pink"><i class="fa fa-desktop"></i></div></a>
           </div>
           <div class="media-body">
             <?php $inst_sub=App\User::select('id')->where('inst_id',auth()->user()->inst_id)->get()->pluck('id'); ?>
             <h4 class="card-title">{{ App\Quiz::whereIn('record_updated_by',$inst_sub)->count() }}</h4>
-            <a href="{{ URL_QUIZZES }}">{{ getPhrase('quizzes')}}</a>
+            <a href="{{ URL_STUDENT_EXAM_CATEGORIES }}">{{ getPhrase('quizzes')}}</a>
           </div>
         </div>
       </div>
@@ -202,12 +202,12 @@
       <div class="col-md-4 col-sm-6">
         <div class="media state-media box-ws">
           <div class="media-left">
-            <a href="{{URL_SUBJECTS}}"><div class="state-icn bg-icon-success"><i class="fa fa-book"></i></div></a>
+            <a href=""><div class="state-icn bg-icon-success"><i class="fa fa-book"></i></div></a>
           </div>
           <div class="media-body">
-            <?php $inst_sub=App\User::select('id')->where('inst_id',auth()->user()->inst_id)->get()->pluck('id'); ?>
-            <h4 class="card-title">{{ App\Subject::whereIn('record_updated_by',$inst_sub)->get()->count()}}</h4>
-            <a href="{{URL_SUBJECTS}}">{{ getPhrase('subjects')}}</a>
+            <?php #$inst_sub=App\User::select('id')->where('inst_id',auth()->user()->inst_id)->get()->pluck('id'); ?>
+            <h4 class="card-title">{{ App\Subject::where('section_id',auth()->user()->section_id)->get()->count()}}</h4>
+            <a href="">{{ getPhrase('subjects')}}</a>
           </div>
         </div>
       </div>
@@ -240,8 +240,8 @@
 			<table class="table table-striped table-bordered datatable" id="datatable" cellspacing="0" width="100%">
 				<thead>
 					<tr>
-						<th>{{ getPhrase('Test Name')}}</th>
-						<th>{{ getPhrase('Subject')}}</th>
+						<th>{{ getPhrase('Quiz Category')}}</th>
+						<th>{{ getPhrase('Quiz Name')}}</th>
 						<th>{{ getPhrase('Total_Marks')}}</th>
 						<th>{{ getPhrase('Scored Marks')}}</th>
 						<th>{{ getPhrase('Percentage')}}</th>
