@@ -3,7 +3,7 @@
 
         <div class="textarea-hint">
             <fieldset class="form-group">
-                <textarea class="{{$question->id}}" class="form-control" name="{{$question->id}}[0]" placeholder="Enter Your answer" rows="20"></textarea>
+                <textarea  class="form-control {{$question->id}}" style="margin-top: 5px" name="{{$question->id}}[0]" placeholder="Enter Your answer" rows="20"></textarea>
                 <button class="{{$question->id}}-button" type="button" name="button"><i class="fa fa-microphone" aria-hidden="true"></i></button>
 
             </fieldset>

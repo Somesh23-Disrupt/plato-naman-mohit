@@ -121,6 +121,7 @@ class QuizResult extends Model
             $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')
             ->select(['quiz_id', 'quizzes.title',DB::raw('Max(percentage) as percentage'), 'quizresults.user_id'])
             ->where('quizresults.user_id', '=', $user->id)
+            ->where('quizresults.publish_result', '=', 1)
             ->groupBy('quizresults.quiz_id')
 
             ->get();

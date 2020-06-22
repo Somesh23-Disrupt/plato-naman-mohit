@@ -145,7 +145,8 @@ if(isset($block_navigation))
 						<div class="username">
 
 							<h2>{{Auth::user()->name}}</h2>
-
+							<br>
+							<h2>{{getPhrase('Section ').Auth::user()->section_name}}</h2>
 
 
 						</div>

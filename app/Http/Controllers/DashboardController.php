@@ -614,6 +614,7 @@ class DashboardController extends Controller
             $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')
                 ->select(['title','is_paid' ,'dueration', 'quizzes.total_marks',  \DB::raw('count(quizresults.user_id) as attempts, quizzes.slug, user_id') ])
                 ->where('user_id', '=', $user->id)
+                ->where('quizresults.publish_result', '=',1)
                 ->groupBy('quizresults.quiz_id')
                 ->get();
 
@@ -644,28 +645,40 @@ class DashboardController extends Controller
     }
     public function examanalysisbytotalmarks($user='')
     {
-
+      $records = array();
       if(checkRole(['parent'])||checkRole(['admin'])){
         $user=$user;
+        $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')
+          ->select(['title','is_paid' ,'dueration', 'quizresults.total_marks_obtained as total_marks',  \DB::raw('count(quizresults.user_id) as attempts, quizzes.slug, user_id') ])
+          ->where('user_id', '=', $user->id)
+          ->groupBy('quizresults.quiz_id')
+          ->get();
       }else{
         $user = auth()->user();
-
+        
+        $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')
+          ->select(['title','is_paid' ,'dueration', 'quizresults.total_marks_obtained as total_marks',  \DB::raw('count(quizresults.user_id) as attempts, quizzes.slug, user_id') ])
+          ->where('user_id', '=', $user->id)
+          ->where('quizresults.publish_result', '=', 1)
+          ->groupBy('quizresults.quiz_id')
+          ->get();
+        // dd($records);
       }
 
       $data['active_class']       = 'dashboard';
       $data['title']='Dashboard';
       $data['user']               = $user;
       // Chart code start
-      $records = array();
+      
       $labels = [];
       $dataset = [];
       $bgcolor = [];
       $bordercolor = [];
-      $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')
-          ->select(['title','is_paid' ,'dueration', 'quizresults.total_marks_obtained as total_marks',  \DB::raw('count(quizresults.user_id) as attempts, quizzes.slug, user_id') ])
-          ->where('user_id', '=', $user->id)
-          ->groupBy('quizresults.quiz_id')
-          ->get();
+      // $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')
+      //     ->select(['title','is_paid' ,'dueration', 'quizresults.total_marks_obtained as total_marks',  \DB::raw('count(quizresults.user_id) as attempts, quizzes.slug, user_id') ])
+      //     ->where('user_id', '=', $user->id)
+      //     ->groupBy('quizresults.quiz_id')
+      //     ->get();
 
       $chartSettings = new App\ChartSettings();
 
