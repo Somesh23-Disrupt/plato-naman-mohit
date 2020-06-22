@@ -20,7 +20,7 @@
 				<!-- /.row -->
 				<div class="panel panel-custom">
 					<div class="panel-heading">
-
+						@if(!checkRole(['student']))
 						<div class="pull-right messages-buttons">
 
 							<a href="{{URL_SUBJECTS_IMPORT}}" class="btn  btn-primary button" >{{ getPhrase('import')}}</a>
@@ -29,6 +29,7 @@
 							@endif
 
 						</div>
+						@endif
 						<h1>{{ $title }}</h1>
 					</div>
 					<div class="panel-body packages">

@@ -202,12 +202,12 @@
       <div class="col-md-4 col-sm-6">
         <div class="media state-media box-ws">
           <div class="media-left">
-            <a href=""><div class="state-icn bg-icon-success"><i class="fa fa-book"></i></div></a>
+            <a href="{{URL_MASTERSETTINGS_SUBJECTS}}"><div class="state-icn bg-icon-success"><i class="fa fa-book"></i></div></a>
           </div>
           <div class="media-body">
             <?php #$inst_sub=App\User::select('id')->where('inst_id',auth()->user()->inst_id)->get()->pluck('id'); ?>
             <h4 class="card-title">{{ App\Subject::where('section_id',auth()->user()->section_id)->get()->count()}}</h4>
-            <a href="">{{ getPhrase('subjects')}}</a>
+            <a href="{{URL_MASTERSETTINGS_SUBJECTS}}">{{ getPhrase('subjects')}}</a>
           </div>
         </div>
       </div>

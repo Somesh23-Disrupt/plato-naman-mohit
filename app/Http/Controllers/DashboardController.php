@@ -347,7 +347,7 @@ class DashboardController extends Controller
             // dd($data['tnps']);
             $resultObject = new App\QuizResult();
             $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')
-            ->select(['quiz_id', 'quizzes.title',DB::raw('Max(percentage) as percentage'), 'quizresults.user_id','quizresults.total_marks','total_marks_obtained','category_id'])
+            ->select(['quiz_id', 'quizzes.title',DB::raw('Max(percentage) as percentage'), 'quizresults.user_id','quizresults.total_marks','quizresults.total_marks_obtained','category_id'])
             ->where('quizresults.user_id', '=', $user->id)
             ->where('quizresults.publish_result', '=', 1)
             ->groupBy('quizresults.quiz_id')

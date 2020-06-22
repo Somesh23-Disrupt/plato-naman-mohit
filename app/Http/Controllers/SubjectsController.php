@@ -31,8 +31,12 @@ class SubjectsController extends Controller
     {
       if(!checkRole(getUserGrade(3)))
       {
+        if(!checkRole(['student'])){
+
+        
         prepareBlockUserMessage();
         return back();
+        }
       }
      
         $data['active_class']       = 'subjects';
@@ -54,8 +58,12 @@ class SubjectsController extends Controller
     {
       if(!checkRole(getUserGrade(3)))
       {
-        prepareBlockUserMessage();
-        return back();
+        if(!checkRole(['student'])){
+
+        
+          prepareBlockUserMessage();
+          return back();
+          }
       }
 
       if(auth()->user()->section_id==null){
@@ -65,10 +73,19 @@ class SubjectsController extends Controller
         ->orderBy('updated_at','desc');
       }else{
 
-         $records = Subject::select([
-         	'id','subject_title','section_id', 'teacher_id','subject_code','maximum_marks', 'pass_marks', 'is_lab', 'is_elective_type', 'slug', 'updated_at'])
-            ->where('record_updated_by',Auth::user()->id)
-         ->orderBy('updated_at','desc');
+        if(checkRole(['student'])){
+          $records = Subject::select([
+            'id','subject_title','section_id', 'teacher_id','subject_code','maximum_marks', 'pass_marks', 'is_lab', 'is_elective_type', 'slug', 'updated_at'])
+             ->where('section_id',Auth::user()->section_id)
+          ->orderBy('updated_at','desc');
+        }else{
+
+          $records = Subject::select([
+            'id','subject_title','section_id', 'teacher_id','subject_code','maximum_marks', 'pass_marks', 'is_lab', 'is_elective_type', 'slug', 'updated_at'])
+             ->where('record_updated_by',Auth::user()->id)
+          ->orderBy('updated_at','desc');
+        }
+         
         }
         return Datatables::of($records)
         ->addColumn('action', function ($records) {

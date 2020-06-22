@@ -577,6 +577,7 @@ class UsersController extends Controller
         'image'     => 'bail|mimes:png,jpg,jpeg|max:2048',
         ];
 
+        
         if(!isEligible($slug))
           return back();
 
@@ -613,6 +614,7 @@ class UsersController extends Controller
                                 ->where('inst_id',Auth::user()->inst_id)
                                 ->where('section_name',$request->section)->pluck('section_id')->first();
 
+                                
                 if($sect_id==NULL){
                     $sect_id=User::select('section_id')
                                     ->orderBy('section_id','asc')
@@ -621,13 +623,14 @@ class UsersController extends Controller
                 }
             }
             $record->section_id   = $sect_id;
-            $record->section_name = $request->section ;
+            $record->section_name = $request->section;
         }
 
 
 
        $record->phone = $request->phone;
        $record->address = $request->address;
+      
        $record->save();
        if($request->password) {
           $password       = $request->password;
@@ -642,12 +645,13 @@ class UsersController extends Controller
            * Delete the Roles associated with that user
            * Add the new set of roles
            */
+        
          if(!env('DEMO_MODE')) {
           DB::table('role_user')
           ->where('user_id', '=', $record->id)
           ->where('role_id', '=', $previous_role_id)
           ->delete();
-         $record->roles()->attach($request->role_id);
+         $record->roles()->attach($record->role_id);
        }
         }
         if(!env('DEMO_MODE')) {
