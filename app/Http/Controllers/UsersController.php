@@ -282,6 +282,8 @@ class UsersController extends Controller
             $role_id = getRoleData('student');
 
 
+
+        
         $user               = new User();
         $name               = $request->name;
         $user->name         = $name;

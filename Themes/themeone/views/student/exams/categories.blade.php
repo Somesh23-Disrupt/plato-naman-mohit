@@ -23,6 +23,7 @@
 					<?php $settings = getExamSettings(); ?>
 					@if(count($categories))
 						@foreach($categories as $c)
+						
 							<div class="col-md-3">
 								<div class="library-item mouseover-box-shadow">
 								<a href="{{URL_STUDENT_EXAMS.$c->slug}}">
@@ -36,7 +37,7 @@
 									<div class="item-details">
 										<h3>{{ $c->category }}</h3>
 										<ul>
-											<li><i class="icon-bookmark"></i> {{ count($c->quizzes()).' '.getPhrase('quizzes')}}</li>
+											<li><i class="icon-bookmark"></i> {{ $c->getQuizzes()->count().' '.getPhrase('quizzes')}}</li>
 											<li><i class="icon-eye"></i> {{getPhrase('view')}}</li>
 										</ul>
 

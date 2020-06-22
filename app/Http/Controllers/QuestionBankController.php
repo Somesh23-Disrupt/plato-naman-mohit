@@ -366,8 +366,7 @@ class QuestionBankController extends Controller
         $record->subject_id             = $request->subject_id;
         $record->topic_id               = $request->topic_id;
         $record->question               = $request->question;
-        $record->difficulty_level       = $request->difficulty_level;
-        $record->hint                   = $request->hint;
+        
         $record->explanation            = $request->explanation;
         $record->marks                  = $request->marks;
         $record->time_to_spend          = $request->time_to_spend;
@@ -536,8 +535,7 @@ class QuestionBankController extends Controller
         $record->subject_id			= $request->subject_id;
         $record->topic_id				= $request->topic_id;
         $record->question				= $request->question;
-        $record->difficulty_level		= $request->difficulty_level;
-        $record->hint					  = $request->hint;
+       
         $record->explanation		= $request->explanation;
         $record->marks					= $request->marks;
         $record->question_type  = $request->question_type;

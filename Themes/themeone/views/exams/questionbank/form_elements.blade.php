@@ -110,16 +110,7 @@
 </div>
 </div>
 		
-	<fieldset class="form-group ">
-	{{ Form::label('difficulty_level', getphrase('difficulty_level')) }}
-	<span class="text-red">*</span>
-
-	{{Form::select('difficulty_level',$exam_difficulty_levels , null, ['class'=>'form-control', "id"=>"difficulty_level" ])}}
-	</fieldset>
-	<fieldset class="form-group">
-		{{ Form::label('hint', getphrase('hint')) }} 
-		{{ Form::text('hint', $value = null , $attributes = array('class'=>'form-control', 'placeholder' => 'Hint for the question')) }}
-	</fieldset>
+	
 
 	<fieldset class="form-group">
 		{{ Form::label('explanation', getphrase('explanation')) }} 

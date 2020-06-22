@@ -191,7 +191,51 @@
 						</div>
 
 					</fieldset>
+@if(checkRole(['teacher']))
+					<fieldset class="form-group">
 
+						<?php
+
+						$readonly = '';
+
+							if(!checkRole(getUserGrade(4)))
+
+							$readonly = 'readonly="true"';
+
+						if($record)
+
+						{
+
+							$readonly = 'readonly="true"';
+
+						}
+
+
+
+						?>
+
+						{{ Form::label('parent_email', getphrase('parent_email')) }}
+
+						<span class="text-red">*</span>
+
+						{{ Form::email('parent_email', $value = null, $attributes = array('class'=>'form-control', 'placeholder' => 'jack@jarvis.com',
+
+							'ng-model'=>'parent_email',
+
+							'ng-class'=>'{"has-error": formUsers.parent_email.$touched && formUsers.parent_email.$invalid}',
+
+						 $readonly)) }}
+
+						 <div class="validation-error" ng-messages="formUsers.parent_email.$error" >
+
+	    					{!! getValidationMessage()!!}
+
+	    					{!! getValidationMessage('parent_email')!!}
+
+						</div>
+
+					</fieldset>
+@endif
 					@if(!$record)
 					 <fieldset class="form-group">
 					 {{ Form::label('password', getphrase('password')) }}
