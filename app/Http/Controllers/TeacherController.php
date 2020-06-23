@@ -185,16 +185,18 @@ class TeacherController extends Controller
               prepareBlockUserMessage();
               return redirect("dashboard");
             }
-            $teachsec=auth()->user()->section_name;
-            $len=strlen($teachsec);
-            // dd(Str::limit($teachsec,2));
-            $slugstr=App\User::select(['section_name'])->where('section_id',$slug)->first()->section_name;
-            
-            // dd(Str::limit($slugstr,2));
-            // dd(!(Str::limit($slugstr,2)==$teachgrade));
-           
 
-
+          // dd($slug);
+           $secs=App\Subject::select('section_id')->where('teacher_id',auth()->user()->id)->distinct()->pluck('section_id');
+           if(!count($secs)>0){
+            prepareBlockUserMessage();
+            return redirect("dashboard");
+           }
+          //  dd($secs);
+           if(!$secs->contains($slug)){
+            prepareBlockUserMessage();
+            return redirect("dashboard");
+           }
 
             
 

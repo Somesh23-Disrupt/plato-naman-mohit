@@ -28,11 +28,7 @@
 								<div class="library-item mouseover-box-shadow">
 								<div class="">
 									<div class="item-image">
-									@if($c->is_paid)
-									<div class="label-primary label-band">{{getPhrase('premium')}}</div>
-									@else
-									<div class="label-danger  label-band">{{getPhrase('free')}}</div>
-									@endif
+									
 
 									<?php $image = IMAGE_PATH_UPLOAD_EXAMSERIES_DEFAULT;
 									if(isset($c->image) && $c->image!='')

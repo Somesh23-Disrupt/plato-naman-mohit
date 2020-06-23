@@ -97,7 +97,7 @@ class ReportsController extends Controller
         $record->exam_status = $exam_status;
         $record->save();
         flash('success','record_updated_successfully', 'success');
-    	return redirect(URL_RESULTS_VIEW_ANSWERS.$exam_slug."/".$result_slug);
+    	return redirect(URL_SUBMISSION_QUIZE.'/'.$exam_slug);
     }
 
 

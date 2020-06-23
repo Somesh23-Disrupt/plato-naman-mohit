@@ -226,26 +226,13 @@
 							<li><a href="{{ URL_LMS_SERIES }}"> <i class="fa fa-fw fa-list-ol"></i>{{ getPhrase('series') }}</a></li>
 					</ul>
 					</li>
-					@if(auth()->user()->section_id!=NULL)
-					<li {{ isActive($active_class, 'section') }}>
-
-						<a data-toggle="collapse" data-target="#section"><i class="fa fa-fw fa-window-restore" ></i>
-						Sections </a>
-							<ul id="section" class="collapse sidemenu-dropdown">
-								@foreach ($sectionsforteach as $section)
-
-
-									<li><a href="{{URL_SECDETAILS.'/'.$section }}"> <i class="fa fa-fw fa-random"></i>{{ App\User::select(['section_name'])->where('section_id',$section)->first()->section_name }}</a></li>
-
-								@endforeach
-							</ul>
-						</li>
-					@else
-						<?php $secs=App\Subject::select(['section_id'])->where('teacher_id',auth()->user()->id)->distinct('section_id')->get()->pluck('section_id');?>
+					<?php $secs=App\Subject::select(['section_id'])->where('teacher_id',auth()->user()->id)->distinct('section_id')->get()->pluck('section_id');?>
+					
 						<li {{ isActive($active_class, 'section') }}>
 
 							<a data-toggle="collapse" data-target="#section"><i class="fa fa-fw fa-window-restore"></i>
 							Sections </a>
+							@if(count($secs)>0)
 								<ul id="section" class="collapse sidemenu-dropdown">
 									@foreach ($secs as $sec)
 
@@ -254,9 +241,9 @@
 
 									@endforeach
 								</ul>
-							</li>
-					@endif
-
+							@endif
+						</li>
+					
 
 
 					<li {{ isActive($active_class, 'meetings') }} >

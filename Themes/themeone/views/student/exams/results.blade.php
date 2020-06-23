@@ -6,16 +6,24 @@
 
 @section('content')
 
-<div id="page-wrapper">
+
 	@if($record->publish_results_immediately==0)
-		<center><h1 style="margin:20px">Quiz Submitted Successfully</h1></center>
-		<div class="col-lg-12 text-center">
+	
 
-		<a onClick="setLocalItem('{{URL_USERS_DASHBOARD}}')" href="javascript:void(0);" class="btn t btn-primary">{{ getPhrase('Back To Dashboard') }}</a>
+		<!-- Page Heading -->
 
+	<div class="h-100">
+		<center><div style="margin-top:45vh">
+			<h1>Quiz Submitted Successfully</h1>
+			<a onClick="setLocalItem('{{URL_USERS_DASHBOARD}}')" href="javascript:void(0);" class="btn t btn-primary">{{ getPhrase('Back To Dashboard') }}</a>
+		
 		</div>
+		</center>
+	</div>
+	
 
 	@else
+	<div id="page-wrapper">
 			<div class="container-fluid">
 
 				<!-- Page Heading -->

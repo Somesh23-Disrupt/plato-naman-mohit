@@ -49,9 +49,11 @@
                         <ol class="breadcrumb">
 
                             <li><a href="{{PREFIX}}"><i class="mdi mdi-home"></i></a> </li>
-
-                            <li><a href="{{URL_STUDENT_ANALYSIS_BY_EXAM.$user_details->slug}}">{{getPhrase('analysis')}}</a></li>
-
+                            @if(!checkRole(['teacher']))
+                                <li><a href="{{URL_STUDENT_ANALYSIS_BY_EXAM.$user_details->slug}}">{{getPhrase('analysis')}}</a></li>
+                            @else
+                                <li><a href="{{URL_SUBMISSION_QUIZE.'/'.$exam_record->slug}}">{{getPhrase($exam_record->title)}}</a></li>
+                            @endif
                             <li>{{$exam_record->title.' '.getPhrase('answers')}}</li>
 
                         </ol>

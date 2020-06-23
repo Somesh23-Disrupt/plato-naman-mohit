@@ -214,10 +214,9 @@
 
 						?>
 
-						{{ Form::label('parent_email', getphrase('parent_email')) }}
+						{{ Form::label('parent_email', getphrase('parent_email ').' (Optional)') }}
 
-						<span class="text-red">*</span>
-
+						
 						{{ Form::email('parent_email', $value = null, $attributes = array('class'=>'form-control', 'placeholder' => 'jack@jarvis.com',
 
 							'ng-model'=>'parent_email',
