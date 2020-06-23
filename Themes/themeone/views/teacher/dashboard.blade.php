@@ -163,8 +163,8 @@
 							<table class="table table-striped table-bordered datatable" id="datatable" id="example" cellspacing="0" width="100%">
 								<thead>
 									<tr>
-										<th>{{ getPhrase('Test Name')}}</th>
-										<th>{{ getPhrase('Subject')}}</th>
+										<th>{{ getPhrase('Quiz Category')}}</th>
+										<th>{{ getPhrase('Quizzes')}}</th>
 										<th>{{ getPhrase('Total Marks')}}</th>
 										<th>{{ getPhrase('Avg Marks')}}</th>
 										<th>{{ getPhrase('pass_student')}}</th>
