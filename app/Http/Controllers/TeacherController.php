@@ -350,15 +350,14 @@ class TeacherController extends Controller
                 else{
                   $data['tppforteach']=0;
                 }
-                // dd($data['passpercent']);
-                $sections=App\User::select(['section_id'])->where('role_id',5)->where('inst_id',auth()->user()->inst_id)->distinct()->pluck('section_id');
-                // dd($sections);
-                $data['sectionsforteach']= $sections;
-        
-        
-              $data['title']=App\User::select(['section_name'])->where('section_id',$slug)->first()->section_name;
-              $data['active_class']       = 'section';
               
+              
+              $subject=App\Subject::select('subject_title')->where('teacher_id',auth()->user()->id)->get()->first();
+             
+              $data['title_section']=App\User::select(['section_name'])->where('section_id',$slug)->first()->section_name.' > '.$subject->subject_title;
+              $data['active_class']       = 'section';
+              $data['title']=App\User::select(['section_name'])->where('section_id',$slug)
+              ->first()->section_name;
               $view_name = getTheme().'::teacher.sec-detail';
               return view($view_name, $data);
 

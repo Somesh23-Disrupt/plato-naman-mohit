@@ -242,7 +242,7 @@
 				<div class="col-md-6">  				  
 					<div class="panel panel-primary dsPanel">				   				    
 						<div class="panel-body" >
-						<canvas id="{{$newid}}" width="100" height="60"></canvas>					
+						<canvas id="{{$newid}}" width="100" height="80"></canvas>					
 						</div>				
 					</div>				
 				</div>

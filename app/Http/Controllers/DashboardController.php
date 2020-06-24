@@ -227,7 +227,7 @@ class DashboardController extends Controller
 
                     $stdbysec=App\User::where('section_id',auth()->user()->section_id)->where('role_id',5)->pluck('id');
 
-                    $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')->where('exam_status','pass')->whereIN('user_id',$stdbysec)
+                    $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')->where('exam_status','pass')->whereIn('user_id',$stdbysec)
                       ->select(['quiz_id', 'quizzes.category_id','quizzes.total_marks','quizzes.title','quizresults.exam_status',DB::raw('count(distinct(quizresults.user_id)) as tp'),DB::raw('round(avg(total_marks_obtained),2) as avgmarks'), 'quizresults.user_id'])
                     ->groupBy('quizresults.quiz_id')
                     ->get();
@@ -237,7 +237,7 @@ class DashboardController extends Controller
                   $sec=App\Subject::select(['section_id'])->where('teacher_id',auth()->user()->id)->pluck('section_id')->first();
                   // dd($sec);
                   $stdbysec=App\User::where('section_id',$sec)->where('role_id',5)->pluck('id');
-                    $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')->where('exam_status','pass')->whereIN('user_id',$stdbysec)
+                    $records = Quiz::join('quizresults', 'quizzes.id', '=', 'quizresults.quiz_id')->where('exam_status','pass')->whereIn('user_id',$stdbysec)
                       ->select(['quiz_id', 'quizzes.category_id','quizzes.total_marks','quizzes.title','quizresults.exam_status',DB::raw('count(distinct(quizresults.user_id)) as tp'),DB::raw('round(avg(total_marks_obtained),2) as avgmarks'), 'quizresults.user_id'])
                     ->groupBy('quizresults.quiz_id')
                     ->get();
@@ -1084,6 +1084,7 @@ class DashboardController extends Controller
              ->whereIn('user_id',$userbyinst)
              ->get();
 
+            //  dd($records);
       foreach($records as $record) {
           $color_number = rand(0,999);
           $record = (object)$record;

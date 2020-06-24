@@ -330,8 +330,10 @@ class SubjectsController extends Controller
                  }
                }
             }
-
-             if(count($result_ids)){
+            DB::table('questionbank_quizzes')
+            ->where('subject_id', '=',  $record->id)
+            ->delete();
+             if(count($result_ids)>0){
                foreach ($result_ids as $id) {
                  $delete_record   = QuizResult::where('id','=',$id)->first();
                  $delete_record->delete();

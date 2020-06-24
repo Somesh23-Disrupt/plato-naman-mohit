@@ -11,7 +11,7 @@
 					<div class="col-lg-12">
 						<ol class="breadcrumb">
 							 
-							<li><i class="fa fa-home"></i> {{ $title}}</li>
+							<li><i class="fa fa-home"></i> {{ $title_section}}</li>
 						</ol>
 					</div>
 				</div>
